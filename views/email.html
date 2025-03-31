@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promjena lozinke - Mazor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            overflow-x: hidden; /* Sprečava horizontalni scroll na mobilnim uređajima */
+        }
+
+        /* Top navbar - smaller and black */
+        .top-navbar {
+            background-color: #124e9a;
+            color: #fff;
+            padding: 5px 0;
+            width: 100%;
+        }
+
+        .top-navbar-container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            flex-wrap: wrap; /* Dozvoljava prelom na manjim ekranima */
+        }
+
+        .top-navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .top-navbar a:hover {
+            color: #fff;
+        }
+
+        .top-navbar i {
+            color: #fff;
+            margin-right: 5px;
+        }
+
+        .top-right {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap; /* Dozvoljava prelom na manjim ekranima */
+        }
+
+        /* Main header */
+        .main-header {
+            background-color: #124e9a;
+            padding: 15px 0;
+            width: 100%;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            flex-wrap: wrap; /* Dozvoljava prelom na manjim ekranima */
+        }
+
+        .logo {
+            width: 180px;
+            margin: 5px 0;
+        }
+
+        .logo img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            max-width: 700px;
+            margin: 10px 20px;
+            position: relative;
+            width: 100%; /* Za mobilne uređaje */
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .search-bar input::placeholder {
+            color: #999;
+        }
+
+        .search-bar button {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 5px 0;
+            flex-wrap: wrap; /* Dozvoljava prelom na manjim ekranima */
+        }
+
+        .user-actions a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .prijava {
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .wishlist, .cart {
+            font-size: 16px;
+        }
+
+        /* Hamburger menu */
+        .hamburger-menu {
+            display: none; /* Sakriveno na desktop verziji */
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            position: relative;
+            z-index: 1000;
+            transition: opacity 0.3s;
+        }
+
+        .hamburger-icon {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 5px 0;
+            transition: all 0.3s;
+        }
+
+        .hamburger-menu.active .hamburger-icon:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger-menu.active .hamburger-icon:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active .hamburger-icon:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Hamburger ikonica se sakriva kada je meni otvoren */
+        .hamburger-menu.active {
+            opacity: 0; /* Sakrij hamburgera kada je meni otvoren */
+            pointer-events: none; /* Onemogući klikove na nevidljivi element */
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: -85%;
+            width: 85%;
+            height: 100%;
+            background-color: #111;
+            z-index: 999;
+            transition: all 0.3s ease-in-out;
+            overflow-y: auto;
+            padding-top: 60px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .mobile-nav.active {
+            left: 0;
+        }
+
+        /* Sklanjamo dupli X iz mobilnog menija */
+        .mobile-nav-header {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 0;
+        }
+
+        .mobile-nav a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid #333;
+            font-size: 14px;
+        }
+
+        .mobile-nav a i {
+            margin-right: 15px;
+            min-width: 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .mobile-nav a.sve-kategorije {
+            background-color: #fff;
+        }
+
+        .mobile-nav a.sve-kategorije i {
+            color: white;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            display: none;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            background-color: #f2f2f2;
+            border-bottom: 1px solid #ddd;
+            width: 100%;
+            margin-bottom: 0;
+            overflow-x: auto; /* Omogućava scroll na malim ekranima */
+            position: relative; /* Ključno za pozicioniranje mega-dropdown menija */
+        }
+
+        .nav-container {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            justify-content: stretch;
+        }
+
+        .nav-menu a {
+            color: #333;
+            text-decoration: none;
+            padding: 15px 10px;
+            font-weight: bold;
+            font-size: 13px;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: max-content; /* Sprečava da se linkovi previše suze */
+        }
+
+        .nav-menu a:hover {
+            background-color: #e5e5e5;
+        }
+        .sve-kategorije:hover{
+            background-color: #333 !important;
+        }
+
+        .nav-menu .sve-kategorije {
+            background-color: #124e9a;
+            color: #ffffff;
+            border: 1px solid #124e9a;
+        }
+
+        /* Active stanje za SVE KATEGORIJE kada je dropdown otvoren */
+        .nav-menu .sve-kategorije.active {
+            background-color: #333;
+        }
+
+
+        .dropdown-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px 15px;
+        }
+
+        .dropdown-columns {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .dropdown-column {
+            width: 20%;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+
+        .dropdown-column:not(:last-child) {
+            border-right: 1px solid #f0f0f0;
+        }
+
+        .dropdown-column h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .category-list, .subcategory-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .category-list li, .subcategory-list li {
+            margin-bottom: 12px;
+        }
+
+        .category-list a, .subcategory-list a {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+            display: block;
+        }
+
+        .subcategory-list a {
+            color: #666;
+        }
+
+        .category-list a:hover, .subcategory-list a:hover {
+            color: #fff;
+        }
+
+        /* Mobile podmeni za SVE KATEGORIJE */
+        .mobile-subcategories {
+            padding-left: 0;
+            display: none;
+            background-color: #222;
+        }
+
+        .mobile-subcategories a {
+            padding: 12px 20px 12px 35px;
+            font-size: 13px;
+            border-bottom: 1px solid #333;
+        }
+
+        .mobile-nav a.has-children {
+            position: relative;
+        }
+
+        .mobile-nav a.has-children:after {
+            content: '\f107';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 20px;
+            transition: transform 0.3s;
+        }
+
+        .mobile-nav a.has-children.active:after {
+            transform: rotate(180deg);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #124e9a;
+            color: #fff;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responzivni grid */
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #fff;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 30px;
+            height: 2px;
+            background-color: #fff;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .footer-contact {
+            margin-bottom: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #ccc;
+            font-size: 14px;
+            align-items: flex-start;
+        }
+
+        .contact-item i {
+            color: #fff;
+            min-width: 20px; /* Fiksna širina za ikone */
+            text-align: center;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #333;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background-color: #fff;
+        }
+
+        .social-icon i {
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #444;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+        }
+
+        .payment-methods {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .payment-icon {
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 5px;
+            width: 40px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Prilagođeni footer za mobilne uređaje */
+        .mobile-footer {
+            display: none;
+            background-color: #124e9a;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .mobile-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .mobile-contact {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .mobile-copyright {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: -85%;
+            width: 85%;
+            height: 100%;
+            background-color: #111;
+            z-index: 999;
+            transition: all 0.3s ease-in-out;
+            overflow-y: auto;
+            padding-top: 60px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .mobile-nav.active {
+            left: 0;
+        }
+
+        .mobile-nav-header {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 0;
+        }
+
+        .mobile-nav a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid #333;
+            font-size: 14px;
+        }
+
+        .mobile-nav a i {
+            margin-right: 15px;
+            min-width: 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .mobile-nav a.sve-kategorije {
+            background-color: #111;
+        }
+
+        .mobile-nav a.sve-kategorije i {
+            color: white;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            display: none;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        /* Mobile submenu styles */
+        .mobile-subcategories {
+            padding-left: 0;
+            display: none;
+            background-color: #222;
+        }
+
+        .mobile-subcategories a {
+            padding: 12px 20px 12px 35px;
+            font-size: 13px;
+            border-bottom: 1px solid #333;
+        }
+
+        .mobile-nav a.has-children {
+            position: relative;
+        }
+
+        .mobile-nav a.has-children:after {
+            content: '\f107';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 20px;
+            transition: transform 0.3s;
+        }
+
+        .mobile-nav a.has-children.active:after {
+            transform: rotate(180deg);
+        }
+
+        /* Hamburger menu */
+        .hamburger-menu {
+            display: none; /* Hidden on desktop */
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            position: relative;
+            z-index: 1000;
+            transition: opacity 0.3s;
+        }
+
+        .hamburger-icon {
+            display: flex;
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            transition: all 0.3s;
+        }
+
+        .hamburger-menu.active .hamburger-icon:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger-menu.active .hamburger-icon:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active .hamburger-icon:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Hamburger icon hidden when menu is open */
+        .hamburger-menu.active {
+            opacity: 0; /* Hide hamburger when menu is open */
+            pointer-events: none; /* Disable clicks on hidden element */
+        }
+        
+        .mobile-top-nav {
+            display: none; /* Hidden by default, shown on mobile */
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .telefon{
+            display: none;
+        }
+        #telefon{
+            display: none;
+        }
+
+        /* Password reset form styles */
+        .reset-password-container {
+            max-width: 450px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .reset-password-title {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .reset-password-description {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .reset-password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .required-mark {
+            color: red;
+            margin-right: 5px;
+        }
+
+        .form-group input {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            width: 100%;
+        }
+
+        .form-group input:focus {
+            border-color: #124e9a;
+            outline: none;
+        }
+
+        .reset-btn {
+            background-color: #124e9a;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .reset-btn:hover {
+            background-color: #0a3b77;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .telefon{
+                display: flex;
+            }
+            #telefon{
+                display: flex;
+            }
+           
+            .logo {
+                width: 120px;
+                margin: 0 auto;
+                order: 1;
+            }
+            
+            .desktop{
+                display: none;
+            }
+            
+            .search-bar {
+                width: 100%;
+                margin: 10px 0;
+                order: 3;
+            }
+            
+            .user-actions {
+                order: 2;
+                gap: 15px;
+                margin: 0;
+                justify-content: flex-end;
+            }
+            
+            .prijava span {
+                display: none;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .footer {
+                display: none;
+            }
+            
+            .mobile-footer {
+                display: block;
+            }
+            
+            .mobile-top-nav {
+                display: flex !important;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+
+            
+            .search-bar {
+                width: 100% !important;
+                margin: 10px 0 !important;
+                order: 2 !important;
+                padding: 10px 15px;
+            }
+            
+            .logo {
+                width: 120px !important;
+                margin: 0 auto !important;
+            }
+            
+            .user-actions {
+                display: flex !important;
+                gap: 15px !important;
+                margin: 0 !important;
+            }
+            
+            .prijava span {
+                display: none;
+            }
+            .header-container {
+                flex-direction: row !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                padding: 10px 15px !important;
+                flex-wrap: nowrap !important;
+            }
+            
+            /* Show mobile nav and hide desktop elements */
+            .mobile-top-nav {
+                display: flex !important;
+                align-items: center !important;
+                width: 100% !important;
+            }
+            
+            /* Show mobile search container */
+            .mobile-search-container {
+                display: block !important;
+            }
+            
+            /* Hide desktop search and user actions */
+            .desktop-search, .desktop {
+                display: none !important;
+            }
+            
+            /* Hamburger menu styling */
+            .hamburger-menu {
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                height: 30px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            .hamburger-icon {
+                display: block !important;
+                width: 25px !important;
+                height: 3px !important;
+                background-color: white !important;
+                margin: 3px 0 !important;
+            }
+            
+            /* Logo styling */
+            .mobile-top-nav .logo {
+                margin: 0 auto !important;
+                text-align: center !important;
+            }
+            
+            /* User actions styling */
+            .mobile-top-nav .user-actions {
+                display: flex !important;
+                align-items: center !important;
+                gap: 15px !important;
+                margin: 0 !important;
+                justify-content: flex-end !important;
+            }
+            
+            /* Mobile search bar styling */
+            .mobile-search-container .search-bar {
+                width: 100% !important;
+                margin: 0 !important;
+                max-width: none !important;
+            }
+            
+            .mobile-search-container .search-bar input {
+                width: 100% !important;
+                padding: 10px 15px !important;
+                font-size: 14px !important;
+            }
+            
+            .reset-password-container {
+                margin: 153px 15px;
+                padding: 20px;
+            }
+            
+            .reset-password-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main header with logo and search -->
+    <div class="main-header">
+        <div class="header-container">
+            <!-- Desktop view -->
+            <a href="/" class="logo desktop">
+                <img src="logo.png" alt="TEHNOMAX" style="max-width: 180px;">
+            </a>
+            <div class="search-bar desktop-search">
+                <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="user-actions desktop">
+                <a href="prijava.html" class="prijava">
+                    <i class="fas fa-user fa-lg"></i> PRIJAVA
+                </a>
+                <a href="korpa.html" class="cart">
+                    <i class="fas fa-shopping-cart fa-lg"></i>
+                </a>
+            </div>
+            
+            <!-- Mobile view - aligned in one row -->
+            <div class="mobile-top-nav">
+                <button class="hamburger-menu" id="hamburgerMenu">
+                    <span class="hamburger-icon"></span>
+                    <span class="hamburger-icon"></span>
+                    <span class="hamburger-icon"></span>
+                </button>
+                
+                <a href="/" class="logo">
+                    <img src="logo.png" alt="TEHNOMAX" style="max-width: 120px;">
+                </a>
+                
+                <div class="user-actions">
+                    <a href="prijava.html" class="prijava">
+                        <i class="fas fa-user fa-lg"></i>
+                    </a>
+                    <a href="korpa.html" class="cart">
+                        <i class="fas fa-shopping-cart fa-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile search bar in separate row below -->
+        <div class="mobile-search-container" id="telefon">
+            <div class="search-bar">
+                <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <button class="close-menu" id="closeMenu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <a href="#" class="sve-kategorije"><i class="fas fa-th-large"></i> SVE KATEGORIJE</a>
+        <!-- Mobile subcategories will be added by JavaScript -->
+        <a href="index.html"><i class="fas fa-home"></i> POČETNA</a>
+        <a href="#"><i class="fas fa-store"></i> PRODAVNICE</a>
+        <a href="kontakt.html"><i class="fas fa-envelope"></i> KONTAKT</a>
+        <a href="#"><i class="fas fa-headset"></i> PODRŠKA</a>
+        <a href="#"><i class="fas fa-newspaper"></i> NOVOSTI</a>
+    </div>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    
+    <!-- Desktop navigation menu -->
+    <div class="nav-menu">
+        <div class="nav-container">
+            <a href="#" class="sve-kategorije" id="sveKategorijeDesktop">SVE KATEGORIJE</a>
+            <a href="index.html">POČETNA</a>
+            <a href="#">PRODAVNICE</a>
+            <a href="kontakt.html">KONTAKT</a>
+            <a href="#">PODRŠKA</a>
+            <a href="#">NOVOSTI</a>
+        </div>
+    </div>
+
+    <!-- Password Reset Form -->
+    <div class="reset-password-container">
+        <h1 class="reset-password-title">Promjena lozinke</h1>
+        <p class="reset-password-description">Unesite vašu e-mail adresu na koju ćemo vam poslati link za obnovu lozinke.</p>
+        <form class="reset-password-form">
+            <div class="form-group">
+                <label for="email"><span class="required-mark">*</span> Email adresa</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <button type="submit" class="reset-btn">Pošalji Email</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>O nama</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">O kompaniji</a></li>
+                        <li><a href="#">Naša misija</a></li>
+                        <li><a href="#">Karijera</a></li>
+                        <li><a href="#">Prodavnice</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Korisnička podrška</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Česta pitanja</a></li>
+                        <li><a href="#">Način plaćanja</a></li>
+                        <li><a href="#">Dostava</a></li>
+                        <li><a href="#">Reklamacije</a></li>
+                        <li><a href="#">Povrat robe</a></li>
+                        <li><a href="#">Servis</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Korisničke informacije</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Uvjeti korištenja</a></li>
+                        <li><a href="#">Politika privatnosti</a></li>
+                        <li><a href="#">Prava potrošača</a></li>
+                        <li><a href="#">Katalozi</a></li>
+                        <li><a href="#">Akcije</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Kontaktirajte nas</h3>
+                    <div class="footer-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Ulica Dr. Nika Miljanića 6, Nikšić 81400</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+382 69 206 050</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>mazor@t-com.me</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Pon - Sub: 9:00 - 20:00<br></span>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-social">
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 Marko Ivanović</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Footer za mobilne uređaje -->
+    <div class="mobile-footer">
+        <div class="mobile-social">
+            <a href="#" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-icon">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-icon">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+        <div class="mobile-copyright">
+            © 2025 Marko Ivanović
+        </div>
+    </div>
+
+    <script>
+        // Fixed Mobile Navigation JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hamburger menu functionality
+            const hamburgerMenu = document.getElementById('hamburgerMenu');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            // Function to open menu
+            function openMenu() {
+                mobileNav.classList.add('active');
+                mobileOverlay.classList.add('active');
+                hamburgerMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            // Function to close menu
+            function closeMenuFunc() {
+                mobileNav.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                hamburgerMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Event listeners
+            if (hamburgerMenu) {
+                hamburgerMenu.addEventListener('click', openMenu);
+            }
+            
+            if (closeMenu) {
+                closeMenu.addEventListener('click', closeMenuFunc);
+            }
+            
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', closeMenuFunc);
+            }
+            
+            // Mobile SVE KATEGORIJE dropdown functionality
+            const sveKategorijeMobile = document.querySelector('.mobile-nav .sve-kategorije');
+            
+            if (sveKategorijeMobile) {
+                // Add class for arrow icon
+                sveKategorijeMobile.classList.add('has-children');
+                
+                // Create mobile submenu if it doesn't exist
+                let mobileSubMenu = document.querySelector('.mobile-subcategories');
+                if (!mobileSubMenu) {
+                    mobileSubMenu = document.createElement('div');
+                    mobileSubMenu.className = 'mobile-subcategories';
+                    
+                    // Mobile submenu content
+                    mobileSubMenu.innerHTML = `
+                        <a href="#"><i class="fas fa-tv"></i> Televizori, Audio i Video</a>
+                        <a href="#"><i class="fas fa-blender"></i> Bijela tehnika</a>
+                        <a href="#"><i class="fas fa-coffee"></i> Mali kućni aparati</a>
+                        <a href="#"><i class="fas fa-snowflake"></i> Grijanje i klimatizacija</a>
+                        <a href="#"><i class="fas fa-mobile-alt"></i> Telefoni i pametni satovi</a>
+                        <a href="#"><i class="fas fa-camera"></i> Fotoaparati i kamere</a>
+                        <a href="#"><i class="fas fa-running"></i> Sport i Rekreacija</a>
+                        <a href="#"><i class="fas fa-laptop"></i> IT Uređaji</a>
+                        <a href="#"><i class="fas fa-gamepad"></i> Gaming i konzole</a>
+                    `;
+                    
+                    // Insert submenu after "SVE KATEGORIJE" link
+                    sveKategorijeMobile.parentNode.insertBefore(mobileSubMenu, sveKategorijeMobile.nextSibling);
+                }
+                
+                // Toggle for submenu
+                sveKategorijeMobile.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    this.classList.toggle('active');
+                    
+                    if (mobileSubMenu.style.display === 'block') {
+                        mobileSubMenu.style.display = 'none';
+                    } else {
+                        mobileSubMenu.style.display = 'block';
+                    }
+                });
+            }
+
+            // Close menu when clicking on mobile links (except SVE KATEGORIJE)
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav a:not(.sve-kategorije)');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Don't close if it's a submenu item
+                    if (this.closest('.mobile-subcategories')) {
+                        e.stopPropagation();
+                        return;
+                    }
+                    closeMenuFunc();
+                });
+            });
+            
+            // Password reset form validation
+            const resetPasswordForm = document.querySelector('.reset-password-form');
+            
+            if (resetPasswordForm) {
+                resetPasswordForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const email = document.getElementById('email').value;
+                    
+                    if (!email) {
+                        alert('Molimo unesite email adresu.');
+                        return;
+                    }
+                    
+                    // Validacija email formata
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email)) {
+                        alert('Molimo unesite ispravan email format.');
+                        return;
+                    }
+                    
+                    // Ovde bi išao kod za slanje podataka na server
+                    console.log('Email za resetiranje lozinke poslan na:', email);
+                    
+                    // Feedback korisniku
+                    alert('Link za obnovu lozinke je poslan na vašu email adresu.');
+                });
+            }
+            
+            // Ažuriranje godine u footeru
+            const currentYear = new Date().getFullYear();
+            const footerYearElements = document.querySelectorAll('.footer-bottom p, .mobile-copyright');
+            
+            footerYearElements.forEach(element => {
+                element.textContent = `© ${currentYear} Marko Ivanović`;
+            });
+        });
+    </script>
+</body>
+</html>
+                        

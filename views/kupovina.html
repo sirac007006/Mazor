@@ -1,0 +1,2024 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kupovina - Mazor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    overflow-x: hidden; /* Sprečava horizontalni scroll na mobilnim uređajima */
+}
+
+/* Top navbar - smaller and black */
+.top-navbar {
+    background-color: #124e9a;
+    color: #fff;
+    padding: 5px 0;
+    width: 100%;
+}
+
+.top-navbar-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    flex-wrap: wrap; /* Dozvoljava prelom na manjim ekranima */
+}
+
+.top-navbar a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    transition: color 0.3s ease;
+}
+
+.top-navbar a:hover {
+    color: #fff;
+}
+
+.top-navbar i {
+    color: #fff;
+    margin-right: 5px;
+}
+
+.top-right {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap; /* Dozvoljava prelom na manjim ekranima */
+}
+
+/* Main header */
+.main-header {
+    background-color: #124e9a;
+    padding: 15px 0;
+    width: 100%;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    flex-wrap: wrap; /* Dozvoljava prelom na manjim ekranima */
+}
+
+.logo {
+    width: 180px;
+    margin: 5px 0;
+}
+
+.logo img {
+    max-width: 100%;
+    height: auto;
+}
+
+.search-bar {
+    flex-grow: 1;
+    max-width: 700px;
+    margin: 10px 20px;
+    position: relative;
+    width: 100%; /* Za mobilne uređaje */
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+}
+
+.search-bar input::placeholder {
+    color: #999;
+}
+
+.search-bar button {
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 5px 0;
+    flex-wrap: wrap; /* Dozvoljava prelom na manjim ekranima */
+}
+
+.user-actions a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.prijava {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.wishlist, .cart {
+    font-size: 16px;
+}
+
+/* Hamburger menu */
+.hamburger-menu {
+    display: none; /* Sakriveno na desktop verziji */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    z-index: 1000;
+    transition: opacity 0.3s;
+}
+
+.hamburger-icon {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+    transition: all 0.3s;
+}
+
+.hamburger-menu.active .hamburger-icon:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-menu.active .hamburger-icon:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active .hamburger-icon:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Hamburger ikonica se sakriva kada je meni otvoren */
+.hamburger-menu.active {
+    opacity: 0; /* Sakrij hamburgera kada je meni otvoren */
+    pointer-events: none; /* Onemogući klikove na nevidljivi element */
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    left: -85%;
+    width: 85%;
+    height: 100%;
+    background-color: #111;
+    z-index: 999;
+    transition: all 0.3s ease-in-out;
+    overflow-y: auto;
+    padding-top: 60px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.mobile-nav.active {
+    left: 0;
+}
+
+/* Sklanjamo dupli X iz mobilnog menija */
+.mobile-nav-header {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 0;
+}
+
+.mobile-nav a {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid #333;
+    font-size: 14px;
+}
+
+.mobile-nav a i {
+    margin-right: 15px;
+    min-width: 20px;
+    text-align: center;
+    color: #fff;
+}
+
+.mobile-nav a.sve-kategorije {
+    background-color: #fff;
+}
+
+.mobile-nav a.sve-kategorije i {
+    color: white;
+}
+
+.close-menu {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    display: none;
+}
+
+.mobile-overlay.active {
+    display: block;
+}
+
+/* Navigation Menu */
+.nav-menu {
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    margin-bottom: 0;
+    overflow-x: auto; /* Omogućava scroll na malim ekranima */
+    position: relative; /* Ključno za pozicioniranje mega-dropdown menija */
+}
+
+.nav-container {
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    justify-content: stretch;
+}
+
+.nav-menu a {
+    color: #333;
+    text-decoration: none;
+    padding: 15px 10px;
+    font-weight: bold;
+    font-size: 13px;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: max-content; /* Sprečava da se linkovi previše suze */
+}
+
+.nav-menu a:hover {
+    background-color: #e5e5e5;
+}
+.sve-kategorije:hover{
+    background-color: #333 !important;
+}
+
+.nav-menu .sve-kategorije {
+    background-color: #124e9a;
+    color: #ffffff;
+    border: 1px solid #124e9a;
+}
+
+/* Active stanje za SVE KATEGORIJE kada je dropdown otvoren */
+.nav-menu .sve-kategorije.active {
+    background-color: #333;
+}
+
+
+.dropdown-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 25px 15px;
+}
+
+.dropdown-columns {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.dropdown-column {
+    width: 20%;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+.dropdown-column:not(:last-child) {
+    border-right: 1px solid #f0f0f0;
+}
+
+.dropdown-column h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: bold;
+}
+
+.category-list, .subcategory-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-list li, .subcategory-list li {
+    margin-bottom: 12px;
+}
+
+.category-list a, .subcategory-list a {
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+    display: block;
+}
+
+.subcategory-list a {
+    color: #666;
+}
+
+.category-list a:hover, .subcategory-list a:hover {
+    color: #fff;
+}
+
+/* Mobile podmeni za SVE KATEGORIJE */
+.mobile-subcategories {
+    padding-left: 0;
+    display: none;
+    background-color: #222;
+}
+
+.mobile-subcategories a {
+    padding: 12px 20px 12px 35px;
+    font-size: 13px;
+    border-bottom: 1px solid #333;
+}
+
+.mobile-nav a.has-children {
+    position: relative;
+}
+
+.mobile-nav a.has-children:after {
+    content: '\f107';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 20px;
+    transition: transform 0.3s;
+}
+
+.mobile-nav a.has-children.active:after {
+    transform: rotate(180deg);
+}
+
+/* Footer */
+.footer {
+    background-color: #124e9a;
+    color: #fff;
+    padding: 40px 0 20px;
+    margin-top: 50px;
+    width: 100%;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responzivni grid */
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.footer-column h3 {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #fff;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-column h3:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 30px;
+    height: 2px;
+    background-color: #fff;
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+.footer-contact {
+    margin-bottom: 20px;
+}
+
+.contact-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: #ccc;
+    font-size: 14px;
+    align-items: flex-start;
+}
+
+.contact-item i {
+    color: #fff;
+    min-width: 20px; /* Fiksna širina za ikone */
+    text-align: center;
+}
+
+.footer-social {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.social-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.social-icon:hover {
+    background-color: #fff;
+}
+
+.social-icon i {
+    color: #fff;
+    font-size: 16px;
+}
+
+.footer-bottom {
+    border-top: 1px solid #444;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+}
+
+.payment-methods {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.payment-icon {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 5px;
+    width: 40px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Prilagođeni footer za mobilne uređaje */
+.mobile-footer {
+    display: none;
+    background-color: #124e9a;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.mobile-social {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.mobile-contact {
+    color: white;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.mobile-copyright {
+    color: #999;
+    font-size: 12px;
+}
+
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    left: -85%;
+    width: 85%;
+    height: 100%;
+    background-color: #111;
+    z-index: 999;
+    transition: all 0.3s ease-in-out;
+    overflow-y: auto;
+    padding-top: 60px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.mobile-nav.active {
+    left: 0;
+}
+
+.mobile-nav-header {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 0;
+}
+
+.mobile-nav a {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid #333;
+    font-size: 14px;
+}
+
+.mobile-nav a i {
+    margin-right: 15px;
+    min-width: 20px;
+    text-align: center;
+    color: #fff;
+}
+
+.mobile-nav a.sve-kategorije {
+    background-color: #111;
+}
+
+.mobile-nav a.sve-kategorije i {
+    color: white;
+}
+
+.close-menu {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    display: none;
+}
+
+.mobile-overlay.active {
+    display: block;
+}
+
+/* Mobile submenu styles */
+.mobile-subcategories {
+    padding-left: 0;
+    display: none;
+    background-color: #222;
+}
+
+.mobile-subcategories a {
+    padding: 12px 20px 12px 35px;
+    font-size: 13px;
+    border-bottom: 1px solid #333;
+}
+
+.mobile-nav a.has-children {
+    position: relative;
+}
+
+.mobile-nav a.has-children:after {
+    content: '\f107';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 20px;
+    transition: transform 0.3s;
+}
+
+.mobile-nav a.has-children.active:after {
+    transform: rotate(180deg);
+}
+
+/* Hamburger menu */
+.hamburger-menu {
+    display: none; /* Hidden on desktop */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    z-index: 1000;
+    transition: opacity 0.3s;
+}
+
+.hamburger-icon {
+    display: flex;
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    transition: all 0.3s;
+}
+
+.hamburger-menu.active .hamburger-icon:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-menu.active .hamburger-icon:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active .hamburger-icon:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Hamburger icon hidden when menu is open */
+.hamburger-menu.active {
+    opacity: 0; /* Hide hamburger when menu is open */
+    pointer-events: none; /* Disable clicks on hidden element */
+}
+.mobile-top-nav {
+    display: none; /* Hidden by default, shown on mobile */
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.telefon{
+    display: none;
+}
+#telefon{
+    display: none;
+}
+
+/* Checkout forma stilovi */
+.kupovina-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.checkout-left {
+    flex: 2;
+    min-width: 300px;
+}
+
+.checkout-right {
+    flex: 1;
+    min-width: 300px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    align-self: flex-start;
+}
+
+.checkout-title {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.checkout-steps {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.step-number {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+.active-step {
+    background-color: #124e9a;
+}
+
+.inactive-step {
+    background-color: #999;
+}
+
+.step-line {
+    flex: 1;
+    height: 2px;
+    background-color: #ddd;
+    margin: 0 10px;
+}
+
+.checkout-section {
+    background-color: white;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-section-title {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.delivery-options {
+    display: flex;
+    margin-bottom: 25px;
+    gap: 15px;
+}
+
+.delivery-option {
+    flex: 1;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.delivery-option.selected {
+    border-color: #124e9a;
+    background-color: #f0f7ff;
+}
+
+.delivery-option i {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #666;
+}
+
+.form-group input, .form-group select {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: #124e9a;
+    outline: none;
+}
+
+.checkout-checkbox {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.checkout-checkbox input {
+    margin-right: 10px;
+}
+
+/* Form validation */
+.error-message {
+    color: #e44d26;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+.form-group input.error,
+.form-group select.error {
+    border-color: #e44d26;
+    background-color: #fff0f0;
+}
+
+.form-group input.error + .error-message,
+.form-group select.error + .error-message {
+    display: block;
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    display: none;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #124e9a;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.summary-title {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.cart-items {
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.item-details {
+    flex: 1;
+}
+
+.item-name {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.item-price {
+    font-size: 14px;
+    color: #666;
+}
+
+.item-quantity {
+    font-size: 14px;
+    color: #999;
+}
+
+.item-total {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.price-summary {
+    margin-top: 20px;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.price-label {
+    color: #666;
+}
+
+.price-value {
+    font-weight: bold;
+}
+
+.total-price {
+    font-size: 18px;
+    color: #124e9a;
+    font-weight: bold;
+}
+
+.discount {
+    color: #e44d26;
+}
+
+.delivery-time {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+.continue-btn {
+    background-color: #124e9a;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    text-transform: uppercase;
+}
+
+.continue-btn:hover {
+    background-color: #0a3b77;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .telefon{
+        display: flex;
+    }
+    #telefon{
+        display: flex;
+    }
+   
+    .logo {
+        width: 120px;
+        margin: 0 auto;
+        order: 1;
+    }
+    
+    .desktop{
+        display: none;
+    }
+    
+    .search-bar {
+        width: 100%;
+        margin: 10px 0;
+        order: 3;
+    }
+    
+    .user-actions {
+        order: 2;
+        gap: 15px;
+        margin: 0;
+        justify-content: flex-end;
+    }
+    
+    .prijava span {
+        display: none;
+    }
+    
+    .nav-menu {
+        display: none;
+    }
+    
+    .footer {
+        display: none;
+    }
+    
+    .mobile-footer {
+        display: block;
+    }
+    
+    .mobile-top-nav {
+        display: flex !important;
+    }
+    
+    .nav-menu {
+        display: none;
+    }
+
+    
+    .search-bar {
+        width: 100% !important;
+        margin: 10px 0 !important;
+        order: 2 !important;
+        padding: 10px 15px;
+    }
+    
+    .logo {
+        width: 120px !important;
+        margin: 0 auto !important;
+    }
+    
+    .user-actions {
+        display: flex !important;
+        gap: 15px !important;
+        margin: 0 !important;
+    }
+    
+    .prijava span {
+        display: none;
+    }
+    .header-container {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 10px 15px !important;
+        flex-wrap: nowrap !important;
+    }
+    
+    /* Show mobile nav and hide desktop elements */
+    .mobile-top-nav {
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+    
+    /* Show mobile search container */
+    .mobile-search-container {
+        display: block !important;
+    }
+    
+    /* Hide desktop search and user actions */
+    .desktop-search, .desktop {
+        display: none !important;
+    }
+    
+    /* Hamburger menu styling */
+    .hamburger-menu {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        height: 30px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .hamburger-icon {
+        display: block !important;
+        width: 25px !important;
+        height: 3px !important;
+        background-color: white !important;
+        margin: 3px 0 !important;
+    }
+    
+    /* Logo styling */
+    .mobile-top-nav .logo {
+        margin: 0 auto !important;
+        text-align: center !important;
+    }
+    
+    /* User actions styling */
+    .mobile-top-nav .user-actions {
+        display: flex !important;
+        align-items: center !important;
+        gap: 15px !important;
+        margin: 0 !important;
+        justify-content: flex-end !important;
+    }
+    
+    /* Mobile search bar styling */
+    .mobile-search-container .search-bar {
+        width: 100% !important;
+        margin: 0 !important;
+        max-width: none !important;
+    }
+    
+    .mobile-search-container .search-bar input {
+        width: 100% !important;
+        padding: 10px 15px !important;
+        font-size: 14px !important;
+    }
+    
+    .kupovina-container {
+        flex-direction: column;
+        padding: 0 15px;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .delivery-options {
+        flex-direction: column;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="main-header">
+        <div class="header-container">
+            <!-- Desktop view -->
+            <a href="/" class="logo desktop">
+                <img src="logo.png" alt="TEHNOMAX" style="max-width: 180px;">
+            </a>
+            <div class="search-bar desktop-search">
+                <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="user-actions desktop">
+                <a href="prijava.html" class="prijava">
+                    <i class="fas fa-user fa-lg"></i> PRIJAVA
+                </a>
+                <a href="korpa.html" class="cart">
+                    <i class="fas fa-shopping-cart fa-lg"></i>
+                </a>
+            </div>
+            
+            <!-- Mobile view - aligned in one row -->
+            <div class="mobile-top-nav">
+                <button class="hamburger-menu" id="hamburgerMenu">
+                    <span class="hamburger-icon"></span>
+                    <span class="hamburger-icon"></span>
+                    <span class="hamburger-icon"></span>
+                </button>
+                
+                <a href="/" class="logo">
+                    <img src="logo.png" alt="TEHNOMAX" style="max-width: 120px;">
+                </a>
+                
+                <div class="user-actions">
+                    <a href="prijava.html" class="prijava">
+                        <i class="fas fa-user fa-lg"></i>
+                    </a>
+                    <a href="korpa.html" class="cart">
+                        <i class="fas fa-shopping-cart fa-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile search bar in separate row below -->
+        <div class="mobile-search-container" id="telefon">
+            <div class="search-bar">
+                <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <button class="close-menu" id="closeMenu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <a href="#" class="sve-kategorije"><i class="fas fa-th-large"></i> SVE KATEGORIJE</a>
+        <!-- Mobile subcategories will be added by JavaScript -->
+        <a href="index.html"><i class="fas fa-home"></i> POČETNA</a>
+        <a href="#"><i class="fas fa-store"></i> PRODAVNICE</a>
+        <a href="kontakt.html"><i class="fas fa-envelope"></i> KONTAKT</a>
+        <a href="#"><i class="fas fa-headset"></i> PODRŠKA</a>
+        <a href="#"><i class="fas fa-newspaper"></i> NOVOSTI</a>
+    </div>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    
+    <!-- Desktop navigation menu -->
+    <div class="nav-menu">
+        <div class="nav-container">
+            <a href="#" class="sve-kategorije" id="sveKategorijeDesktop">SVE KATEGORIJE</a>
+            <a href="index.html">POČETNA</a>
+            <a href="#">PRODAVNICE</a>
+            <a href="kontakt.html">KONTAKT</a>
+            <a href="#">PODRŠKA</a>
+            <a href="#">NOVOSTI</a>
+        </div>
+    </div>
+
+    <!-- Checkout Container -->
+    <div class="kupovina-container">
+        <!-- Left Checkout Column -->
+        <div class="checkout-left">
+            <h1 class="checkout-title">Kupovina</h1>
+            
+            <!-- Delivery Method -->
+            <div class="checkout-section">
+                <h2 class="checkout-section-title">Odaberi način preuzimanja</h2>
+                
+                <div class="delivery-options">
+                    <div class="delivery-option selected" id="standardDelivery">
+                        <i class="fas fa-truck"></i>
+                        <span>STANDARDNA ISPORUKA</span>
+                    </div>
+                    <div class="delivery-option" id="storePickup">
+                        <i class="fas fa-store"></i>
+                        <span>PREUZIMANJE U PRODAVNICI</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Data -->
+            <div class="checkout-section">
+                <h2 class="checkout-section-title">Korisnički podaci</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ime">Ime *</label>
+                        <input type="text" id="ime" name="ime" value="Marko" required>
+                        <div class="error-message">Molimo unesite ime</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="prezime">Prezime *</label>
+                        <input type="text" id="prezime" name="prezime" value="Ivanovic" required>
+                        <div class="error-message">Molimo unesite prezime</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" value="markonis007006@gmail.com" required>
+                        <div class="error-message">Molimo unesite ispravan email</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefon">Telefon *</label>
+                        <input type="tel" name="telefon" value="+382 67844223" required>
+                        <div class="error-message">Molimo unesite ispravan broj telefona</div>
+                    </div>
+                </div>
+                
+                <div class="address-fields">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ulica">Ulica *</label>
+                            <input type="text" id="ulica" name="ulica" data-required="true" required>
+                            <div class="error-message">Molimo unesite ulicu</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="broj">Broj *</label>
+                            <input type="text" id="broj" name="broj" data-required="true" required>
+                            <div class="error-message">Molimo unesite kućni broj</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="stan">Stan</label>
+                            <input type="text" id="stan" name="stan">
+                        </div>
+                        <div class="form-group">
+                            <label for="sprat">Sprat</label>
+                            <input type="text" id="sprat" name="sprat">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="grad">Grad *</label>
+                            <select id="grad" name="grad" data-required="true" required>
+                                <option value="">Izaberite grad</option>
+                                <option value="niksic">Nikšić</option>
+                                <option value="podgorica">Podgorica</option>
+                                <option value="bar">Bar</option>
+                                <option value="budva">Budva</option>
+                                <option value="cetinje">Cetinje</option>
+                            </select>
+                            <div class="error-message">Molimo izaberite grad</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="postanski_broj">Poštanski broj *</label>
+                            <input type="text" id="postanski_broj" name="postanski_broj" data-required="true" required>
+                            <div class="error-message">Molimo unesite poštanski broj</div>
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-checkbox">
+                        <input type="checkbox" id="ima_lift" name="ima_lift">
+                        <label for="ima_lift">Ima lift</label>
+                    </div>
+                </div>
+                
+                <div class="store-fields" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="prodavnica">Odaberite prodavnicu *</label>
+                            <select id="prodavnica" name="prodavnica">
+                                <option value="">Izaberite prodavnicu</option>
+                                <option value="niksic">Mazor - Nikšić (Ul. Dr. Nika Miljanića 6)</option>
+                                <option value="podgorica">Mazor - Podgorica (Delta City)</option>
+                                <option value="bar">Mazor - Bar (Jovana Tomaševića 42)</option>
+                            </select>
+                            <div class="error-message">Molimo izaberite prodavnicu</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="napomena">Napomena</label>
+                    <input id="napomena" name="napomena" type="text" rows="3"></input>
+                </div>
+            </div>
+            
+            <button type="button" class="continue-btn" id="continueBtn">POTVRDI</button>
+        </div>
+        
+        <!-- Right Checkout Column - Order Summary -->
+        <div class="checkout-right">
+            <div class="summary-title">Pregled kupovine</div>
+            <div class="cart-items">
+                <div class="cart-item">
+                    <div class="item-details">
+                        <div class="item-name">MOBILNI TELEFON APPLE IPHONE 15 128GB GREEN MTP53SX/A</div>
+                        <div class="item-price">x3</div>
+                    </div>
+                    <div class="item-total">799,00 €</div>
+                </div>
+                
+                <div class="cart-item">
+                    <div class="item-details">
+                        <div class="item-name">MOBILNI TELEFON APPLE IPHONE 15 PRO 1TB WHITE TITANIUM MTVD3SX/A</div>
+                        <div class="item-price">x2</div>
+                    </div>
+                    <div class="item-total">1.615,00 €</div>
+                </div>
+                
+                <div class="cart-item">
+                    <div class="item-details">
+                        <div class="item-name">REMAX RP-U22 Dual USB 2.4A Fast Charging punjač beli</div>
+                        <div class="item-price">x3</div>
+                    </div>
+                    <div class="item-total">6,66 €</div>
+                </div>
+                
+                <div class="cart-item">
+                    <div class="item-details">
+                        <div class="item-name">ADAPTER APPLE MAGSAFE 2 POWER ADAPTER-45W(MACBOOK AIR) MD592Z/A</div>
+                        <div class="item-price">x1</div>
+                    </div>
+                    <div class="item-total">95,40 €</div>
+                </div>
+            </div>
+            
+            <div class="price-summary">
+                <div class="price-row">
+                    <span class="price-label">Ukupno</span>
+                    <span class="price-value">2.953,39 €</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Vrijeme isporuke</span>
+                    <span class="price-value">3 do 10 radnih dana</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>O nama</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">O kompaniji</a></li>
+                        <li><a href="#">Naša misija</a></li>
+                        <li><a href="#">Karijera</a></li>
+                        <li><a href="#">Prodavnice</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Korisnička podrška</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Česta pitanja</a></li>
+                        <li><a href="#">Način plaćanja</a></li>
+                        <li><a href="#">Dostava</a></li>
+                        <li><a href="#">Reklamacije</a></li>
+                        <li><a href="#">Povrat robe</a></li>
+                        <li><a href="#">Servis</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Korisničke informacije</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Uvjeti korištenja</a></li>
+                        <li><a href="#">Politika privatnosti</a></li>
+                        <li><a href="#">Prava potrošača</a></li>
+                        <li><a href="#">Katalozi</a></li>
+                        <li><a href="#">Akcije</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Kontaktirajte nas</h3>
+                    <div class="footer-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Ulica Dr. Nika Miljanića 6, Nikšić 81400</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+382 69 206 050</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>mazor@t-com.me</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Pon - Sub: 9:00 - 20:00<br></span>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-social">
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 Marko Ivanović</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Footer za mobilne uređaje -->
+    <div class="mobile-footer">
+        <div class="mobile-social">
+            <a href="#" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-icon">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-icon">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+        <div class="mobile-copyright">
+            © 2025 Marko Ivanović
+        </div>
+    </div>
+
+    <script>
+        // Checkout page JavaScript
+        // Function to show loading overlay
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+        
+        // Function to hide loading overlay
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+        
+        // Function to simulate API request with delay
+        function simulateApiRequest(data, successProbability = 0.9) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (Math.random() < successProbability) {
+                        resolve({ success: true, data: data });
+                    } else {
+                        reject({ success: false, message: "Greška prilikom slanja podataka. Molimo pokušajte ponovo." });
+                    }
+                }, 1500); // Simulate network delay
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hamburger menu functionality
+            const hamburgerMenu = document.getElementById('hamburgerMenu');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            // Function to open menu
+            function openMenu() {
+                mobileNav.classList.add('active');
+                mobileOverlay.classList.add('active');
+                hamburgerMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            // Function to close menu
+            function closeMenuFunc() {
+                mobileNav.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                hamburgerMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Event listeners
+            if (hamburgerMenu) {
+                hamburgerMenu.addEventListener('click', openMenu);
+            }
+            
+            if (closeMenu) {
+                closeMenu.addEventListener('click', closeMenuFunc);
+            }
+            
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', closeMenuFunc);
+            }
+            
+            // Mobile SVE KATEGORIJE dropdown functionality
+            const sveKategorijeMobile = document.querySelector('.mobile-nav .sve-kategorije');
+            
+            if (sveKategorijeMobile) {
+                // Add class for arrow icon
+                sveKategorijeMobile.classList.add('has-children');
+                
+                // Create mobile submenu if it doesn't exist
+                let mobileSubMenu = document.querySelector('.mobile-subcategories');
+                if (!mobileSubMenu) {
+                    mobileSubMenu = document.createElement('div');
+                    mobileSubMenu.className = 'mobile-subcategories';
+                    
+                    // Mobile submenu content
+                    mobileSubMenu.innerHTML = `
+                        <a href="#"><i class="fas fa-tv"></i> Televizori, Audio i Video</a>
+                        <a href="#"><i class="fas fa-blender"></i> Bijela tehnika</a>
+                        <a href="#"><i class="fas fa-coffee"></i> Mali kućni aparati</a>
+                        <a href="#"><i class="fas fa-snowflake"></i> Grijanje i klimatizacija</a>
+                        <a href="#"><i class="fas fa-mobile-alt"></i> Telefoni i pametni satovi</a>
+                        <a href="#"><i class="fas fa-camera"></i> Fotoaparati i kamere</a>
+                        <a href="#"><i class="fas fa-running"></i> Sport i Rekreacija</a>
+                        <a href="#"><i class="fas fa-laptop"></i> IT Uređaji</a>
+                        <a href="#"><i class="fas fa-gamepad"></i> Gaming i konzole</a>
+                    `;
+                    
+                    // Insert submenu after "SVE KATEGORIJE" link
+                    sveKategorijeMobile.parentNode.insertBefore(mobileSubMenu, sveKategorijeMobile.nextSibling);
+                }
+                
+                // Toggle for submenu
+                sveKategorijeMobile.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    this.classList.toggle('active');
+                    
+                    if (mobileSubMenu.style.display === 'block') {
+                        mobileSubMenu.style.display = 'none';
+                    } else {
+                        mobileSubMenu.style.display = 'block';
+                    }
+                });
+            }
+
+            // Close menu when clicking on mobile links (except SVE KATEGORIJE)
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav a:not(.sve-kategorije)');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Don't close if it's a submenu item
+                    if (this.closest('.mobile-subcategories')) {
+                        e.stopPropagation();
+                        return;
+                    }
+                    closeMenuFunc();
+                });
+            });
+            
+            // Desktop navigation
+            const sveKategorijeBtn = document.getElementById('sveKategorijeDesktop');
+            const megaDropdown = document.getElementById('megaDropdown');
+            
+            if (sveKategorijeBtn && megaDropdown) {
+                sveKategorijeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    if (megaDropdown.style.display === 'block') {
+                        megaDropdown.style.display = 'none';
+                        sveKategorijeBtn.classList.remove('active');
+                    } else {
+                        megaDropdown.style.display = 'block';
+                        sveKategorijeBtn.classList.add('active');
+                    }
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (megaDropdown && megaDropdown.style.display === 'block' && 
+                        !megaDropdown.contains(e.target) && 
+                        e.target !== sveKategorijeBtn) {
+                        megaDropdown.style.display = 'none';
+                        sveKategorijeBtn.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Checkout specific functionality
+            
+            // Delivery option selection
+            const standardDelivery = document.getElementById('standardDelivery');
+            const storePickup = document.getElementById('storePickup');
+            const addressFields = document.querySelector('.address-fields');
+            const storeFields = document.querySelector('.store-fields');
+            
+            function setDeliveryOption(isStandard) {
+                if (isStandard) {
+                    standardDelivery.classList.add('selected');
+                    storePickup.classList.remove('selected');
+                    
+                    if (addressFields && storeFields) {
+                        addressFields.style.display = 'block';
+                        storeFields.style.display = 'none';
+                        
+                        // Make address fields required
+                        const requiredAddressFields = addressFields.querySelectorAll('input[data-required="true"]');
+                        requiredAddressFields.forEach(field => {
+                            field.setAttribute('required', '');
+                        });
+                        
+                        // Remove required from store fields
+                        const storeSelectField = storeFields.querySelector('select');
+                        if (storeSelectField) {
+                            storeSelectField.removeAttribute('required');
+                        }
+                    }
+                } else {
+                    standardDelivery.classList.remove('selected');
+                    storePickup.classList.add('selected');
+                    
+                    if (addressFields && storeFields) {
+                        addressFields.style.display = 'none';
+                        storeFields.style.display = 'block';
+                        
+                        // Remove required from address fields
+                        const requiredAddressFields = addressFields.querySelectorAll('input[data-required="true"]');
+                        requiredAddressFields.forEach(field => {
+                            field.removeAttribute('required');
+                        });
+                        
+                        // Make store selection required
+                        const storeSelectField = storeFields.querySelector('select');
+                        if (storeSelectField) {
+                            storeSelectField.setAttribute('required', '');
+                        }
+                    }
+                }
+            }
+            
+            standardDelivery.addEventListener('click', function() {
+                setDeliveryOption(true);
+            });
+            
+            storePickup.addEventListener('click', function() {
+                setDeliveryOption(false);
+            });
+            
+            // Form field validation
+            const formFields = document.querySelectorAll('.form-group input, .form-group select');
+            
+            formFields.forEach(field => {
+                field.addEventListener('blur', function() {
+                    validateField(this);
+                });
+                
+                field.addEventListener('input', function() {
+                    if (this.classList.contains('error')) {
+                        validateField(this);
+                    }
+                });
+            });
+            
+            function validateField(field) {
+                const errorClass = 'error';
+                
+                // Skip validation if field doesn't have required attribute
+                if (!field.hasAttribute('required')) {
+                    field.classList.remove(errorClass);
+                    field.style.borderColor = '';
+                    return true;
+                }
+                
+                let isValid = true;
+                const value = field.value.trim();
+                
+                // Check if empty
+                if (value === '') {
+                    isValid = false;
+                } else {
+                    // Type-specific validation
+                    if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                        isValid = false;
+                    } else if (field.id === 'telefon' && !/^[\d\s\+\-\(\)]{6,20}$/.test(value)) {
+                        isValid = false;
+                    } else if (field.id === 'postanski_broj' && !/^\d{5}$/.test(value)) {
+                        isValid = false;
+                    }
+                }
+                
+                if (isValid) {
+                    field.classList.remove(errorClass);
+                    field.style.borderColor = '';
+                } else {
+                    field.classList.add(errorClass);
+                    field.style.borderColor = '#ff0000';
+                }
+                
+                return isValid;
+            }
+            
+            // Continue button
+            const continueBtn = document.getElementById('continueBtn');
+            
+            if (continueBtn) {
+                continueBtn.addEventListener('click', function() {
+                    // Get all visible required fields
+                    const visibleSections = document.querySelectorAll('.checkout-section:not([style*="display: none"])');
+                    let allRequiredFields = [];
+                    
+                    visibleSections.forEach(section => {
+                        const requiredFields = section.querySelectorAll('input[required], select[required]');
+                        allRequiredFields = [...allRequiredFields, ...requiredFields];
+                    });
+                    
+                    // Validate each field
+                    let isValid = true;
+                    allRequiredFields.forEach(field => {
+                        if (!validateField(field)) {
+                            isValid = false;
+                        }
+                    });
+                    
+                    if (isValid) {
+                        // Save form data to sessionStorage for the next steps
+                        const formData = {};
+                        formFields.forEach(field => {
+                            if (field.name) {
+                                formData[field.name] = field.value;
+                            }
+                        });
+                        
+                        // Save delivery method
+                        const selectedDelivery = document.querySelector('.delivery-option.selected span').textContent;
+                        formData['delivery_method'] = selectedDelivery;
+                        
+                        sessionStorage.setItem('checkoutData', JSON.stringify(formData));
+                        showLoading();
+                        
+                        // Simulate API request to save user data
+                        simulateApiRequest(formData)
+                            .then(response => {
+                                hideLoading();
+                                // In a real app, redirect to the next page
+                                alert('Uspješno ste unijeli podatke o dostavi! Prelazimo na sljedeći korak: Način plaćanja');
+                                // window.location.href = '/nacin-placanja';
+                            })
+                            .catch(error => {
+                                hideLoading();
+                                alert(error.message);
+                            });
+                    } else {
+                        // Scroll to the first error field
+                        const firstErrorField = document.querySelector('.error');
+                        if (firstErrorField) {
+                            firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            firstErrorField.focus();
+                        }
+                        
+                        alert('Molimo popunite sva obavezna polja ispravno');
+                    }
+                });
+            }
+            
+            // Auto-populate city based on postal code
+            const postalCodeField = document.getElementById('postanski_broj');
+            const cityField = document.getElementById('grad');
+            
+            if (postalCodeField && cityField) {
+                postalCodeField.addEventListener('blur', function() {
+                    const postalCode = this.value.trim();
+                    
+                    // Map of postal codes to cities
+                    const postalCodes = {
+                        '81400': 'niksic',
+                        '81000': 'podgorica',
+                        '85000': 'bar',
+                        '85310': 'budva',
+                        '81250': 'cetinje'
+                    };
+                    
+                    if (postalCodes[postalCode]) {
+                        cityField.value = postalCodes[postalCode];
+                    }
+                });
+            }
+            
+            // Check if we have saved checkout data from a previous attempt
+            const savedCheckoutData = sessionStorage.getItem('checkoutData');
+            if (savedCheckoutData) {
+                try {
+                    const checkoutData = JSON.parse(savedCheckoutData);
+                    
+                    // Auto-fill form fields
+                    for (const [name, value] of Object.entries(checkoutData)) {
+                        const field = document.querySelector(`[name="${name}"]`);
+                        if (field) {
+                            field.value = value;
+                        }
+                    }
+                    
+                    // Set delivery option
+                    if (checkoutData.delivery_method) {
+                        const isStandardDelivery = checkoutData.delivery_method.includes('STANDARDNA');
+                        setDeliveryOption(isStandardDelivery);
+                    }
+                } catch (error) {
+                    console.error('Error restoring checkout data:', error);
+                }
+            }
+            
+            // Check if URL contains query parameters for prefilling
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('email')) {
+                const emailField = document.getElementById('email');
+                if (emailField) {
+                    emailField.value = urlParams.get('email');
+                }
+            }
+            
+            // Setup persistent data storage between checkout steps
+            function setupCheckoutStorage() {
+                // Listen for changes on any form field
+                formFields.forEach(field => {
+                    field.addEventListener('change', function() {
+                        // Store the current field value in localStorage
+                        if (field.name) {
+                            localStorage.setItem(`checkout_${field.name}`, field.value);
+                        }
+                    });
+                    
+                    // Load any previously stored value
+                    if (field.name) {
+                        const savedValue = localStorage.getItem(`checkout_${field.name}`);
+                        if (savedValue) {
+                            field.value = savedValue;
+                        }
+                    }
+                });
+            }
+            
+            // Call the setup function
+            setupCheckoutStorage();
+            
+            // Manage real-time cart updates
+            function setupCartUpdates() {
+                // This would connect to a real cart system
+                // For demo purposes, we're just logging cart events
+                console.log('Cart system initialized');
+                
+                // Example: Update shipping costs based on delivery method
+                const deliveryOptions = document.querySelectorAll('.delivery-option');
+                deliveryOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const isStandardDelivery = this.id === 'standardDelivery';
+                        updateShippingCost(isStandardDelivery);
+                    });
+                });
+            }
+            
+            function updateShippingCost(isStandardDelivery) {
+                // Example shipping cost calculation
+                // In a real app, this would call an API to calculate shipping
+                const shippingCost = isStandardDelivery ? 5.00 : 0.00;
+                console.log(`Updated shipping cost: ${shippingCost}€`);
+                
+                // Example: Update display (this would be implemented in a real app)
+                // document.getElementById('shipping-cost').textContent = `${shippingCost.toFixed(2)} €`;
+                // updateTotals();
+            }
+            
+            // Call the cart setup function
+            setupCartUpdates();
+            
+            // Ažuriranje godine u footeru
+            const currentYear = new Date().getFullYear();
+            const footerYearElements = document.querySelectorAll('.footer-bottom p, .mobile-copyright');
+            
+            footerYearElements.forEach(element => {
+                element.textContent = `© ${currentYear} Marko Ivanović`;
+            });
+            
+            // Form field enhancement with real-time validation
+            function enhanceFormFields() {
+                // Add custom validation styles on focus/blur
+                formFields.forEach(field => {
+                    field.addEventListener('focus', function() {
+                        this.parentElement.classList.add('focused');
+                    });
+                    
+                    field.addEventListener('blur', function() {
+                        this.parentElement.classList.remove('focused');
+                        validateField(this);
+                    });
+                });
+                
+                // Phone number formatting
+                const phoneField = document.getElementById('telefon');
+                if (phoneField) {
+                    phoneField.addEventListener('input', function(e) {
+                        let value = e.target.value.replace(/\D/g, '');
+                        
+                        // Format phone number as +382 XX XXX XXX
+                        if (value.length > 0) {
+                            if (value.length <= 3) {
+                                value = `+${value}`;
+                            } else if (value.length <= 5) {
+                                value = `+${value.substring(0, 3)} ${value.substring(3)}`;
+                            } else if (value.length <= 8) {
+                                value = `+${value.substring(0, 3)} ${value.substring(3, 5)} ${value.substring(5)}`;
+                            } else {
+                                value = `+${value.substring(0, 3)} ${value.substring(3, 5)} ${value.substring(5, 8)} ${value.substring(8, 11)}`;
+                            }
+                        }
+                        
+                        e.target.value = value;
+                    });
+                }
+            }
+            
+            // Call field enhancement
+            enhanceFormFields();
+        });
+    </script>
+</body>
+</html>
