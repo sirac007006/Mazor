@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Promjena lozinke - Mazor</title>
+    <title>Servisi - Mazor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -710,85 +710,83 @@
             display: none;
         }
 
-        /* Password reset form styles */
-        .reset-password-container {
-            max-width: 450px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: white;
+        /* Service Grid Styles */
+        .page-title {
+            text-align: center;
+            color: #124e9a;
+            margin: 40px 0 30px;
+            font-size: 28px;
+        }
+
+        .services-container {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 0 15px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: #fff;
             border-radius: 8px;
+            overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            height: 220px;
         }
 
-        .reset-password-title {
-            font-size: 24px;
-            margin-bottom: 30px;
-            color: #333;
-            font-weight: bold;
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
 
-        .reset-password-description {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-
-        .reset-password-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-        }
-
-        .required-mark {
-            color: red;
-            margin-right: 5px;
-        }
-
-        .form-group input {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: border-color 0.3s;
+        .service-image {
+            height: 100%;
             width: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
-        .form-group input:focus {
-            border-color: #124e9a;
-            outline: none;
-        }
-
-        .reset-btn {
-            background-color: #124e9a;
+        .service-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(18, 78, 154, 0.85);
             color: white;
-            border: none;
-            padding: 14px 30px;
-            border-radius: 5px;
-            font-size: 16px;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover .service-info {
+            transform: translateY(0);
+        }
+
+        .service-name {
+            font-size: 18px;
             font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            margin-bottom: 10px;
         }
 
-        .reset-btn:hover {
-            background-color: #0a3b77;
+        .service-address, .service-phone {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: flex-start;
         }
 
-        /* Responsiveness */
+        .service-address i, .service-phone i {
+            margin-right: 8px;
+            min-width: 16px;
+        }
+
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             .telefon{
                 display: flex;
@@ -937,121 +935,262 @@
                 font-size: 14px !important;
             }
             
-            .reset-password-container {
-                margin: 153px 15px;
-                padding: 20px;
+            .services-grid {
+                grid-template-columns: 1fr;
             }
             
-            .reset-password-title {
-                font-size: 20px;
+            .page-title {
+                font-size: 22px;
+                margin: 30px 0 20px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Main header with logo and search -->
-<div class="main-header">
-    <div class="header-container">
-        <!-- Desktop view -->
-        <a href="/" class="logo desktop">
-            <img src="logo.png" alt="TEHNOMAX" style="max-width: 180px;">
-        </a>
-        <div class="search-bar desktop-search">
-            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-        <div class="user-actions desktop">
-            <% if (typeof session.user !== "undefined") { %>
-                <a href="/profil" class="prijavljen-korisnik">
-                    <i class="fas fa-user fa-lg"></i> <%= session.user.ime[0].toUpperCase() %><%= session.user.prezime[0].toUpperCase() %>
-                </a>
-            <% } else { %>
-                <a href="/prijava" class="prijava">
-                    <i class="fas fa-user fa-lg"></i> PRIJAVA
-                </a>
-            <% } %>
-            <a href="/korpa" class="cart">
-                <i class="fas fa-shopping-cart fa-lg"></i>
-            </a>
-        </div>
-        
-        <!-- Mobile view - aligned in one row -->
-        <div class="mobile-top-nav">
-            <button class="hamburger-menu" id="hamburgerMenu">
-                <span class="hamburger-icon"></span>
-                <span class="hamburger-icon"></span>
-                <span class="hamburger-icon"></span>
-            </button>
-            
-            <a href="/" class="logo" id="kt">
-                <img src="logo.png" alt="TEHNOMAX" style="max-width: 120px;">
-            </a>
-            
-            <div class="user-actions">
-                <% if (typeof session.user !== "undefined") { %>
-                    <a href="/profil" class="prijavljen-korisnik" id="kt"> 
-                        <i class="fas fa-user fa-lg"></i> <%= session.user.ime[0] %><%= session.user.prezime[0] %>
-                    </a>
-                <% } else { %>
-                    <a href="/prijava" class="prijava" id="kt">
-                        <i class="fas fa-user fa-lg"></i>
-                    </a>
-                <% } %>
-                <a href="/korpa" class="cart" id="kt">
-                    <i class="fas fa-shopping-cart fa-lg"></i>
-                </a>
-            </div>
-        </div>
-    </div>
+    <%-include('partials/header.ejs')%>
+    <h1 class="page-title">Ovlašćeni Servisi</h1>
     
-    <!-- Mobile search bar in separate row below -->
-    <div class="mobile-search-container" id="telefon">
-        <div class="search-bar">
-            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-    </div>
-</div>
-
-<!-- Add mobile navigation menu - THIS WAS MISSING -->
-<div class="mobile-nav" id="mobileNav">
-    <div class="mobile-nav-header">
-        <button id="closeMenu" class="close-menu">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    <a href="/svekategorije" class="sve-kategorije"><i class="fas fa-bars"></i> SVE KATEGORIJE</a>
-    <a href="/" class="mobile-nav-link"><i class="fas fa-home"></i> POČETNA</a>
-    <a href="/akcije" class="mobile-nav-link"><i class="fas fa-tag"></i> AKCIJE I POPUSTI</a>
-    <a href="/kontakt" class="mobile-nav-link"><i class="fas fa-envelope"></i> KONTAKT</a>
-    <a href="/servisi" class="mobile-nav-link"><i class="fas fa-cog"></i> SERVISI</a>
-</div>
-
-<!-- Add mobile overlay for closing menu - THIS WAS MISSING -->
-<div class="mobile-overlay" id="mobileOverlay"></div>
-
-<!-- Desktop navigation menu -->
-<div class="nav-menu">
-    <div class="nav-container">
-        <a href="/svekategorije" class="sve-kategorije" id="sveKategorijeDesktop">SVE KATEGORIJE</a>
-        <a href="/">POČETNA</a>
-        <a href="/akcije">AKCIJE I POPUSTI</a>
-        <a href="/kontakt">KONTAKT</a>
-        <a href="/servisi">SERVISI</a>
-    </div>
-</div>
-
-    <!-- Password Reset Form -->
-    <div class="reset-password-container">
-        <h1 class="reset-password-title">Promjena lozinke</h1>
-        <p class="reset-password-description">Unesite vašu e-mail adresu na koju ćemo vam poslati link za obnovu lozinke.</p>
-        <form class="reset-password-form">
-            <div class="form-group">
-                <label for="email"><span class="required-mark">*</span> Email adresa</label>
-                <input type="email" id="email" name="email" required>
+    <div class="services-container">
+        <div class="services-grid">
+            <!-- Service 1 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('elektronberane.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">ELEKTRON BERANE</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Poslovni Centar Berane ul M.Zecevica 26.</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>063/235-111</span>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="reset-btn">Pošalji Email</button>
-        </form>
+            
+            <!-- Service 2 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('elnik.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">ELEKTRO SERVIS NIKCEVIC ELNIK</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Baja Pivljanina 1P+7</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>040/213-042, 069/047-507</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service 3 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('frigo.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">FRIGO ELEKTRO VUJOVIĆ</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ul. Skoja br. 9, Podgorica</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>020/268-890, call centar 19988</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service 4 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('ct.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">COMTRADE DISTRIBUTION</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ul. Vojislavljevića br. 70, Podgorica</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>020/212-342</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service 5 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('komerc.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">ELEKTRONIKA KOMERC</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ul. Slobode br. 17, Bijelo Polje</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>050/431-236, 069/324-812</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('fgpromet.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">FG PROMET</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ul. Dalmatinska br. 54, Podgorica</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>020/219-130, 069/337-829</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service 9 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('its.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">ITS INFORMATION TECHNOLOGY SERVICE</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Josipa Broza Tita (zgrada Normala) pp10, Podgorica</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>020/512-596, 020/656-983, 067/303-403</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service 10 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('kimtec.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">KIM-TEC CG</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ćemovsko polje bb, Podgorica</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>020/608-251</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service 11 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('klimam.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">KLIMA M</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ul. Miladina Popovića 155, Podgorica</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>078/101-606, 067/261-535</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service 12 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('lacoelektro.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">LACO ELEKTRO</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Radosavac 48</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>052/321-644, 069/085-112</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service 13 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('mroaming.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">MONTENEGRO ROAMING</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Trg Slobode br.75, Podgorica</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>020/664-292, 069/353-289</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service 14 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('neposystem.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">NEPO SYSTEM</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>II Crnogorskih Bataljona 2/1, Podgorica</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>069/330-026</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service 15 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('pin.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">ALSO MONTENEGRO</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Vranići bb, Podgorica</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>078/103-139</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service 17 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('tvcentar.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">TV CENTAR ĐEČEVIĆ</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Bulevar Save Kovačevića br. 151, Podgorica</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>020/620-980, 069/333-633</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service 18 -->
+            <div class="service-card">
+                <div class="service-image" style="background-image: url('tehnolux.jpg');"></div>
+                <div class="service-info">
+                    <div class="service-name">TEHNO LUX</div>
+                    <div class="service-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Bulevar Pera Ćetkovića br. 36, Podgorica</span>
+                    </div>
+                    <div class="service-phone">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>020/656-411</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -1253,34 +1392,34 @@
                 });
             });
             
-            // Password reset form validation
-            const resetPasswordForm = document.querySelector('.reset-password-form');
-            
-            if (resetPasswordForm) {
-                resetPasswordForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const email = document.getElementById('email').value;
-                    
-                    if (!email) {
-                        alert('Molimo unesite email adresu.');
-                        return;
-                    }
-                    
-                    // Validacija email formata
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(email)) {
-                        alert('Molimo unesite ispravan email format.');
-                        return;
-                    }
-                    
-                    // Ovde bi išao kod za slanje podataka na server
-                    console.log('Email za resetiranje lozinke poslan na:', email);
-                    
-                    // Feedback korisniku
-                    alert('Link za obnovu lozinke je poslan na vašu email adresu.');
-                });
-            }
+            // Randomize service card background colors for visual appeal
+            serviceCards.forEach((card, index) => {
+                // Set a unique icon for each service (or cycle through if more services than icons)
+                const iconClass = serviceIcons[index % serviceIcons.length];
+                
+                // Create icon overlay in the image
+                const image = card.querySelector('.service-image');
+                const iconOverlay = document.createElement('div');
+                iconOverlay.style.position = 'absolute';
+                iconOverlay.style.top = '50%';
+                iconOverlay.style.left = '50%';
+                iconOverlay.style.transform = 'translate(-50%, -50%)';
+                iconOverlay.style.fontSize = '48px';
+                iconOverlay.style.color = 'rgba(255, 255, 255, 0.8)';
+                iconOverlay.innerHTML = `<i class="fas ${iconClass}"></i>`;
+                
+                // Set relative positioning on image container
+                image.style.position = 'relative';
+                
+                // Add subtle color gradient to image background
+                const hue = (index * 20) % 360; // Create different hues
+                image.style.backgroundColor = `hsl(${hue}, 70%, 25%)`;
+                image.style.backgroundImage = `linear-gradient(135deg, hsl(${hue}, 70%, 30%), hsl(${hue}, 70%, 15%)), url('/api/placeholder/320/220')`;
+                image.style.backgroundBlendMode = 'multiply';
+                
+                // Append icon to image
+                image.appendChild(iconOverlay);
+            });
             
             // Ažuriranje godine u footeru
             const currentYear = new Date().getFullYear();
@@ -1293,4 +1432,3 @@
     </script>
 </body>
 </html>
-                        

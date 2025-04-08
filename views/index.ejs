@@ -495,7 +495,7 @@ body {
     background-color: #fff;
 }
 
-.side-banner {
+.vivax-banner {
     flex: 1;
     background-color: white;
     display: flex;
@@ -983,6 +983,9 @@ body {
 .has-children.active {
     background-color: #111;
 }
+#telefon{
+    display: none;
+}
 
 @media (max-width: 1250px) {
     .prev-arrow {
@@ -1178,9 +1181,9 @@ body {
     }
     
     .user-actions {
-        display: flex !important;
-        gap: 15px !important;
-        margin: 0 !important;
+        display: flex;
+        gap: 15px;
+        margin: 0;
     }
 
     .desktop{
@@ -1225,6 +1228,12 @@ body {
     
     .dropdown-column {
         width: 100%;
+    }
+    #desk{
+        display: none;
+    }
+    .desktop{
+        display: none;
     }
 
 }
@@ -1327,81 +1336,7 @@ font-size: 14px !important;
     </style>
 </head>
 <body>
-    <!-- Main header with logo and search - Tehnomax style -->
-    <!-- Novi header sa ispravnom strukturom -->
-<div class="main-header">
-    <div class="header-container">
-        <!-- Desktop prikaz -->
-        <a href="#" class="logo">
-            <img src="logo.png" alt="TEHNOMAX" style="max-width: 180px;" class="desktop">
-        </a>
-        <div class="search-bar">
-            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-        <div class="desktop">
-        <div class="user-actions" class="desktop">
-            <a href="/prijava" class="prijava">
-                <i class="fas fa-user fa-lg" class="desktop"></i> PRIJAVA
-            </a>
-            <a href="/korpa" class="cart">
-                <i class="fas fa-shopping-cart fa-lg" class="desktop"></i>
-            </a>
-        </div></div>
-        
-        <!-- Mobilni prikaz -->
-        <div class="mobile-top-nav">
-            <button class="hamburger-menu" id="hamburgerMenu">
-                <span class="hamburger-icon"></span>
-                <span class="hamburger-icon"></span>
-                <span class="hamburger-icon"></span>
-            </button>
-            
-            <a href="#" class="logo">
-                <img src="logo.png" alt="TEHNOMAX" style="max-width: 120px;">
-            </a>
-            
-            <div class="user-actions">
-                <a href="/prijava" class="prijava">
-                    <i class="fas fa-user fa-lg"></i>
-                </a>
-                <a href="/korpa" class="cart">
-                    <i class="fas fa-shopping-cart fa-lg"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Mobilna navigacija - maknuta mobile-nav-header klasa -->
-<div class="mobile-nav" id="mobileNav">
-    <div class="mobile-nav-header">
-        <button class="close-menu" id="closeMenu">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    <a href="#" class="sve-kategorije"><i class="fas fa-th-large"></i> SVE KATEGORIJE</a>
-    <a href="/"><i class="fas fa-tag"></i>POČETNA</a>
-    <a href="#"><i class="fas fa-store"></i> PRODAVNICE</a>
-    <a href="/kontakt"><i class="fas fa-envelope"></i> KONTAKT</a>
-    <a href="#"><i class="fas fa-headset"></i> PODRŠKA</a>
-    <a href="#"><i class="fas fa-newspaper"></i> NOVOSTI</a>
-</div>
-<div class="mobile-overlay" id="mobileOverlay"></div>
-<!-- Dodajte ovaj HTML kod odmah nakon vašeg glavnog menija (nav-menu) -->
-
-    <!-- Glavna navigacija za desktop -->
-    <div class="nav-menu">
-        <div class="nav-container">
-            <a href="#" class="sve-kategorije" id="sveKategorijeDesktop">SVE KATEGORIJE</a>
-            <a href="/">POČETNA</a>
-            <a href="#">PRODAVNICE</a>
-            <a href="/kontakt">KONTAKT</a>
-            <a href="#">PODRŠKA</a>
-            <a href="#">NOVOSTI</a>
-        </div>
-    </div>
-
+<%-include('partials/header.ejs')%>
     <!-- Featured products slider and banner -->
     <div class="featured-section">
         <!-- Main slider - 2/3 space -->
@@ -1442,6 +1377,10 @@ font-size: 14px !important;
             </div>
         </div>
     
+        <!-- Vivax banner - 1/3 space -->
+        <div class="vivax-banner">
+            <img src="vox.jpg" alt="Vivax">
+        </div>
     </div>
     
     <!-- Categories section - MODIFIED FOR 9 CARDS -->
@@ -1458,7 +1397,7 @@ font-size: 14px !important;
                 <div class="category-icon">
                     <img src="tv.png" alt="Televizori">
                 </div>
-                <h3>Televizori</h3>
+                <h3>Televizori i Audio</h3>
             </div>
             <div class="category-card">
                 <div class="category-icon">
@@ -1484,13 +1423,6 @@ font-size: 14px !important;
                 </div>
                 <h3>Aparati za ličnu njegu</h3>
             </div>
-            <!-- Added 3 new category cards -->
-            <div class="category-card">
-                <div class="category-icon">
-                    <img src="speaker.png" alt="Audio">
-                </div>
-                <h3>Audio</h3>
-            </div>
             <div class="category-card">
                 <div class="category-icon">
                     <img src="klima.png" alt="Grijanje i hlađenje">
@@ -1502,6 +1434,12 @@ font-size: 14px !important;
                     <img src="laptop.png" alt="Laptop i tableti">
                 </div>
                 <h3>Laptop i tableti</h3>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <img src="razno.png" alt="Razno">
+                </div>
+                <h3>Razno</h3>
             </div>
         </div>
     </div>
@@ -2123,11 +2061,11 @@ font-size: 14px !important;
         
         // Sadržaj mobilnog podmenija
         mobileSubMenu.innerHTML = `
-            <a href="#"><i class="fas fa-tv"></i> Televizori, Audio i Video</a>
             <a href="#"><i class="fas fa-blender"></i> Bijela tehnika</a>
-            <a href="#"><i class="fas fa-coffee"></i> Mali kućni aparati</a>
-            <a href="#"><i class="fas fa-snowflake"></i> Grijanje i klimatizacija</a>
-            <a href="#"><i class="fas fa-mobile-alt"></i> Telefoni i pametni satovi</a>
+            <a href="#"><i class="fas fa-tv"></i> Televizori i audio</a>
+            <a href="#"><i class="fas fa-fire"></i> Šporeti, kamini i peći</a>
+            <a href="#"><i class="fas fa-wm"></i> Ugradna tehnika</a>
+            <a href="#"><i class="fas fa-mobile-alt"></i> Mali kućni aparati</a>
             <a href="#"><i class="fas fa-camera"></i> Fotoaparati i kamere</a>
             <a href="#"><i class="fas fa-running"></i> Sport i Rekreacija</a>
             <a href="#"><i class="fas fa-laptop"></i> IT Uređaji</a>

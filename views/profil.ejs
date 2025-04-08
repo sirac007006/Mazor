@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Promjena lozinke - Mazor</title>
+    <title>Korisnički profil - Mazor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -710,9 +710,9 @@
             display: none;
         }
 
-        /* Password reset form styles */
-        .reset-password-container {
-            max-width: 450px;
+        /* Profile form styles */
+        .profile-container {
+            max-width: 800px;
             margin: 50px auto;
             padding: 30px;
             background-color: white;
@@ -720,59 +720,60 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .reset-password-title {
+        .profile-title {
             font-size: 24px;
             margin-bottom: 30px;
             color: #333;
             font-weight: bold;
         }
 
-        .reset-password-description {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-
-        .reset-password-form {
+        .profile-form {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
+        .form-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
         .form-group {
             display: flex;
             flex-direction: column;
+            flex: 1;
+            min-width: 250px;
         }
 
         .form-group label {
             font-size: 14px;
             color: #333;
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
         }
 
-        .required-mark {
-            color: red;
-            margin-right: 5px;
-        }
-
-        .form-group input {
+        .form-group input, .form-group select {
             padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 14px;
             transition: border-color 0.3s;
-            width: 100%;
         }
 
-        .form-group input:focus {
+        .form-group input:focus, .form-group select:focus {
             border-color: #124e9a;
             outline: none;
         }
 
-        .reset-btn {
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .save-btn {
             background-color: #124e9a;
             color: white;
             border: none;
@@ -782,9 +783,100 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s;
+            flex: 1;
+            max-width: 250px;
         }
 
-        .reset-btn:hover {
+        .logout-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            flex: 1;
+            max-width: 250px;
+        }
+
+        .save-btn:hover {
+            background-color: #0a3b77;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Recent orders section */
+        .recent-orders {
+            margin-top: 40px;
+        }
+
+        .orders-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .orders-table th {
+            background-color: #f2f2f2;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .orders-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+        }
+
+        .status-completed {
+            background-color: #2ecc71;
+        }
+
+        .status-processing {
+            background-color: #3498db;
+        }
+
+        .status-shipped {
+            background-color: #f39c12;
+        }
+
+        .view-btn {
+            background-color: #124e9a;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .view-btn:hover {
             background-color: #0a3b77;
         }
 
@@ -937,360 +1029,374 @@
                 font-size: 14px !important;
             }
             
-            .reset-password-container {
-                margin: 153px 15px;
+            .profile-container {
+                margin: 30px 15px;
                 padding: 20px;
             }
             
-            .reset-password-title {
-                font-size: 20px;
+            .form-buttons {
+                flex-direction: column;
+            }
+            
+            .save-btn, .logout-btn {
+                max-width: 100%;
+            }
+            
+            .orders-table {
+                display: block;
+                overflow-x: auto;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Main header with logo and search -->
-<div class="main-header">
-    <div class="header-container">
-        <!-- Desktop view -->
-        <a href="/" class="logo desktop">
-            <img src="logo.png" alt="TEHNOMAX" style="max-width: 180px;">
-        </a>
-        <div class="search-bar desktop-search">
-            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-        <div class="user-actions desktop">
-            <% if (typeof session.user !== "undefined") { %>
-                <a href="/profil" class="prijavljen-korisnik">
-                    <i class="fas fa-user fa-lg"></i> <%= session.user.ime[0].toUpperCase() %><%= session.user.prezime[0].toUpperCase() %>
-                </a>
-            <% } else { %>
-                <a href="/prijava" class="prijava">
-                    <i class="fas fa-user fa-lg"></i> PRIJAVA
-                </a>
-            <% } %>
-            <a href="/korpa" class="cart">
-                <i class="fas fa-shopping-cart fa-lg"></i>
-            </a>
+    <%-include('partials/header.ejs')%>
+<div class="profile-container">
+    <h1 class="profile-title">Moj profil</h1>
+    <form class="profile-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="ime">Ime</label>
+                <input type="text" id="ime" name="ime" value="Marko">
+            </div>
+            <div class="form-group">
+                <label for="prezime">Prezime</label>
+                <input type="text" id="prezime" name="prezime" value="Marković">
+            </div>
         </div>
         
-        <!-- Mobile view - aligned in one row -->
-        <div class="mobile-top-nav">
-            <button class="hamburger-menu" id="hamburgerMenu">
-                <span class="hamburger-icon"></span>
-                <span class="hamburger-icon"></span>
-                <span class="hamburger-icon"></span>
-            </button>
-            
-            <a href="/" class="logo" id="kt">
-                <img src="logo.png" alt="TEHNOMAX" style="max-width: 120px;">
-            </a>
-            
-            <div class="user-actions">
-                <% if (typeof session.user !== "undefined") { %>
-                    <a href="/profil" class="prijavljen-korisnik" id="kt"> 
-                        <i class="fas fa-user fa-lg"></i> <%= session.user.ime[0] %><%= session.user.prezime[0] %>
-                    </a>
-                <% } else { %>
-                    <a href="/prijava" class="prijava" id="kt">
-                        <i class="fas fa-user fa-lg"></i>
-                    </a>
-                <% } %>
-                <a href="/korpa" class="cart" id="kt">
-                    <i class="fas fa-shopping-cart fa-lg"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Mobile search bar in separate row below -->
-    <div class="mobile-search-container" id="telefon">
-        <div class="search-bar">
-            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-    </div>
-</div>
-
-<!-- Add mobile navigation menu - THIS WAS MISSING -->
-<div class="mobile-nav" id="mobileNav">
-    <div class="mobile-nav-header">
-        <button id="closeMenu" class="close-menu">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    <a href="/svekategorije" class="sve-kategorije"><i class="fas fa-bars"></i> SVE KATEGORIJE</a>
-    <a href="/" class="mobile-nav-link"><i class="fas fa-home"></i> POČETNA</a>
-    <a href="/akcije" class="mobile-nav-link"><i class="fas fa-tag"></i> AKCIJE I POPUSTI</a>
-    <a href="/kontakt" class="mobile-nav-link"><i class="fas fa-envelope"></i> KONTAKT</a>
-    <a href="/servisi" class="mobile-nav-link"><i class="fas fa-cog"></i> SERVISI</a>
-</div>
-
-<!-- Add mobile overlay for closing menu - THIS WAS MISSING -->
-<div class="mobile-overlay" id="mobileOverlay"></div>
-
-<!-- Desktop navigation menu -->
-<div class="nav-menu">
-    <div class="nav-container">
-        <a href="/svekategorije" class="sve-kategorije" id="sveKategorijeDesktop">SVE KATEGORIJE</a>
-        <a href="/">POČETNA</a>
-        <a href="/akcije">AKCIJE I POPUSTI</a>
-        <a href="/kontakt">KONTAKT</a>
-        <a href="/servisi">SERVISI</a>
-    </div>
-</div>
-
-    <!-- Password Reset Form -->
-    <div class="reset-password-container">
-        <h1 class="reset-password-title">Promjena lozinke</h1>
-        <p class="reset-password-description">Unesite vašu e-mail adresu na koju ćemo vam poslati link za obnovu lozinke.</p>
-        <form class="reset-password-form">
+        <div class="form-row">
             <div class="form-group">
-                <label for="email"><span class="required-mark">*</span> Email adresa</label>
-                <input type="email" id="email" name="email" required>
+                <label for="email">Email adresa</label>
+                <input type="email" id="email" name="email" value="marko.markovic@gmail.com">
             </div>
-            <button type="submit" class="reset-btn">Pošalji Email</button>
-        </form>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>O nama</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">O kompaniji</a></li>
-                        <li><a href="#">Naša misija</a></li>
-                        <li><a href="#">Karijera</a></li>
-                        <li><a href="#">Prodavnice</a></li>
-                        <li><a href="#">Blog</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Korisnička podrška</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Česta pitanja</a></li>
-                        <li><a href="#">Način plaćanja</a></li>
-                        <li><a href="#">Dostava</a></li>
-                        <li><a href="#">Reklamacije</a></li>
-                        <li><a href="#">Povrat robe</a></li>
-                        <li><a href="#">Servis</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Korisničke informacije</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Uvjeti korištenja</a></li>
-                        <li><a href="#">Politika privatnosti</a></li>
-                        <li><a href="#">Prava potrošača</a></li>
-                        <li><a href="#">Katalozi</a></li>
-                        <li><a href="#">Akcije</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Kontaktirajte nas</h3>
-                    <div class="footer-contact">
-                        <div class="contact-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Ulica Dr. Nika Miljanića 6, Nikšić 81400</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-phone-alt"></i>
-                            <span>+382 69 206 050</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <span>mazor@t-com.me</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-clock"></i>
-                            <span>Pon - Sub: 9:00 - 20:00<br></span>
-                        </div>
-                    </div>
-                    
-                    <div class="footer-social">
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>© 2025 Marko Ivanović</p>
+            <div class="form-group">
+                <label for="telefon">Telefon</label>
+                <input type="tel" id="tel" name="telefon" value="+382 69 123 456">
             </div>
         </div>
-    </footer>
+
+        <div class="form-group">
+            <label for="adresa">Adresa</label>
+            <input type="text" id="adresa" name="adresa" value="Ulica Slobode 123">
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="grad">Grad</label>
+                <input type="text" id="grad" name="grad" value="Nikšić">
+            </div>
+            <div class="form-group">
+                <label for="postanski_broj">Poštanski broj</label>
+                <input type="text" id="postanski_broj" name="postanski_broj" value="81400">
+            </div>
+        </div>
+        
+        <div class="form-buttons">
+            <button type="submit" class="save-btn">Sačuvaj promjene</button>
+            <button type="button" class="logout-btn">Odjava</button>
+        </div>
+    </form>
     
-    <!-- Footer za mobilne uređaje -->
-    <div class="mobile-footer">
-        <div class="mobile-social">
-            <a href="#" class="social-icon">
-                <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="#" class="social-icon">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" class="social-icon">
-                <i class="fab fa-youtube"></i>
-            </a>
-            <a href="#" class="social-icon">
-                <i class="fab fa-linkedin-in"></i>
-            </a>
+    <div class="recent-orders">
+        <h2 class="orders-title">Poslednje narudžbine</h2>
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>ID narudžbine</th>
+                    <th>Datum</th>
+                    <th>Iznos</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#OR-2025-1458</td>
+                    <td>03.04.2025</td>
+                    <td>245,00 €</td>
+                    <td><span class="status-badge status-completed">Završeno</span></td>
+            
+                </tr>
+                <tr>
+                    <td>#OR-2025-1423</td>
+                    <td>25.03.2025</td>
+                    <td>189,99 €</td>
+                    <td><span class="status-badge status-shipped">Poslato</span></td>
+                   
+                </tr>
+                <tr>
+                    <td>#OR-2025-1387</td>
+                    <td>14.03.2025</td>
+                    <td>78,50 €</td>
+                    <td><span class="status-badge status-processing">U obradi</span></td>
+                   
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>O nama</h3>
+                <ul class="footer-links">
+                    <li><a href="#">O kompaniji</a></li>
+                    <li><a href="#">Naša misija</a></li>
+                    <li><a href="#">Karijera</a></li>
+                    <li><a href="#">Prodavnice</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Korisnička podrška</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Česta pitanja</a></li>
+                    <li><a href="#">Način plaćanja</a></li>
+                    <li><a href="#">Dostava</a></li>
+                    <li><a href="#">Reklamacije</a></li>
+                    <li><a href="#">Povrat robe</a></li>
+                    <li><a href="#">Servis</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Korisničke informacije</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Uvjeti korištenja</a></li>
+                    <li><a href="#">Politika privatnosti</a></li>
+                    <li><a href="#">Prava potrošača</a></li>
+                    <li><a href="#">Katalozi</a></li>
+                    <li><a href="#">Akcije</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Kontaktirajte nas</h3>
+                <div class="footer-contact">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ulica Dr. Nika Miljanića 6, Nikšić 81400</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>+382 69 206 050</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>mazor@t-com.me</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Pon - Sub: 9:00 - 20:00<br></span>
+                    </div>
+                </div>
+                
+                <div class="footer-social">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="mobile-copyright">
-            © 2025 Marko Ivanović
+        
+        <div class="footer-bottom">
+            <p>© 2025 Marko Ivanović</p>
         </div>
     </div>
+</footer>
 
-    <script>
-        // Fixed Mobile Navigation JavaScript
-        document.addEventListener('DOMContentLoaded', function() {
-            // Hamburger menu functionality
-            const hamburgerMenu = document.getElementById('hamburgerMenu');
-            const closeMenu = document.getElementById('closeMenu');
-            const mobileNav = document.getElementById('mobileNav');
-            const mobileOverlay = document.getElementById('mobileOverlay');
+<!-- Footer za mobilne uređaje -->
+<div class="mobile-footer">
+    <div class="mobile-social">
+        <a href="#" class="social-icon">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" class="social-icon">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="social-icon">
+            <i class="fab fa-youtube"></i>
+        </a>
+        <a href="#" class="social-icon">
+            <i class="fab fa-linkedin-in"></i>
+        </a>
+    </div>
+    <div class="mobile-copyright">
+        © 2025 Marko Ivanović
+    </div>
+</div>
+
+<script>
+    // Fixed Mobile Navigation JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hamburger menu functionality
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const closeMenu = document.getElementById('closeMenu');
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        
+        // Function to open menu
+        function openMenu() {
+            mobileNav.classList.add('active');
+            mobileOverlay.classList.add('active');
+            hamburgerMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Function to close menu
+        function closeMenuFunc() {
+            mobileNav.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            hamburgerMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Event listeners
+        if (hamburgerMenu) {
+            hamburgerMenu.addEventListener('click', openMenu);
+        }
+        
+        if (closeMenu) {
+            closeMenu.addEventListener('click', closeMenuFunc);
+        }
+        
+        if (mobileOverlay) {
+            mobileOverlay.addEventListener('click', closeMenuFunc);
+        }
+        
+        // Mobile SVE KATEGORIJE dropdown functionality
+        const sveKategorijeMobile = document.querySelector('.mobile-nav .sve-kategorije');
+        
+        if (sveKategorijeMobile) {
+            // Add class for arrow icon
+            sveKategorijeMobile.classList.add('has-children');
             
-            // Function to open menu
-            function openMenu() {
-                mobileNav.classList.add('active');
-                mobileOverlay.classList.add('active');
-                hamburgerMenu.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-            
-            // Function to close menu
-            function closeMenuFunc() {
-                mobileNav.classList.remove('active');
-                mobileOverlay.classList.remove('active');
-                hamburgerMenu.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            
-            // Event listeners
-            if (hamburgerMenu) {
-                hamburgerMenu.addEventListener('click', openMenu);
-            }
-            
-            if (closeMenu) {
-                closeMenu.addEventListener('click', closeMenuFunc);
-            }
-            
-            if (mobileOverlay) {
-                mobileOverlay.addEventListener('click', closeMenuFunc);
-            }
-            
-            // Mobile SVE KATEGORIJE dropdown functionality
-            const sveKategorijeMobile = document.querySelector('.mobile-nav .sve-kategorije');
-            
-            if (sveKategorijeMobile) {
-                // Add class for arrow icon
-                sveKategorijeMobile.classList.add('has-children');
+            // Create mobile submenu if it doesn't exist
+            let mobileSubMenu = document.querySelector('.mobile-subcategories');
+            if (!mobileSubMenu) {
+                mobileSubMenu = document.createElement('div');
+                mobileSubMenu.className = 'mobile-subcategories';
                 
-                // Create mobile submenu if it doesn't exist
-                let mobileSubMenu = document.querySelector('.mobile-subcategories');
-                if (!mobileSubMenu) {
-                    mobileSubMenu = document.createElement('div');
-                    mobileSubMenu.className = 'mobile-subcategories';
-                    
-                    // Mobile submenu content
-                    mobileSubMenu.innerHTML = `
-                        <a href="#"><i class="fas fa-tv"></i> Televizori, Audio i Video</a>
-                        <a href="#"><i class="fas fa-blender"></i> Bijela tehnika</a>
-                        <a href="#"><i class="fas fa-coffee"></i> Mali kućni aparati</a>
-                        <a href="#"><i class="fas fa-snowflake"></i> Grijanje i klimatizacija</a>
-                        <a href="#"><i class="fas fa-mobile-alt"></i> Telefoni i pametni satovi</a>
-                        <a href="#"><i class="fas fa-camera"></i> Fotoaparati i kamere</a>
-                        <a href="#"><i class="fas fa-running"></i> Sport i Rekreacija</a>
-                        <a href="#"><i class="fas fa-laptop"></i> IT Uređaji</a>
-                        <a href="#"><i class="fas fa-gamepad"></i> Gaming i konzole</a>
-                    `;
-                    
-                    // Insert submenu after "SVE KATEGORIJE" link
-                    sveKategorijeMobile.parentNode.insertBefore(mobileSubMenu, sveKategorijeMobile.nextSibling);
+                // Mobile submenu content
+                mobileSubMenu.innerHTML = `
+                    <a href="#"><i class="fas fa-tv"></i> Televizori, Audio i Video</a>
+                    <a href="#"><i class="fas fa-blender"></i> Bijela tehnika</a>
+                    <a href="#"><i class="fas fa-coffee"></i> Mali kućni aparati</a>
+                    <a href="#"><i class="fas fa-snowflake"></i> Grijanje i klimatizacija</a>
+                    <a href="#"><i class="fas fa-mobile-alt"></i> Telefoni i pametni satovi</a>
+                    <a href="#"><i class="fas fa-camera"></i> Fotoaparati i kamere</a>
+                    <a href="#"><i class="fas fa-running"></i> Sport i Rekreacija</a>
+                    <a href="#"><i class="fas fa-laptop"></i> IT Uređaji</a>
+                    <a href="#"><i class="fas fa-gamepad"></i> Gaming i konzole</a>
+                `;
+                
+                // Insert submenu after "SVE KATEGORIJE" link
+                sveKategorijeMobile.parentNode.insertBefore(mobileSubMenu, sveKategorijeMobile.nextSibling);
+            }
+            
+            // Toggle for submenu
+            sveKategorijeMobile.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                this.classList.toggle('active');
+                
+                if (mobileSubMenu.style.display === 'block') {
+                    mobileSubMenu.style.display = 'none';
+                } else {
+                    mobileSubMenu.style.display = 'block';
                 }
-                
-                // Toggle for submenu
-                sveKategorijeMobile.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    this.classList.toggle('active');
-                    
-                    if (mobileSubMenu.style.display === 'block') {
-                        mobileSubMenu.style.display = 'none';
-                    } else {
-                        mobileSubMenu.style.display = 'block';
-                    }
-                });
-            }
-
-            // Close menu when clicking on mobile links (except SVE KATEGORIJE)
-            const mobileNavLinks = document.querySelectorAll('.mobile-nav a:not(.sve-kategorije)');
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    // Don't close if it's a submenu item
-                    if (this.closest('.mobile-subcategories')) {
-                        e.stopPropagation();
-                        return;
-                    }
-                    closeMenuFunc();
-                });
             });
-            
-            // Password reset form validation
-            const resetPasswordForm = document.querySelector('.reset-password-form');
-            
-            if (resetPasswordForm) {
-                resetPasswordForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const email = document.getElementById('email').value;
-                    
-                    if (!email) {
-                        alert('Molimo unesite email adresu.');
-                        return;
-                    }
-                    
-                    // Validacija email formata
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(email)) {
-                        alert('Molimo unesite ispravan email format.');
-                        return;
-                    }
-                    
-                    // Ovde bi išao kod za slanje podataka na server
-                    console.log('Email za resetiranje lozinke poslan na:', email);
-                    
-                    // Feedback korisniku
-                    alert('Link za obnovu lozinke je poslan na vašu email adresu.');
-                });
-            }
-            
-            // Ažuriranje godine u footeru
-            const currentYear = new Date().getFullYear();
-            const footerYearElements = document.querySelectorAll('.footer-bottom p, .mobile-copyright');
-            
-            footerYearElements.forEach(element => {
-                element.textContent = `© ${currentYear} Marko Ivanović`;
+        }
+
+        // Close menu when clicking on mobile links (except SVE KATEGORIJE)
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav a:not(.sve-kategorije)');
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Don't close if it's a submenu item
+                if (this.closest('.mobile-subcategories')) {
+                    e.stopPropagation();
+                    return;
+                }
+                closeMenuFunc();
             });
         });
-    </script>
+        
+        // Profile form validation and submission
+        const profileForm = document.querySelector('.profile-form');
+        
+        if (profileForm) {
+            profileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validacija podataka
+                const email = document.getElementById('email').value;
+                
+                if (!email) {
+                    alert('Molimo unesite email adresu.');
+                    return;
+                }
+                
+                // Validacija email formata
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Molimo unesite ispravan email format.');
+                    return;
+                }
+                
+                // Ovde bi išao kod za slanje podataka na server
+                console.log('Podaci profila su ažurirani.');
+                
+                // Feedback korisniku
+                alert('Vaš profil je uspješno ažuriran!');
+            });
+        }
+        
+        // Odjava korisnika
+        const logoutBtn = document.querySelector('.logout-btn');
+        
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function() {
+                if (confirm('Da li ste sigurni da želite da se odjavite?')) {
+                    // Ovde bi išao kod za odjavu na serveru
+                    console.log('Korisnik odjavljen.');
+                    window.location.href = '/prijava';
+                }
+            });
+        }
+        
+        // View order details
+        const viewButtons = document.querySelectorAll('.view-btn');
+        
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const orderId = this.closest('tr').cells[0].textContent;
+                alert(`Detalji narudžbe ${orderId} će biti prikazani u novoj stranici.`);
+                // window.location.href = `/narudzba/${orderId}`;
+            });
+        });
+        
+        // Ažuriranje godine u footeru
+        const currentYear = new Date().getFullYear();
+        const footerYearElements = document.querySelectorAll('.footer-bottom p, .mobile-copyright');
+        
+        footerYearElements.forEach(element => {
+            element.textContent = `© ${currentYear} Marko Ivanović`;
+        });
+    });
+</script>
 </body>
 </html>
-                        

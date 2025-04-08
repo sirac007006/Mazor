@@ -1,0 +1,91 @@
+<!-- Main header with logo and search -->
+<div class="main-header">
+    <div class="header-container">
+        <!-- Desktop view -->
+        <a href="/" class="logo desktop">
+            <img src="logo.png" alt="TEHNOMAX" style="max-width: 180px;">
+        </a>
+        <div class="search-bar desktop-search">
+            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="user-actions desktop">
+            <% if (typeof session.user !== "undefined") { %>
+                <a href="/profil" class="prijavljen-korisnik">
+                    <i class="fas fa-user fa-lg"></i> <%= session.user.ime[0].toUpperCase() %><%= session.user.prezime[0].toUpperCase() %>
+                </a>
+            <% } else { %>
+                <a href="/prijava" class="prijava">
+                    <i class="fas fa-user fa-lg"></i> PRIJAVA
+                </a>
+            <% } %>
+            <a href="/korpa" class="cart">
+                <i class="fas fa-shopping-cart fa-lg"></i>
+            </a>
+        </div>
+        
+        <!-- Mobile view - aligned in one row -->
+        <div class="mobile-top-nav">
+            <button class="hamburger-menu" id="hamburgerMenu">
+                <span class="hamburger-icon"></span>
+                <span class="hamburger-icon"></span>
+                <span class="hamburger-icon"></span>
+            </button>
+            
+            <a href="/" class="logo" id="kt">
+                <img src="logo.png" alt="TEHNOMAX" style="max-width: 120px;">
+            </a>
+            
+            <div class="user-actions">
+                <% if (typeof session.user !== "undefined") { %>
+                    <a href="/profil" class="prijavljen-korisnik" id="kt"> 
+                        <i class="fas fa-user fa-lg"></i> <%= session.user.ime[0] %><%= session.user.prezime[0] %>
+                    </a>
+                <% } else { %>
+                    <a href="/prijava" class="prijava" id="kt">
+                        <i class="fas fa-user fa-lg"></i>
+                    </a>
+                <% } %>
+                <a href="/korpa" class="cart" id="kt">
+                    <i class="fas fa-shopping-cart fa-lg"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile search bar in separate row below -->
+    <div class="mobile-search-container" id="telefon">
+        <div class="search-bar">
+            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- Add mobile navigation menu - THIS WAS MISSING -->
+<div class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header">
+        <button id="closeMenu" class="close-menu">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <a href="/svekategorije" class="sve-kategorije"><i class="fas fa-bars"></i> SVE KATEGORIJE</a>
+    <a href="/" class="mobile-nav-link"><i class="fas fa-home"></i> POČETNA</a>
+    <a href="/akcije" class="mobile-nav-link"><i class="fas fa-tag"></i> AKCIJE I POPUSTI</a>
+    <a href="/kontakt" class="mobile-nav-link"><i class="fas fa-envelope"></i> KONTAKT</a>
+    <a href="/servisi" class="mobile-nav-link"><i class="fas fa-cog"></i> SERVISI</a>
+</div>
+
+<!-- Add mobile overlay for closing menu - THIS WAS MISSING -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<!-- Desktop navigation menu -->
+<div class="nav-menu">
+    <div class="nav-container">
+        <a href="/svekategorije" class="sve-kategorije" id="sveKategorijeDesktop">SVE KATEGORIJE</a>
+        <a href="/">POČETNA</a>
+        <a href="/akcije">AKCIJE I POPUSTI</a>
+        <a href="/kontakt">KONTAKT</a>
+        <a href="/servisi">SERVISI</a>
+    </div>
+</div>
