@@ -24,7 +24,10 @@ const db = new pg.Client({
     password: "BjgIlknTXDKS4VcASVI7CsDzarpsV27l",
     host: "cvtripi4d50c73amk5gg-a.oregon-postgres.render.com",
     port: 5432,
-    database: "mazor"
+    database: "mazor",
+    ssl: {
+        rejectUnauthorized: false, // for most cloud DBs like Heroku/Render
+      },
 })
 db.connect();
 function getCategory(category){
