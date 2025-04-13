@@ -95,7 +95,6 @@ app.get("/svekategorije/:category", async (req, res) => {
     var subcategories = (await db.query(
         "SELECT * FROM subcategories WHERE category = $1", [category]
     )).rows;
-    console.log(subcategories);
 
     res.render("podkategorije1.ejs", {
         category:category,
@@ -183,7 +182,6 @@ app.get("/svekategorije/:category/:subcategory/:id", async (req, res) => {
         );
 
         const proizvod = rows[0];
-        console.log(proizvod);
         res.render("proizvod.ejs", {
             category,
             subcategory,
@@ -207,7 +205,6 @@ app.get("/proizvodi/:id", async (req, res) => {
         );
 
         const proizvod = rows[0];
-        console.log(proizvod);
         res.render("proizvod.ejs", {
             proizvod,
             session: req.session,
@@ -347,7 +344,6 @@ app.post("/registracija", async (req, res) => {
                 return res.status(500).send("Greška pri hesiranju lozinke");
             }
 
-            console.log(hash);
             let password = hash;
 
             await db.query(
@@ -434,7 +430,6 @@ app.get('/kupovina', (req, res) => {
 
     let ukupno = 0;
 
-    console.log(req.session)
     korpa.forEach(item => {
         ukupno += parseFloat(item.cena) * item.kolicina;
     });
