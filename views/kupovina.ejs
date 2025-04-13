@@ -1286,10 +1286,7 @@ body {
                         <div class="form-group">
                             <label for="prodavnica">Odaberite prodavnicu *</label>
                             <select id="prodavnica" name="prodavnica">
-                                <option value="">Izaberite prodavnicu</option>
                                 <option value="niksic">Mazor - Nikšić (Ul. Dr. Nika Miljanića 6)</option>
-                                <option value="podgorica">Mazor - Podgorica (Delta City)</option>
-                                <option value="bar">Mazor - Bar (Jovana Tomaševića 42)</option>
                             </select>
                             <div class="error-message">Molimo izaberite prodavnicu</div>
                         </div>
@@ -1309,43 +1306,23 @@ body {
         <div class="checkout-right">
             <div class="summary-title">Pregled kupovine</div>
             <div class="cart-items">
-                <div class="cart-item">
-                    <div class="item-details">
-                        <div class="item-name">MOBILNI TELEFON APPLE IPHONE 15 128GB GREEN MTP53SX/A</div>
-                        <div class="item-price">x3</div>
+                <%console.log(korpa)%>
+                <% korpa.forEach((item) => { %>
+                    <div class="cart-item">
+                        <div class="item-details">
+                            <div class="item-name"><%= item.naziv %></div>
+                            <div class="item-price">x<%= item.kolicina %></div>
+                        </div>
+                        <div class="item-total"><%= (item.kolicina * item.cena).toFixed(2) %> €</div>
                     </div>
-                    <div class="item-total">799,00 €</div>
-                </div>
+                <% }) %>
                 
-                <div class="cart-item">
-                    <div class="item-details">
-                        <div class="item-name">MOBILNI TELEFON APPLE IPHONE 15 PRO 1TB WHITE TITANIUM MTVD3SX/A</div>
-                        <div class="item-price">x2</div>
-                    </div>
-                    <div class="item-total">1.615,00 €</div>
-                </div>
-                
-                <div class="cart-item">
-                    <div class="item-details">
-                        <div class="item-name">REMAX RP-U22 Dual USB 2.4A Fast Charging punjač beli</div>
-                        <div class="item-price">x3</div>
-                    </div>
-                    <div class="item-total">6,66 €</div>
-                </div>
-                
-                <div class="cart-item">
-                    <div class="item-details">
-                        <div class="item-name">ADAPTER APPLE MAGSAFE 2 POWER ADAPTER-45W(MACBOOK AIR) MD592Z/A</div>
-                        <div class="item-price">x1</div>
-                    </div>
-                    <div class="item-total">95,40 €</div>
-                </div>
             </div>
             
             <div class="price-summary">
                 <div class="price-row">
                     <span class="price-label">Ukupno</span>
-                    <span class="price-value">2.953,39 €</span>
+                    <span class="price-value"><%=ukupno%> €</span>
                 </div>
                 <div class="price-row">
                     <span class="price-label">Vrijeme isporuke</span>
@@ -1532,18 +1509,17 @@ body {
                     mobileSubMenu = document.createElement('div');
                     mobileSubMenu.className = 'mobile-subcategories';
                     
-                    // Mobile submenu content
                     mobileSubMenu.innerHTML = `
-                        <a href="#"><i class="fas fa-tv"></i> Televizori, Audio i Video</a>
-                        <a href="#"><i class="fas fa-blender"></i> Bijela tehnika</a>
-                        <a href="#"><i class="fas fa-coffee"></i> Mali kućni aparati</a>
-                        <a href="#"><i class="fas fa-snowflake"></i> Grijanje i klimatizacija</a>
-                        <a href="#"><i class="fas fa-mobile-alt"></i> Telefoni i pametni satovi</a>
-                        <a href="#"><i class="fas fa-camera"></i> Fotoaparati i kamere</a>
-                        <a href="#"><i class="fas fa-running"></i> Sport i Rekreacija</a>
-                        <a href="#"><i class="fas fa-laptop"></i> IT Uređaji</a>
-                        <a href="#"><i class="fas fa-gamepad"></i> Gaming i konzole</a>
-                    `;
+            <a href="#"><i class="fas fa-blender"></i> Bijela tehnika</a>
+            <a href="#"><i class="fas fa-tv"></i> Televizori i audio</a>
+            <a href="#"><i class="fas fa-fire"></i> Šporeti, kamini i peći</a>
+            <a href="#"><i class="fas fa-plug"></i> Ugradna tehnika</a>
+            <a href="#"><i class="fas fa-blender"></i> Mali kućni aparati</a>
+            <a href="#"><i class="fas fa-spa"></i> Aparati za ličnu njegu</a>
+            <a href="#"><i class="fas fa-snowflake"></i> Grijanje i hlađenje</a>
+            <a href="#"><i class="fas fa-laptop"></i> Laptop i tableti</a>
+            <a href="#"><i class="fas fa-bolt"></i> Razno</a>
+        `;
                     
                     // Insert submenu after "SVE KATEGORIJE" link
                     sveKategorijeMobile.parentNode.insertBefore(mobileSubMenu, sveKategorijeMobile.nextSibling);

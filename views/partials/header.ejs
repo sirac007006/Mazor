@@ -3,12 +3,13 @@
     <div class="header-container">
         <!-- Desktop view -->
         <a href="/" class="logo desktop">
-            <img src="logo.png" alt="TEHNOMAX" style="max-width: 180px;">
+            <img src="/logo.png" alt="TEHNOMAX" style="max-width: 180px;">
         </a>
-        <div class="search-bar desktop-search">
-            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
+        <form action="/search" method="get" class="search-bar desktop-search" id="desktop">
+            <input type="text" name="q" placeholder="Pronađite proizvod, kategoriju ili brend...">
             <button><i class="fas fa-search"></i></button>
-        </div>
+        </form>
+        
         <div class="user-actions desktop">
             <% if (typeof session.user !== "undefined") { %>
                 <a href="/profil" class="prijavljen-korisnik">
@@ -33,7 +34,7 @@
             </button>
             
             <a href="/" class="logo" id="kt">
-                <img src="logo.png" alt="TEHNOMAX" style="max-width: 120px;">
+                <img src="/logo.png" alt="TEHNOMAX" style="max-width: 120px;">
             </a>
             
             <div class="user-actions">
@@ -55,10 +56,11 @@
     
     <!-- Mobile search bar in separate row below -->
     <div class="mobile-search-container" id="telefon">
-        <div class="search-bar">
-            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
+        <form action="/search" method="get" class="search-bar">
+            <input type="text" name="q" placeholder="Pronađite proizvod, kategoriju ili brend...">
             <button><i class="fas fa-search"></i></button>
-        </div>
+        </form>
+        
     </div>
 </div>
 
@@ -82,7 +84,7 @@
 <!-- Desktop navigation menu -->
 <div class="nav-menu">
     <div class="nav-container">
-        <a href="/svekategorije" class="sve-kategorije" id="sveKategorijeDesktop">SVE KATEGORIJE</a>
+        <a href="/svekategorije" class="sve-kategorije">SVE KATEGORIJE</a>
         <a href="/">POČETNA</a>
         <a href="/akcije">AKCIJE I POPUSTI</a>
         <a href="/kontakt">KONTAKT</a>

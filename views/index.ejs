@@ -555,6 +555,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .category-card:hover {
@@ -977,7 +978,7 @@ body {
 }
 
 .mobile-subcategories a {
-    padding: 10px 15px;
+    padding: 12px 15px;
 }
 
 .has-children.active {
@@ -985,6 +986,9 @@ body {
 }
 #telefon{
     display: none;
+}
+.product-container a{
+    text-decoration: none;
 }
 
 @media (max-width: 1250px) {
@@ -1376,71 +1380,58 @@ font-size: 14px !important;
                 <span class="dot" data-index="4"></span>
             </div>
         </div>
-    
-        <!-- Vivax banner - 1/3 space -->
-        <div class="vivax-banner">
-            <img src="vox.jpg" alt="Vivax">
-        </div>
     </div>
     
     <!-- Categories section - MODIFIED FOR 9 CARDS -->
     <div class="categories-section">
         <h2 class="section-title">Kategorije proizvoda</h2>
         <div class="categories-container">
-            <div class="category-card">
+            <a href="/svekategorije/bijelatehnika" class="category-card">
                 <div class="category-icon">
                     <img src="masina.png" alt="Bijela tehnika">
                 </div>
-                <h3>Bijela tehnika</h3>
-            </div>
-            <div class="category-card">
+                <h3>Bijela tehnika</h3></a>
+            <a href="/svekategorije/tviaudio" class="category-card">
                 <div class="category-icon">
-                    <img src="tv.png" alt="Televizori">
+                    <img src="tv.png" alt="Televizori" >
                 </div>
-                <h3>Televizori i Audio</h3>
-            </div>
-            <div class="category-card">
+                <h3>Televizori i Audio</h3></a>
+            <a href="/svekategorije/sporetikaminipeci" class="category-card">
                 <div class="category-icon">
                     <img src="kamin.png" alt="Šporeti, kamini i peći">
                 </div>
-                <h3>Šporeti, kamini i peći</h3>
-            </div>
-            <div class="category-card">
+                <h3>Šporeti, kamini i peći</h3></a>
+            <a href="/svekategorije/ugradnatehnika" class="category-card">
                 <div class="category-icon">
                     <img src="ugradno.png" alt="Ugradna tehnika">
                 </div>
-                <h3>Ugradna tehnika</h3>
-            </div>
-            <div class="category-card">
+                <h3>Ugradna tehnika</h3></a>
+            <a href="/svekategorije/telefonigaming" class="category-card">
+                <div class="category-icon">
+                    <img src="telefon.png" alt="Telefoni i Gaming">
+                </div>
+                <h3>Telefoni i Gaming</h3></a>
+            <a href="/svekategorije/malikucniaparati" class="category-card">
                 <div class="category-icon">
                     <img src="pegla.png" alt="Mali kućni aparati">
                 </div>
-                <h3>Mali kućni aparati</h3>
-            </div>
-            <div class="category-card">
-                <div class="category-icon">
-                    <img src="fen.png" alt="Aparati za ličnu njegu">
-                </div>
-                <h3>Aparati za ličnu njegu</h3>
-            </div>
-            <div class="category-card">
+                <h3>Mali kućni aparati</h3></a>
+            <a href="/svekategorije/grijanjeihladjenje" class="category-card">
                 <div class="category-icon">
                     <img src="klima.png" alt="Grijanje i hlađenje">
                 </div>
-                <h3>Grijanje i hlađenje</h3>
-            </div>
-            <div class="category-card">
+                <h3>Grijanje i hlađenje</h3></a>
+            <a href="/svekategorije/laptopitableti" class="category-card">
                 <div class="category-icon">
                     <img src="laptop.png" alt="Laptop i tableti">
                 </div>
-                <h3>Laptop i tableti</h3>
-            </div>
-            <div class="category-card">
+                <h3>Laptop i tableti</h3></a>
+            <a href="/svekategorije/razno" class="category-card">
                 <div class="category-icon">
                     <img src="razno.png" alt="Razno">
                 </div>
                 <h3>Razno</h3>
-            </div>
+            </a>
         </div>
     </div>
     
@@ -1454,128 +1445,25 @@ font-size: 14px !important;
             <button class="slider-arrow prev-arrow">
                 <i class="fas fa-chevron-left"></i>
             </button>
-    
             <div class="product-container">
-
-                <div class="product-card">
+                <%for(let i = 0; i < televizori.length; i++){%>
+                <a href="/proizvodi/<%=televizori[i].my_id%>" class="product-card">
                     <div class="product-badge">IZDVAJAMO</div>
                     <div class="product-image">
-                        <img src="masina.jpg" alt="Pantum Pantum DRUM DL-5125C 30000 pages">
+                        <img src="<%=televizori[i].slka%>" alt="<%=televizori[i].naziv%>">
                     </div>
                     <div class="product-info">
-                        <div class="product-title">Pantum Pantum DRUM</div>
-                        <div class="product-sku">#2321/MF</div>
+                        <div class="product-title"><%=televizori[i].naziv%></div>
+                        <div class="product-sku">#<%=televizori[i].sifra%></div>
                         <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 93.20€</div>
-                            <div class="product-price">74,50€</div>
+                            <div class="product-price"><%=televizori[i].cena_sapdv%>€</div>
                         </div>
                         <button class="add-to-cart">
                             <i class="fas fa-shopping-cart"></i>
                         </button>
                     </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge">IZDVAJAMO</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Pantum Pantum DRUM DL-5125C 30000 pages">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Pantum Pantum DRUM</div>
-                        <div class="product-sku">#2321/MF</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 93.20€</div>
-                            <div class="product-price">74,50€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge">IZDVAJAMO</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Pantum Pantum DRUM DL-5125C 30000 pages">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Pantum Pantum DRUM</div>
-                        <div class="product-sku">#2321/MF</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 93.20€</div>
-                            <div class="product-price">74,50€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge">IZDVAJAMO</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Pantum Pantum DRUM DL-5125C 30000 pages">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Pantum Pantum DRUM </div>
-                        <div class="product-sku">#2321/MF</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 93.20€</div>
-                            <div class="product-price">74,50€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge">IZDVAJAMO</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Pantum Pantum DRUM DL-5125C 30000 pages">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Pantum Pantum DRUM</div>
-                        <div class="product-sku">#2321/MF</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 93.20€</div>
-                            <div class="product-price">74,50€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge">IZDVAJAMO</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Pantum Pantum DRUM DL-5125C 30000 pages">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Pantum Pantum DRUM</div>
-                        <div class="product-sku">#2321/MF</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 93.20€</div>
-                            <div class="product-price">74,50€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge">IZDVAJAMO</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Pantum Pantum DRUM DL-5125C 30000 pages">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Pantum Pantum DRUM</div>
-                        <div class="product-sku">#2321/MF</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 93.20€</div>
-                            <div class="product-price">74,50€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
+                </a>
+                <%}%>
             </div>
     
             <!-- Desna strelica -->
@@ -1590,153 +1478,7 @@ font-size: 14px !important;
             <span class="section-dot"></span>
         </div>
     </div>
-    <div class="product-section">
-        <div class="section-header">
-            <h2>Akcije</h2>
-        </div>
-    
-        <div class="product-slider">
-            <!-- Leva strelica -->
-            <button class="slider-arrow prev-arrow">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-    
-            <div class="product-container">
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #ff4747;">AKCIJA</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Samsung Neo QLED TV 55Q85C">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Samsung Neo QLED TV 55Q85C</div>
-                        <div class="product-sku">#5521/TV</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 1.299€</div>
-                            <div class="product-price">999€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #ff4747;">AKCIJA</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Samsung Neo QLED TV 55Q85C">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Samsung Neo QLED TV 55Q85C</div>
-                        <div class="product-sku">#5521/TV</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 1.299€</div>
-                            <div class="product-price">999€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #ff4747;">AKCIJA</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Samsung Neo QLED TV 55Q85C">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Samsung Neo QLED TV 55Q85C</div>
-                        <div class="product-sku">#5521/TV</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 1.299€</div>
-                            <div class="product-price">999€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #ff4747;">AKCIJA</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Samsung Neo QLED TV 55Q85C">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Samsung Neo QLED TV 55Q85C</div>
-                        <div class="product-sku">#5521/TV</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 1.299€</div>
-                            <div class="product-price">999€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #ff4747;">AKCIJA</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Bosch Mašina za veš WAX32KH0BY">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Bosch Mašina za veš WAX32KH0BY</div>
-                        <div class="product-sku">#3312/WM</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 749€</div>
-                            <div class="product-price">599€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #ff4747;">AKCIJA</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Gorenje Kombinovani frižider NRK6192TX">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Gorenje Kombinovani frižider NRK6192TX</div>
-                        <div class="product-sku">#2845/FR</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 699€</div>
-                            <div class="product-price">549€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #ff4747;">AKCIJA</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Midea Klima uređaj MSAGBU-12HRFN8">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Midea Klima uređaj MSAGBU-12HRFN8</div>
-                        <div class="product-sku">#1732/AC</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price">MP cijena: 420€</div>
-                            <div class="product-price">349€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Desna strelica -->
-            <button class="slider-arrow next-arrow">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-    
-        <div class="section-dots">
-            <span class="section-dot active"></span>
-            <span class="section-dot"></span>
-            <span class="section-dot"></span>
-        </div>
-    </div>
-    
-    <!-- Sekcija Novi proizvodi -->
+   
     <div class="product-section">
         <div class="section-header">
             <h2>Novi proizvodi</h2>
@@ -1749,125 +1491,25 @@ font-size: 14px !important;
             </button>
     
             <div class="product-container">
-                <div class="product-card">
+                <%for(let i = 0; i <masine.length; i++){%>
+                <a href="/proizvodi/<%=masine[i].my_id%>" class="product-card">
                     <div class="product-badge" style="background-color: #4caf50;">NOVO</div>
                     <div class="product-image">
-                        <img src="masina.jpg" alt="iPhone 16 Pro 256GB">
+                        <img src="<%=masine[i].slka%>" alt="<%=masine[i].naziv%>">
                     </div>
                     <div class="product-info">
-                        <div class="product-title">iPhone 16 Pro 256GB</div>
-                        <div class="product-sku">#9873/IP</div>
+                        <div class="product-title"><%=masine[i].naziv%></div>
+                        <div class="product-sku">#<%=masine[i].sifra%></div>
                         <div class="product-price-info">
                             <div class="product-original-price"></div>
-                            <div class="product-price">1.349€</div>
+                            <div class="product-price"><%=masine[i].cena_sapdv%>€</div>
                         </div>
                         <button class="add-to-cart">
                             <i class="fas fa-shopping-cart"></i>
                         </button>
                     </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #4caf50;">NOVO</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="MacBook Air M3 13.6''">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">MacBook Air M3 13.6''</div>
-                        <div class="product-sku">#7852/MB</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price"></div>
-                            <div class="product-price">1.199€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #4caf50;">NOVO</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Sony WH-1000XM5 Bežične slušalice">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Sony WH-1000XM5 Bežične slušalice</div>
-                        <div class="product-sku">#6254/SN</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price"></div>
-                            <div class="product-price">399€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #4caf50;">NOVO</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Samsung Galaxy Tab S9 Ultra 12.4''">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Samsung Galaxy Tab S9 Ultra 12.4''</div>
-                        <div class="product-sku">#3451/TB</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price"></div>
-                            <div class="product-price">1.199€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #4caf50;">NOVO</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Samsung Galaxy Tab S9 Ultra 12.4''">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Samsung Galaxy Tab S9 Ultra 12.4''</div>
-                        <div class="product-sku">#3451/TB</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price"></div>
-                            <div class="product-price">1.199€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #4caf50;">NOVO</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Samsung Galaxy Tab S9 Ultra 12.4''">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Samsung Galaxy Tab S9 Ultra 12.4''</div>
-                        <div class="product-sku">#3451/TB</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price"></div>
-                            <div class="product-price">1.199€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-badge" style="background-color: #4caf50;">NOVO</div>
-                    <div class="product-image">
-                        <img src="masina.jpg" alt="Samsung Galaxy Tab S9 Ultra 12.4''">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">Samsung Galaxy Tab S9 Ultra 12.4''</div>
-                        <div class="product-sku">#3451/TB</div>
-                        <div class="product-price-info">
-                            <div class="product-original-price"></div>
-                            <div class="product-price">1.199€</div>
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
+                </a>
+                <%}%>
             </div>
     
             <!-- Desna strelica -->
@@ -1988,166 +1630,98 @@ font-size: 14px !important;
     </div>
     
     <script>
-       document.addEventListener('DOMContentLoaded', function() {
-    // Dohvati DOM elemente
-    const sveKategorijeBtn = document.getElementById('sveKategorijeDesktop');
-    const simpleDropdown = document.getElementById('simpleDropdown');
-    
-    // Isključi mega dropdown
-    const megaDropdown = document.getElementById('megaDropdown');
-    if (megaDropdown) {
-        megaDropdown.style.display = 'none';
-    }
-    
-    // Ukloni postojeće event listenere kloniranjem dugmeta
-    const newBtn = sveKategorijeBtn.cloneNode(true);
-    sveKategorijeBtn.parentNode.replaceChild(newBtn, sveKategorijeBtn);
-    
-    // Dodaj novi event listener za klik
-    newBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Toggle dropdown prikaza
-        if (simpleDropdown.style.display === 'block') {
-            simpleDropdown.style.display = 'none';
-            newBtn.classList.remove('active');
-        } else {
-            // Ključne popravke za pozicioniranje
-            simpleDropdown.style.display = 'block';
-            newBtn.classList.add('active');
+     document.addEventListener('DOMContentLoaded', function() {
+            // Hamburger menu functionality
+            const hamburgerMenu = document.getElementById('hamburgerMenu');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileOverlay = document.getElementById('mobileOverlay');
             
-            // Resetuj eventualne inline stilove da bi CSS pravila radila
-            simpleDropdown.style.position = 'absolute';
-            simpleDropdown.style.top = '100%';
-            simpleDropdown.style.left = '0';
-            simpleDropdown.style.zIndex = '1500';
-            simpleDropdown.style.maxHeight = '90vh';
-            simpleDropdown.style.overflow = 'auto';
+            // Function to open menu
+            function openMenu() {
+                mobileNav.classList.add('active');
+                mobileOverlay.classList.add('active');
+                hamburgerMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
             
-            // Proveri da li je dropdown vidljiv
-            setTimeout(() => {
-                const dropdownRect = simpleDropdown.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
+            // Function to close menu
+            function closeMenuFunc() {
+                mobileNav.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                hamburgerMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Event listeners
+            if (hamburgerMenu) {
+                hamburgerMenu.addEventListener('click', openMenu);
+            }
+            
+            if (closeMenu) {
+                closeMenu.addEventListener('click', closeMenuFunc);
+            }
+            
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', closeMenuFunc);
+            }
+            
+            // Mobile SVE KATEGORIJE dropdown functionality
+            const sveKategorijeMobile = document.querySelector('.mobile-nav .sve-kategorije');
+            
+            if (sveKategorijeMobile) {
+                // Add class for arrow icon
+                sveKategorijeMobile.classList.add('has-children');
                 
-                if (dropdownRect.bottom > windowHeight) {
-                    // Ako dropdown prelazi donju ivicu ekrana
-                    simpleDropdown.style.maxHeight = (windowHeight - dropdownRect.top - 20) + 'px';
+                // Create mobile submenu if it doesn't exist
+                let mobileSubMenu = document.querySelector('.mobile-subcategories');
+                if (!mobileSubMenu) {
+                    mobileSubMenu = document.createElement('div');
+                    mobileSubMenu.className = 'mobile-subcategories';
+                    
+                    mobileSubMenu.innerHTML = `
+                        <a href="#"><i class="fas fa-blender"></i> Bijela tehnika</a>
+                        <a href="#"><i class="fas fa-tv"></i> Televizori i audio</a>
+                        <a href="#"><i class="fas fa-fire"></i> Šporeti, kamini i peći</a>
+                        <a href="#"><i class="fas fa-plug"></i> Ugradna tehnika</a>
+                        <a href="#"><i class="fas fa-blender"></i> Mali kućni aparati</a>
+                        <a href="#"><i class="fas fa-spa"></i> Aparati za ličnu njegu</a>
+                        <a href="#"><i class="fas fa-snowflake"></i> Grijanje i hlađenje</a>
+                        <a href="#"><i class="fas fa-laptop"></i> Laptop i tableti</a>
+                        <a href="#"><i class="fas fa-bolt"></i> Razno</a>
+                    `;
+                    
+                    // Insert submenu after "SVE KATEGORIJE" link
+                    sveKategorijeMobile.parentNode.insertBefore(mobileSubMenu, sveKategorijeMobile.nextSibling);
                 }
-            }, 0);
-        }
-    });
-    
-    // Zatvori dropdown kada se klikne negde van
-    document.addEventListener('click', function(e) {
-        if (simpleDropdown.style.display === 'block' && 
-            !simpleDropdown.contains(e.target) && 
-            e.target !== newBtn) {
-            simpleDropdown.style.display = 'none';
-            newBtn.classList.remove('active');
-        }
-    });
-    
-    // Mobilni meni - ova funkcionalnost ostaje ista
-    const sveKategorijeMobile = document.querySelector('.mobile-nav .sve-kategorije');
-    
-    if (sveKategorijeMobile) {
-        // Dodaj klasu za ikonu strelice
-        sveKategorijeMobile.classList.add('has-children');
-        
-        // Kreiraj mobilni podmeni
-        const mobileSubMenu = document.createElement('div');
-        mobileSubMenu.className = 'mobile-subcategories';
-        
-        // Sadržaj mobilnog podmenija
-        mobileSubMenu.innerHTML = `
-            <a href="#"><i class="fas fa-blender"></i> Bijela tehnika</a>
-            <a href="#"><i class="fas fa-tv"></i> Televizori i audio</a>
-            <a href="#"><i class="fas fa-fire"></i> Šporeti, kamini i peći</a>
-            <a href="#"><i class="fas fa-wm"></i> Ugradna tehnika</a>
-            <a href="#"><i class="fas fa-mobile-alt"></i> Mali kućni aparati</a>
-            <a href="#"><i class="fas fa-camera"></i> Fotoaparati i kamere</a>
-            <a href="#"><i class="fas fa-running"></i> Sport i Rekreacija</a>
-            <a href="#"><i class="fas fa-laptop"></i> IT Uređaji</a>
-            <a href="#"><i class="fas fa-gamepad"></i> Gaming i konzole</a>
-        `;
-        
-        // Umetni podmeni nakon "SVE KATEGORIJE" linka
-        sveKategorijeMobile.parentNode.insertBefore(mobileSubMenu, sveKategorijeMobile.nextSibling);
-        
-        // Toggle za podmeni
-        sveKategorijeMobile.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            this.classList.toggle('active');
-            
-            if (mobileSubMenu.style.display === 'block') {
-                mobileSubMenu.style.display = 'none';
-            } else {
-                mobileSubMenu.style.display = 'block';
+                
+                // Toggle for submenu
+                sveKategorijeMobile.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    this.classList.toggle('active');
+                    
+                    if (mobileSubMenu.style.display === 'block') {
+                        mobileSubMenu.style.display = 'none';
+                    } else {
+                        mobileSubMenu.style.display = 'block';
+                    }
+                });
             }
-        });
-    }
 
-    
-    // Handle window resize to ensure dropdown is properly positioned
-    window.addEventListener('resize', function() {
-        if (simpleDropdown.style.display === 'block') {
-            const btnRect = newBtn.getBoundingClientRect();
-            const navContainerRect = document.querySelector('.nav-container').getBoundingClientRect();
-            
-            simpleDropdown.style.left = (btnRect.left - navContainerRect.left) + 'px';
-        }
-    });
-    
-    // Hamburger menu funkcionalnost
-    const hamburgerMenu = document.getElementById('hamburgerMenu');
-    const closeMenu = document.getElementById('closeMenu');
-    const mobileNav = document.getElementById('mobileNav');
-    const mobileOverlay = document.getElementById('mobileOverlay');
-    
-    // Funkcija za otvaranje menija
-    function openMenu() {
-        mobileNav.classList.add('active');
-        mobileOverlay.classList.add('active');
-        hamburgerMenu.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-    
-    // Funkcija za zatvaranje menija
-    function closeMenuFunc() {
-        mobileNav.classList.remove('active');
-        mobileOverlay.classList.remove('active');
-        hamburgerMenu.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-    
-    // Event listeneri
-    if (hamburgerMenu) {
-        hamburgerMenu.addEventListener('click', openMenu);
-    }
-    
-    if (closeMenu) {
-        closeMenu.addEventListener('click', closeMenuFunc);
-    }
-    
-    if (mobileOverlay) {
-        mobileOverlay.addEventListener('click', closeMenuFunc);
-    }
-    
-    // Zatvaranje menija kada se klikne na link
-    const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
-    mobileNavLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Ako je link SVE KATEGORIJE, ne zatvaraj meni
-            if (this.classList.contains('sve-kategorije')) {
-                e.stopPropagation();
-                return;
-            }
-            closeMenuFunc();
-        });
-    });
+            // Close menu when clicking on mobile links (except SVE KATEGORIJE)
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav a:not(.sve-kategorije)');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Don't close if it's a submenu item
+                    if (this.closest('.mobile-subcategories')) {
+                        e.stopPropagation();
+                        return;
+                    }
+                    closeMenuFunc();
+                });
+            });
     
     // Ažuriranje godine u footeru
     let date = new Date();
@@ -2250,7 +1824,7 @@ font-size: 14px !important;
             
             if (productCards.length > 0 && sectionDots.length > 0) {
                 const cardWidth = productCards[0].offsetWidth + 18; // 18px za gap
-                const cardsPerView = window.innerWidth > 1200 ? 4 : 
+                const cardsPerView = window.innerWidth > 1200 ? 5 : 
                                     window.innerWidth > 992 ? 3 : 
                                     window.innerWidth > 768 ? 2 : 1;
                 
