@@ -20,13 +20,12 @@ app.use((req, res, next) => {
     next();
 });
 const db = new pg.Client({
-    user: "postgres",
-    password: "marko123",
-    host: "localhost",
+    user: "marko",
+    password: "BjgIlknTXDKS4VcASVI7CsDzarpsV27l",
+    host: "cvtripi4d50c73amk5gg-a.oregon-postgres.render.com",
     port: 5432,
-    database: "Mazor"
+    database: "mazor"
 })
-
 db.connect();
 function getCategory(category){
     let bcategory;
