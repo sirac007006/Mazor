@@ -450,5 +450,5 @@ app.get("/servisi", async(req,res) =>{
     res.render("servisi.ejs", { session: req.session });
 })
 app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+    console.log(`Ide`);
 });
