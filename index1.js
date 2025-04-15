@@ -42,6 +42,7 @@ const transporter = nodemailer.createTransport({
     }
   });
   
+  
 db.connect();
 function getCategory(category){
     let bcategory;
