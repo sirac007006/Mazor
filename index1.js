@@ -437,8 +437,8 @@ app.post("/reset-lozinka", async (req, res) => {
     res.send("Lozinka uspešno promenjena.");
   });
 app.get("/profil", async(req,res) =>{
-    let korisnik = await db.query("Select * from users where email = $1", [req.session.user[1]])
-    console.log(req.session.user[1]);
+    let korisnik = (await db.query("Select * from users where email = $1", [req.session.user.email])).rows[0];
+    console.log(req.session.user.email);
     console.log(korisnik)
     console.log(req.session.user);
     console.log(req.session);
