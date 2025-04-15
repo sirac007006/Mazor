@@ -1052,11 +1052,11 @@
         <p class="reset-password-description">Unesite svoju novu lozinku.</p>
         <form class="reset-password-form" method="POST" action="/reset-lozinka" id="resetPasswordForm">
             <!-- Hidden token field -->
-            <input type="hidden" id="token" name="token">
+            <input type="hidden" id="token" name="token" value="<%= token %>">
             
             <div class="form-group">
-                <label for="new_password"><span class="required-mark">*</span> Nova lozinka</label>
-                <input type="password" id="new_password" name="new_password" required>
+                <label for="password"><span class="required-mark">*</span> Nova lozinka</label>
+                <input type="password" id="password" name="password" required>
                 <div class="error-message" id="password-error">Lozinka mora imati najmanje 8 karaktera.</div>
             </div>
             
@@ -1069,6 +1069,7 @@
             <button type="submit" class="reset-btn">Promeni lozinku</button>
         </form>
     </div>
+    
 
     <!-- Footer -->
 <footer class="footer">
