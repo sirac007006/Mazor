@@ -69,6 +69,7 @@ app.get("/", async(req, res) => {
         "SELECT * FROM proizvodi limit 14 offset 317"
     )).rows;
     const televizori = rows;
+    console.log(req.session)
     res.render("index.ejs", {
         televizori: televizori,
         masine:masine,
