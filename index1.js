@@ -37,7 +37,7 @@ const db = new pg.Client({
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'tvoj.email@gmail.com',
+      user: 'ivanovicmicko4@gmail.com',
       pass: 'markomarko'
     }
   });
