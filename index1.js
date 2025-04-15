@@ -38,11 +38,11 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: 'ivanovicmicko4@gmail.com',
-      pass: 'markomarko'
+      pass: 'rijp cahz cinh yzeg'
     }
   });
   
-  
+
 db.connect();
 function getCategory(category){
     let bcategory;
