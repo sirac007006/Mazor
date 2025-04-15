@@ -3,6 +3,8 @@ import express from "express";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 import expressSession from "express-session";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
 
 const app = express();
 const port = 3000;
