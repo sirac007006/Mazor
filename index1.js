@@ -386,7 +386,7 @@ router.post("/zaboravljenalozinka", async (req, res) => {
     const link = `https://tvoj-domen.com/reset-lozinka?token=${token}`;
   
     await transporter.sendMail({
-      from: '"Tvoj sajt" <tvojemail@gmail.com>',
+      from: '"Tvoj sajt" <ivanovicmicko4@gmail.com>',
       to: email,
       subject: "Resetovanje lozinke",
       html: `<p>Klikni ispod da resetuješ lozinku:</p><a href="${link}">${link}</a>`,
@@ -420,7 +420,7 @@ app.post("/reset-lozinka", async (req, res) => {
     const userId = tokenRes.rows[0].user_id;
     const hashed = await bcrypt.hash(password, 10);
   
-    await db.query("UPDATE users SET password = $1 WHERE id = $2", [hashed, userId]);
+    await db.query("UPDATE users SET lozinka = $1 WHERE id = $2", [hashed, userId]);
     await db.query("DELETE FROM password_resets WHERE token = $1", [token]);
   
     res.send("Lozinka uspešno promenjena.");
