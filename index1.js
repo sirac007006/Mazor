@@ -504,7 +504,7 @@ app.post("/ukloni-iz-korpe", (req, res) => {
 
 app.get('/kupovina', async(req, res) => {
     const korpa = req.session.korpa || [];
-    let user = await db.query("Select * from users where email = $1", [req.session.user[1]])
+    let korisnik = await db.query("Select * from users where email = $1", [req.session.user[1]])
     let ukupno = 0;
     console.log(req.session)
     korpa.forEach(item => {
@@ -512,7 +512,7 @@ app.get('/kupovina', async(req, res) => {
     });
 
     res.render("kupovina.ejs", {
-        user:user,
+        korisnik,
         korpa: korpa,
         ukupno,
         session: req.session
