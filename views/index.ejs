@@ -1520,99 +1520,99 @@ font-size: 14px !important;
     <%-include('partials/footer.ejs')%>
     
     <script>
-     document.addEventListener('DOMContentLoaded', function() {
-            // Hamburger menu functionality
-            const hamburgerMenu = document.getElementById('hamburgerMenu');
-            const closeMenu = document.getElementById('closeMenu');
-            const mobileNav = document.getElementById('mobileNav');
-            const mobileOverlay = document.getElementById('mobileOverlay');
-            
-            // Function to open menu
-            function openMenu() {
-                mobileNav.classList.add('active');
-                mobileOverlay.classList.add('active');
-                hamburgerMenu.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-            
-            // Function to close menu
-            function closeMenuFunc() {
-                mobileNav.classList.remove('active');
-                mobileOverlay.classList.remove('active');
-                hamburgerMenu.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            
-            // Event listeners
-            if (hamburgerMenu) {
-                hamburgerMenu.addEventListener('click', openMenu);
-            }
-            
-            if (closeMenu) {
-                closeMenu.addEventListener('click', closeMenuFunc);
-            }
-            
-            if (mobileOverlay) {
-                mobileOverlay.addEventListener('click', closeMenuFunc);
-            }
-            
-            // Mobile SVE KATEGORIJE dropdown functionality
-            const sveKategorijeMobile = document.querySelector('.mobile-nav .sve-kategorije');
-            
-            if (sveKategorijeMobile) {
-                // Add class for arrow icon
-                sveKategorijeMobile.classList.add('has-children');
-                
-                // Create mobile submenu if it doesn't exist
-                let mobileSubMenu = document.querySelector('.mobile-subcategories');
-                if (!mobileSubMenu) {
-                    mobileSubMenu = document.createElement('div');
-                    mobileSubMenu.className = 'mobile-subcategories';
-                    
-                    mobileSubMenu.innerHTML = `
-                        <a href="/svekategorije/bijelatehnika"><i class="fas fa-tools"></i> Bijela tehnika</a>
-                        <a href="/svekategorije/tviaudio"><i class="fas fa-tv"></i> Televizori i audio</a>
-                        <a href="/svekategorije/sporetikaminipeci"><i class="fas fa-fire"></i> Šporeti, kamini i peći</a>
-                        <a href="/svekategorije/ugradnatehnika"><i class="fas fa-plug"></i> Ugradna tehnika</a>
-                        <a href="/svekategorije/telefonigaming"><i class="fas fa-gamepad"></i> Telefoni i Gaming</a>
-                        <a href="/svekategorije/malikucniaparati"><i class="fas fa-blender"></i> Mali kućni aparati</a>
-                        <a href="/svekategorije/grijanjeihladjenje"><i class="fas fa-snowflake"></i> Grijanje i hlađenje</a>
-                        <a href="/svekategorije/laptopitableti"><i class="fas fa-laptop"></i> Laptop i tableti</a>
-                        <a href="/svekategorije/razno"><i class="fas fa-bolt"></i> Razno</a>
-                    `;
-                    
-                    // Insert submenu after "SVE KATEGORIJE" link
-                    sveKategorijeMobile.parentNode.insertBefore(mobileSubMenu, sveKategorijeMobile.nextSibling);
-                }
-                
-                // Toggle for submenu
-                sveKategorijeMobile.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    this.classList.toggle('active');
-                    
-                    if (mobileSubMenu.style.display === 'block') {
-                        mobileSubMenu.style.display = 'none';
-                    } else {
-                        mobileSubMenu.style.display = 'block';
-                    }
-                });
-            }
-
-            // Close menu when clicking on mobile links (except SVE KATEGORIJE)
-            const mobileNavLinks = document.querySelectorAll('.mobile-nav a:not(.sve-kategorije)');
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    // Don't close if it's a submenu item
-                    if (this.closest('.mobile-subcategories')) {
-                        e.stopPropagation();
-                        return;
-                    }
-                    closeMenuFunc();
-                });
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    // Hamburger menu functionality
+    const hamburgerMenu = document.getElementById('hamburgerMenu');
+    const closeMenu = document.getElementById('closeMenu');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileOverlay = document.getElementById('mobileOverlay');
     
+    // Function to open menu
+    function openMenu() {
+        mobileNav.classList.add('active');
+        mobileOverlay.classList.add('active');
+        hamburgerMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    // Function to close menu
+    function closeMenuFunc() {
+        mobileNav.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        hamburgerMenu.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Event listeners
+    if (hamburgerMenu) {
+        hamburgerMenu.addEventListener('click', openMenu);
+    }
+    
+    if (closeMenu) {
+        closeMenu.addEventListener('click', closeMenuFunc);
+    }
+    
+    if (mobileOverlay) {
+        mobileOverlay.addEventListener('click', closeMenuFunc);
+    }
+    
+    // Mobile SVE KATEGORIJE dropdown functionality
+    const sveKategorijeMobile = document.querySelector('.mobile-nav .sve-kategorije');
+    
+    if (sveKategorijeMobile) {
+        // Add class for arrow icon
+        sveKategorijeMobile.classList.add('has-children');
+        
+        // Create mobile submenu if it doesn't exist
+        let mobileSubMenu = document.querySelector('.mobile-subcategories');
+        if (!mobileSubMenu) {
+            mobileSubMenu = document.createElement('div');
+            mobileSubMenu.className = 'mobile-subcategories';
+            
+            mobileSubMenu.innerHTML = `
+                <a href="/svekategorije/bijelatehnika"><i class="fas fa-tools"></i> Bijela tehnika</a>
+                <a href="/svekategorije/tviaudio"><i class="fas fa-tv"></i> Televizori i audio</a>
+                <a href="/svekategorije/sporetikaminipeci"><i class="fas fa-fire"></i> Šporeti, kamini i peći</a>
+                <a href="/svekategorije/ugradnatehnika"><i class="fas fa-plug"></i> Ugradna tehnika</a>
+                <a href="/svekategorije/telefonigaming"><i class="fas fa-gamepad"></i> Telefoni i Gaming</a>
+                <a href="/svekategorije/malikucniaparati"><i class="fas fa-blender"></i> Mali kućni aparati</a>
+                <a href="/svekategorije/grijanjeihladjenje"><i class="fas fa-snowflake"></i> Grijanje i hlađenje</a>
+                <a href="/svekategorije/laptopitableti"><i class="fas fa-laptop"></i> Laptop i tableti</a>
+                <a href="/svekategorije/razno"><i class="fas fa-bolt"></i> Razno</a>
+            `;
+            
+            // Insert submenu after "SVE KATEGORIJE" link
+            sveKategorijeMobile.parentNode.insertBefore(mobileSubMenu, sveKategorijeMobile.nextSibling);
+        }
+        
+        // Toggle for submenu
+        sveKategorijeMobile.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            this.classList.toggle('active');
+            
+            if (mobileSubMenu.style.display === 'block') {
+                mobileSubMenu.style.display = 'none';
+            } else {
+                mobileSubMenu.style.display = 'block';
+            }
+        });
+    }
+
+    // Close menu when clicking on mobile links (except SVE KATEGORIJE)
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav a:not(.sve-kategorije)');
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Don't close if it's a submenu item
+            if (this.closest('.mobile-subcategories')) {
+                e.stopPropagation();
+                return;
+            }
+            closeMenuFunc();
+        });
+    });
+
     // Ažuriranje godine u footeru
     let date = new Date();
     let year = date.getFullYear();
@@ -1698,89 +1698,102 @@ font-size: 14px !important;
         }
     }
     
-    // Product slider funkcionalnost
+    // Product slider funkcionalnost - FIXED VERSION
     const productSections = document.querySelectorAll('.product-section');
     
     productSections.forEach(function(section) {
-        const slider = section.querySelector('.product-slider');
         const container = section.querySelector('.product-container');
         const prevArrow = section.querySelector('.prev-arrow');
         const nextArrow = section.querySelector('.next-arrow');
-        const dotsContainer = section.querySelector('.section-dots');
         
-        if (container && prevArrow && nextArrow && dotsContainer) {
-            const sectionDots = dotsContainer.querySelectorAll('.section-dot');
+        if (container && prevArrow && nextArrow) {
             const productCards = container.querySelectorAll('.product-card');
             
-            if (productCards.length > 0 && sectionDots.length > 0) {
-                const cardWidth = productCards[0].offsetWidth + 18; // 18px za gap
-                const cardsPerView = window.innerWidth > 1200 ? 5 : 
-                                    window.innerWidth > 992 ? 3 : 
-                                    window.innerWidth > 768 ? 2 : 1;
+            if (productCards.length > 0) {
+                // Calculate how many cards to scroll based on screen width
+                const getCardsPerView = () => {
+                    if (window.innerWidth > 1200) return 5;
+                    if (window.innerWidth > 992) return 4;
+                    if (window.innerWidth > 768) return 3;
+                    if (window.innerWidth > 576) return 2;
+                    return 1;
+                };
                 
-                let sectionCurrentIndex = 0;
-                
-                function updateSectionDots() {
-                    let maxIndex = Math.ceil(productCards.length / cardsPerView) - 1;
+                const getCardWidth = () => {
+                    // Get actual card width + gap
+                    const cardStyle = window.getComputedStyle(productCards[0]);
+                    const cardWidth = productCards[0].offsetWidth;
+                    const marginRight = parseInt(cardStyle.marginRight) || 0;
+                    const gap = 18; // The gap defined in CSS
                     
-                    sectionDots.forEach((dot, index) => {
-                        if (index === sectionCurrentIndex) {
-                            dot.classList.add('active');
-                        } else {
-                            dot.classList.remove('active');
-                        }
+                    return cardWidth + gap;
+                };
+                
+                // Update scroll position variables
+                let scrollPosition = 0;
+                const maxScroll = productCards.length * getCardWidth() - container.clientWidth;
+                
+                // Handle prev arrow click
+                prevArrow.addEventListener('click', function() {
+                    const scrollAmount = getCardWidth() * getCardsPerView();
+                    scrollPosition = Math.max(0, scrollPosition - scrollAmount);
+                    
+                    container.scroll({
+                        left: scrollPosition,
+                        behavior: 'smooth'
                     });
                     
-                    // Omogući/onemogući strelice
-                    prevArrow.style.opacity = sectionCurrentIndex === 0 ? "0.5" : "1";
-                    nextArrow.style.opacity = sectionCurrentIndex >= maxIndex ? "0.5" : "1";
+                    // Update arrow states
+                    updateArrowStates();
+                });
+                
+                // Handle next arrow click
+                nextArrow.addEventListener('click', function() {
+                    const scrollAmount = getCardWidth() * getCardsPerView();
+                    scrollPosition = Math.min(maxScroll, scrollPosition + scrollAmount);
+                    
+                    container.scroll({
+                        left: scrollPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update arrow states
+                    updateArrowStates();
+                });
+                
+                // Function to update arrow states (disabled/enabled)
+                function updateArrowStates() {
+                    // Disable prev arrow if at the beginning
+                    prevArrow.style.opacity = scrollPosition <= 0 ? "0.5" : "1";
+                    prevArrow.style.pointerEvents = scrollPosition <= 0 ? "none" : "auto";
+                    
+                    // Disable next arrow if at the end
+                    nextArrow.style.opacity = scrollPosition >= maxScroll ? "0.5" : "1";
+                    nextArrow.style.pointerEvents = scrollPosition >= maxScroll ? "none" : "auto";
                 }
                 
-                // Inicijalno postavi tačkice
-                updateSectionDots();
+                // Initial arrow states
+                updateArrowStates();
                 
-                // Klik na levu strelicu
-                prevArrow.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    
-                    if (sectionCurrentIndex > 0) {
-                        sectionCurrentIndex--;
-                        container.scrollBy({
-                            left: -cardWidth * cardsPerView,
-                            behavior: 'smooth'
-                        });
-                        updateSectionDots();
-                    }
+                // Listen for scroll events to update arrow states
+                container.addEventListener('scroll', function() {
+                    scrollPosition = container.scrollLeft;
+                    updateArrowStates();
                 });
                 
-                // Klik na desnu strelicu
-                nextArrow.addEventListener('click', function(e) {
-                    e.stopPropagation();
+                // Update calculations on window resize
+                window.addEventListener('resize', function() {
+                    // Recalculate maxScroll since viewport changed
+                    const newMaxScroll = productCards.length * getCardWidth() - container.clientWidth;
+                    maxScroll = newMaxScroll;
                     
-                    let maxIndex = Math.ceil(productCards.length / cardsPerView) - 1;
-                    if (sectionCurrentIndex < maxIndex) {
-                        sectionCurrentIndex++;
-                        container.scrollBy({
-                            left: cardWidth * cardsPerView,
-                            behavior: 'smooth'
-                        });
-                        updateSectionDots();
+                    // Make sure current scroll position is still valid
+                    if (scrollPosition > maxScroll) {
+                        scrollPosition = maxScroll;
+                        container.scrollLeft = scrollPosition;
                     }
-                });
-                
-                // Klik na tačkice
-                sectionDots.forEach((dot, index) => {
-                    dot.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        
-                        sectionCurrentIndex = index;
-                        const scrollAmount = index * (cardWidth * cardsPerView);
-                        container.scrollTo({
-                            left: scrollAmount,
-                            behavior: 'smooth'
-                        });
-                        updateSectionDots();
-                    });
+                    
+                    updateArrowStates();
                 });
             }
         }
@@ -1813,19 +1826,31 @@ font-size: 14px !important;
         const categoryPrev = document.querySelector('.categories-controls .prev');
         const categoryNext = document.querySelector('.categories-controls .next');
         
-        if (categoryContainer && categoryPrev && categoryNext && categoryCards.length > 0) {
-            categoryPrev.addEventListener('click', function() {
-                categoryContainer.scrollBy({ left: -categoryCards[0].offsetWidth - 20, behavior: 'smooth' });
+        if (categoryContainer && categoryCards.length > 0) {
+            // Dodaj scroll snapping for mobile
+            categoryContainer.style.scrollSnapType = 'x mandatory';
+            categoryCards.forEach(card => {
+                card.style.scrollSnapAlign = 'start';
             });
             
-            categoryNext.addEventListener('click', function() {
-                categoryContainer.scrollBy({ left: categoryCards[0].offsetWidth + 20, behavior: 'smooth' });
-            });
+            // Ako postoje kontrole, dodaj event listenere
+            if (categoryPrev && categoryNext) {
+                categoryPrev.addEventListener('click', function() {
+                    categoryContainer.scrollBy({ left: -categoryCards[0].offsetWidth - 20, behavior: 'smooth' });
+                });
+                
+                categoryNext.addEventListener('click', function() {
+                    categoryContainer.scrollBy({ left: categoryCards[0].offsetWidth + 20, behavior: 'smooth' });
+                });
+            }
         }
     }
     
     // Prilagođavanje za resize
     window.addEventListener('resize', function() {
+        const megaDropdown = document.querySelector('.mega-dropdown');
+        const newBtn = document.querySelector('.sve-kategorije');
+        
         if (megaDropdown && window.innerWidth <= 768) {
             megaDropdown.style.display = 'none';
             if (newBtn) {

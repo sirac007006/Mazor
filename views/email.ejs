@@ -744,6 +744,7 @@
         .form-group {
             display: flex;
             flex-direction: column;
+            padding-bottom: 10px;
         }
 
         .form-group label {
@@ -939,7 +940,7 @@
             }
             
             .reset-password-container {
-                margin: 153px 15px;
+                margin: 173px 15px;
                 padding: 20px;
             }
             
@@ -951,98 +952,8 @@
 </head>
 <body>
     <!-- Main header with logo and search -->
-<div class="main-header">
-    <div class="header-container">
-        <!-- Desktop view -->
-        <a href="/" class="logo desktop">
-            <img src="logo.png" alt="TEHNOMAX" style="max-width: 180px;">
-        </a>
-        <div class="search-bar desktop-search">
-            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-        <div class="user-actions desktop">
-            <% if (typeof session.user !== "undefined") { %>
-                <a href="/profil" class="prijavljen-korisnik">
-                    <i class="fas fa-user fa-lg"></i> <%= session.user.ime[0].toUpperCase() %><%= session.user.prezime[0].toUpperCase() %>
-                </a>
-            <% } else { %>
-                <a href="/prijava" class="prijava">
-                    <i class="fas fa-user fa-lg"></i> PRIJAVA
-                </a>
-            <% } %>
-            <a href="/korpa" class="cart">
-                <i class="fas fa-shopping-cart fa-lg"></i>
-            </a>
-        </div>
-        
-        <!-- Mobile view - aligned in one row -->
-        <div class="mobile-top-nav">
-            <button class="hamburger-menu" id="hamburgerMenu">
-                <span class="hamburger-icon"></span>
-                <span class="hamburger-icon"></span>
-                <span class="hamburger-icon"></span>
-            </button>
-            
-            <a href="/" class="logo" id="kt">
-                <img src="logo.png" alt="TEHNOMAX" style="max-width: 120px;">
-            </a>
-            
-            <div class="user-actions">
-                <% if (typeof session.user !== "undefined") { %>
-                    <a href="/profil" class="prijavljen-korisnik" id="kt"> 
-                        <i class="fas fa-user fa-lg"></i> <%= session.user.ime[0] %><%= session.user.prezime[0] %>
-                    </a>
-                <% } else { %>
-                    <a href="/prijava" class="prijava" id="kt">
-                        <i class="fas fa-user fa-lg"></i>
-                    </a>
-                <% } %>
-                <a href="/korpa" class="cart" id="kt">
-                    <i class="fas fa-shopping-cart fa-lg"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Mobile search bar in separate row below -->
-    <div class="mobile-search-container" id="telefon">
-        <div class="search-bar">
-            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-    </div>
-</div>
+<%-include('partials/header.ejs')%>
 
-<!-- Add mobile navigation menu - THIS WAS MISSING -->
-<div class="mobile-nav" id="mobileNav">
-    <div class="mobile-nav-header">
-        <button id="closeMenu" class="close-menu">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    <a href="/svekategorije" class="sve-kategorije"><i class="fas fa-bars"></i> SVE KATEGORIJE</a>
-    <a href="/" class="mobile-nav-link"><i class="fas fa-home"></i> POČETNA</a>
-    <a href="/akcije" class="mobile-nav-link"><i class="fas fa-tag"></i> AKCIJE I POPUSTI</a>
-    <a href="/kontakt" class="mobile-nav-link"><i class="fas fa-envelope"></i> KONTAKT</a>
-    <a href="/servisi" class="mobile-nav-link"><i class="fas fa-cog"></i> SERVISI</a>
-</div>
-
-<!-- Add mobile overlay for closing menu - THIS WAS MISSING -->
-<div class="mobile-overlay" id="mobileOverlay"></div>
-
-<!-- Desktop navigation menu -->
-<div class="nav-menu">
-    <div class="nav-container">
-        <a href="/svekategorije" class="sve-kategorije" id="sveKategorijeDesktop">SVE KATEGORIJE</a>
-        <a href="/">POČETNA</a>
-        <a href="/akcije">AKCIJE I POPUSTI</a>
-        <a href="/kontakt">KONTAKT</a>
-        <a href="/servisi">SERVISI</a>
-    </div>
-</div>
-
-    <!-- Password Reset Form -->
     <form class="reset-password-container" method="POST" action="/zaboravljenalozinka">
         <h1 class="reset-password-title">Promjena lozinke</h1>
         <p class="reset-password-description">Unesite vašu e-mail adresu na koju ćemo vam poslati link za obnovu lozinke.</p>
@@ -1056,89 +967,7 @@
     </form>
 
     <!-- Footer -->
-<footer class="footer">
-    <div class="footer-container">
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>Naše stranice</h3>
-                <ul class="footer-links">
-                    <li><a href="/svekategorije">Sve kategorije</a></li>
-                    <li><a href="/">Početna</a></li>
-                    <li><a href="/kontakt">Kontakt</a></li>
-                    <li><a href="/kontakt">Servisi</a></li>                 
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h3>Proizvodi</h3>
-                <ul class="footer-links">
-                    <li><a href="/svekategorije/bijelatehnika">Bijela tehnika</a></li>
-                    <li><a href="/svekategorije/tviaudio">Televizori i audio</a></li>
-                    <li><a href="/svekategorije/sporetikaminipeci">Šporeti, kamini i peći</a></li>
-                    <li><a href="/svekategorije/malikucniaparati">Mali kućni aparati</a></li>
-                    <li><a href="/svekategorije/grijanjeihladjenje">Grijanje i hlađenje</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Kontaktirajte nas</h3>
-                <div class="footer-contact">
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Ulica Dr. Nika Miljanića 6, Nikšić 81400</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone-alt"></i>
-                        <span>+382 69 206 050</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>mazor@t-com.me</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-clock"></i>
-                        <span>Pon - Sub: 9:00 - 20:00<br></span>
-                    </div>
-                </div>
-                
-                <div class="footer-social">
-                    <a href="mailto:someone@example.com" class="social-icon">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                    <a href="https://www.instagram.com/mazor_niksic/" class="social-icon">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="tel:+38269206050" class="social-icon">
-                        <i class="fas fa-phone"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>© 2025 Marko Ivanović</p>
-        </div>
-    </div>
-</footer>
-
-<!-- Footer za mobilne uređaje -->
-<div class="mobile-footer">
-    <div class="mobile-social">
-        <a href="mailto:someone@example.com" class="social-icon">
-            <i class="fas fa-envelope"></i>
-        </a>
-        <a href="https://www.instagram.com/mazor_niksic/" class="social-icon">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <a href="tel:+38269206050" class="social-icon">
-            <i class="fas fa-phone"></i>
-        </a>
-    </div>
-    <div class="mobile-copyright">
-        © 2025 Marko Ivanović
-    </div>
-</div>
-
+    <%-include('partials/footer.ejs')%>
     <script>
         function alertBtn(){
             alert("Ako mejl postoji, poslat je link za reset");
