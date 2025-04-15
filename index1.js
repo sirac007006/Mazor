@@ -45,6 +45,21 @@ const transporter = nodemailer.createTransport({
   
 
 db.connect();
+function authMiddleware(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    }
+    next();
+}
+
+app.get("/profil", authMiddleware, async (req, res) => {
+    // ...
+});
+
+app.post("/profil", authMiddleware, async (req, res) => {
+    // ...
+});
+
 function getCategory(category){
     let bcategory;
     switch(category){
@@ -436,14 +451,29 @@ app.post("/reset-lozinka", async (req, res) => {
   
     res.send("Lozinka uspešno promenjena.");
   });
-app.get("/profil", async(req,res) =>{
+app.get("/profil", authMiddleware, async(req,res) =>{
     let korisnik = (await db.query("Select * from users where email = $1", [req.session.user.email])).rows[0];
-    console.log(req.session.user.email);
-    console.log(korisnik)
-    console.log(req.session.user);
-    console.log(req.session);
     res.render("profil.ejs", { session: req.session, korisnik });
 })
+app.post("/profil", authMiddleware, async (req, res) => {
+    try {
+        const { telefon, adresa, grad, postanski_broj } = req.body;
+        const email = req.session.user.email;
+
+        await db.query(
+            `UPDATE users 
+             SET telefon = $1, adresa = $2, grad = $3, pbroj = $4 
+             WHERE email = $5`,
+            [telefon, adresa, grad, postanski_broj, email]
+        );
+
+        res.redirect("/profil");
+    } catch (err) {
+        console.error("Greška prilikom ažuriranja profila:", err);
+        res.status(500).send("Greška na serveru.");
+    }
+});
+
 app.get("/korpa", (req, res) => {
     const korpa = req.session.cart || [];
 
