@@ -10,6 +10,8 @@ const app = express();
 const port = 3000;
 const saltRounds = 10;
 const router = express.Router();
+app.use(router);
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -369,7 +371,8 @@ app.post("/registracija", async (req, res) => {
 app.get("/zaboravljenalozinka", async(req,res) =>{
     res.render("email.ejs", { session: req.session });
 })
-router.post("/zaboravljenalozinka", async (req, res) => {
+app.post("/zaboravljenalozinka", async (req, res) => {
+
     const { email } = req.body;
   
     const userRes = await db.query("SELECT id FROM users WHERE email = $1", [email]);
