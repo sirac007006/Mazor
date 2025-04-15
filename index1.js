@@ -24,6 +24,7 @@ app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     next();
 });
+
 const db = new pg.Client({
     user: "marko",
     password: "BjgIlknTXDKS4VcASVI7CsDzarpsV27l",
@@ -231,7 +232,7 @@ app.get("/proizvodi/:id", async (req, res) => {
         res.status(500).send("Greška na serveru.");
     }}
     else{
-        console.log("greska");
+        res.redirect("/404")
     }
 });
 app.get("/search", async (req, res) => {
@@ -520,6 +521,18 @@ app.get('/kupovina', (req, res) => {
 app.get("/servisi", async(req,res) =>{
     res.render("servisi.ejs", { session: req.session });
 })
+
+// Dodaj rutu za 404 stranicu
+app.get("/404", (req, res) => {
+    res.status(404).render("404.ejs", { session: req.session });
+});
+
+// Važno: Ovo je middleware koji hvata sve rute koje nisu definisane iznad
+// Mora biti postavljen NAKON svih regularnih ruta
+app.use((req, res, next) => {
+    res.status(404).render("404.ejs", { session: req.session });
+});
+
 app.listen(port, () => {
     console.log(`Ide`);
 });
