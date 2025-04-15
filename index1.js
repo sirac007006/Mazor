@@ -35,12 +35,13 @@ const db = new pg.Client({
       },
 })
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: 'gmail',
     auth: {
-      user: "ivanovicmicko4@gmail.com",
-      pass: "markomarko",
-    },
+      user: 'tvoj.email@gmail.com',
+      pass: 'markomarko'
+    }
   });
+  
 db.connect();
 function getCategory(category){
     let bcategory;
