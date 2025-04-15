@@ -437,7 +437,8 @@ app.post("/reset-lozinka", async (req, res) => {
     res.send("Lozinka uspešno promenjena.");
   });
 app.get("/profil", async(req,res) =>{
-    res.render("profil.ejs", { session: req.session });
+    let korisnik = await db.query("Select * from users where email = $1", [req.session.user[1]])
+    res.render("profil.ejs", { session: req.session, korisnik });
 })
 app.get("/korpa", (req, res) => {
     const korpa = req.session.cart || [];
