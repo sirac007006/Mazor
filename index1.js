@@ -390,7 +390,7 @@ app.post("/zaboravljenalozinka", async (req, res) => {
       [userRes.rows[0].id, token, expires]
     );
   
-    const link = `https://https://mazor-w95x.onrender.com/.com/reset-lozinka?token=${token}`;
+    const link = `https://mazor-w95x.onrender.com/reset-lozinka?token=${token}`;
   
     await transporter.sendMail({
       from: '"Mazor" <ivanovicmicko4@gmail.com>',
