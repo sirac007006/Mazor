@@ -7,6 +7,7 @@ import expressSession from "express-session";
 const app = express();
 const port = 3000;
 const saltRounds = 10;
+const router = express.Router();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -29,6 +30,13 @@ const db = new pg.Client({
         rejectUnauthorized: false, // for most cloud DBs like Heroku/Render
       },
 })
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "ivanovicmicko4@gmail.com",
+      pass: "markomarko",
+    },
+  });
 db.connect();
 function getCategory(category){
     let bcategory;
@@ -359,6 +367,64 @@ app.post("/registracija", async (req, res) => {
 app.get("/zaboravljenalozinka", async(req,res) =>{
     res.render("email.ejs", { session: req.session });
 })
+router.post("/zaboravljenalozinka", async (req, res) => {
+    const { email } = req.body;
+  
+    const userRes = await db.query("SELECT id FROM users WHERE email = $1", [email]);
+    if (userRes.rowCount === 0) {
+      return res.send("Ako mejl postoji, poslat je link za reset.");
+    }
+  
+    const token = crypto.randomBytes(32).toString("hex");
+    const expires = new Date(Date.now() + 1000 * 60 * 60); // 1h
+  
+    await db.query(
+      "INSERT INTO password_resets (user_id, token, expires_at) VALUES ($1, $2, $3)",
+      [userRes.rows[0].id, token, expires]
+    );
+  
+    const link = `https://tvoj-domen.com/reset-lozinka?token=${token}`;
+  
+    await transporter.sendMail({
+      from: '"Tvoj sajt" <tvojemail@gmail.com>',
+      to: email,
+      subject: "Resetovanje lozinke",
+      html: `<p>Klikni ispod da resetuješ lozinku:</p><a href="${link}">${link}</a>`,
+    });
+  
+    res.send("Ako mejl postoji, poslat je link za reset.");
+  });
+  
+  export default router;
+app.get("/reset-lozinka", async (req, res) => {
+  const { token } = req.query;
+  const tokenCheck = await db.query(
+    "SELECT * FROM password_resets WHERE token = $1 AND expires_at > NOW()",
+    [token]
+  );
+
+  if (tokenCheck.rowCount === 0) {
+    return res.send("Link nije validan ili je istekao.");
+  }
+
+  res.render("reset-lozinka.ejs", { token });
+});
+app.post("/reset-lozinka", async (req, res) => {
+    const { token, password } = req.body;
+  
+    const tokenRes = await db.query("SELECT * FROM password_resets WHERE token = $1", [token]);
+    if (tokenRes.rowCount === 0) {
+      return res.send("Token nije validan.");
+    }
+  
+    const userId = tokenRes.rows[0].user_id;
+    const hashed = await bcrypt.hash(password, 10);
+  
+    await db.query("UPDATE users SET password = $1 WHERE id = $2", [hashed, userId]);
+    await db.query("DELETE FROM password_resets WHERE token = $1", [token]);
+  
+    res.send("Lozinka uspešno promenjena.");
+  });
 app.get("/profil", async(req,res) =>{
     res.render("profil.ejs", { session: req.session });
 })

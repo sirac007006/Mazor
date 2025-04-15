@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Promjena lozinke - Mazor</title>
+    <title>Reset lozinke - Mazor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -711,7 +711,7 @@
             display: none;
         }
 
-        /* Password reset form styles */
+        /* Reset password form styles */
         .reset-password-container {
             max-width: 450px;
             margin: 50px auto;
@@ -787,6 +787,22 @@
 
         .reset-btn:hover {
             background-color: #0a3b77;
+        }
+
+        /* Validation error styles */
+        .error-message {
+            color: #d9534f;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        .form-group.error input {
+            border-color: #d9534f;
         }
 
         /* Responsiveness */
@@ -962,15 +978,9 @@
             <button><i class="fas fa-search"></i></button>
         </div>
         <div class="user-actions desktop">
-            <% if (typeof session.user !== "undefined") { %>
-                <a href="/profil" class="prijavljen-korisnik">
-                    <i class="fas fa-user fa-lg"></i> <%= session.user.ime[0].toUpperCase() %><%= session.user.prezime[0].toUpperCase() %>
-                </a>
-            <% } else { %>
-                <a href="/prijava" class="prijava">
-                    <i class="fas fa-user fa-lg"></i> PRIJAVA
-                </a>
-            <% } %>
+            <a href="/prijava" class="prijava">
+                <i class="fas fa-user fa-lg"></i> PRIJAVA
+            </a>
             <a href="/korpa" class="cart">
                 <i class="fas fa-shopping-cart fa-lg"></i>
             </a>
@@ -989,15 +999,9 @@
             </a>
             
             <div class="user-actions">
-                <% if (typeof session.user !== "undefined") { %>
-                    <a href="/profil" class="prijavljen-korisnik" id="kt"> 
-                        <i class="fas fa-user fa-lg"></i> <%= session.user.ime[0] %><%= session.user.prezime[0] %>
-                    </a>
-                <% } else { %>
-                    <a href="/prijava" class="prijava" id="kt">
-                        <i class="fas fa-user fa-lg"></i>
-                    </a>
-                <% } %>
+                <a href="/prijava" class="prijava" id="kt">
+                    <i class="fas fa-user fa-lg"></i>
+                </a>
                 <a href="/korpa" class="cart" id="kt">
                     <i class="fas fa-shopping-cart fa-lg"></i>
                 </a>
@@ -1014,7 +1018,7 @@
     </div>
 </div>
 
-<!-- Add mobile navigation menu - THIS WAS MISSING -->
+<!-- Add mobile navigation menu -->
 <div class="mobile-nav" id="mobileNav">
     <div class="mobile-nav-header">
         <button id="closeMenu" class="close-menu">
@@ -1028,7 +1032,7 @@
     <a href="/servisi" class="mobile-nav-link"><i class="fas fa-cog"></i> SERVISI</a>
 </div>
 
-<!-- Add mobile overlay for closing menu - THIS WAS MISSING -->
+<!-- Add mobile overlay for closing menu -->
 <div class="mobile-overlay" id="mobileOverlay"></div>
 
 <!-- Desktop navigation menu -->
@@ -1042,18 +1046,29 @@
     </div>
 </div>
 
-    <!-- Password Reset Form -->
-    <form class="reset-password-container" method="POST" action="/zaboravljenalozinka">
-        <h1 class="reset-password-title">Promjena lozinke</h1>
-        <p class="reset-password-description">Unesite vašu e-mail adresu na koju ćemo vam poslati link za obnovu lozinke.</p>
-        <form class="reset-password-form">
+    <!-- Reset Password Form -->
+    <div class="reset-password-container">
+        <h1 class="reset-password-title">Reset lozinke</h1>
+        <p class="reset-password-description">Unesite svoju novu lozinku.</p>
+        <form class="reset-password-form" method="POST" action="/reset-lozinka" id="resetPasswordForm">
+            <!-- Hidden token field -->
+            <input type="hidden" id="token" name="token">
+            
             <div class="form-group">
-                <label for="email"><span class="required-mark">*</span> Email adresa</label>
-                <input type="email" id="email" name="email" required>
+                <label for="new_password"><span class="required-mark">*</span> Nova lozinka</label>
+                <input type="password" id="new_password" name="new_password" required>
+                <div class="error-message" id="password-error">Lozinka mora imati najmanje 8 karaktera.</div>
             </div>
-            <button type="submit" class="reset-btn">Pošalji Email</button>
+            
+            <div class="form-group">
+                <label for="confirm_password"><span class="required-mark">*</span> Potvrdite lozinku</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+                <div class="error-message" id="confirm-error">Lozinke se ne podudaraju.</div>
+            </div>
+            
+            <button type="submit" class="reset-btn">Promeni lozinku</button>
         </form>
-    </form>
+    </div>
 
     <!-- Footer -->
 <footer class="footer">
@@ -1234,32 +1249,85 @@
                 });
             });
             
-            // Password reset form validation
-            const resetPasswordForm = document.querySelector('.reset-password-form');
+            // Get token from URL and set it in the hidden field
+            function getTokenFromURL() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const token = urlParams.get('token');
+                if (token) {
+                    document.getElementById('token').value = token;
+                }
+            }
+            
+            // Call the function to get token from URL
+            getTokenFromURL();
+            
+            // Reset password form validation
+            const resetPasswordForm = document.getElementById('resetPasswordForm');
+            const newPasswordField = document.getElementById('new_password');
+            const confirmPasswordField = document.getElementById('confirm_password');
+            const passwordError = document.getElementById('password-error');
+            const confirmError = document.getElementById('confirm-error');
             
             if (resetPasswordForm) {
                 resetPasswordForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
+                    let isValid = true;
                     
-                    const email = document.getElementById('email').value;
+                    // Reset previous error states
+                    newPasswordField.parentElement.classList.remove('error');
+                    confirmPasswordField.parentElement.classList.remove('error');
+                    passwordError.classList.remove('visible');
+                    confirmError.classList.remove('visible');
                     
-                    if (!email) {
-                        alert('Molimo unesite email adresu.');
-                        return;
+                    // Check password length
+                    if (newPasswordField.value.length < 8) {
+                        newPasswordField.parentElement.classList.add('error');
+                        passwordError.classList.add('visible');
+                        isValid = false;
                     }
                     
-                    // Validacija email formata
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(email)) {
-                        alert('Molimo unesite ispravan email format.');
-                        return;
+                    // Check passwords match
+                    if (newPasswordField.value !== confirmPasswordField.value) {
+                        confirmPasswordField.parentElement.classList.add('error');
+                        confirmError.classList.add('visible');
+                        isValid = false;
                     }
                     
-                    // Ovde bi išao kod za slanje podataka na server
-                    console.log('Email za resetiranje lozinke poslan na:', email);
+                    if (!isValid) {
+                        e.preventDefault();
+                    }
+                });
+                
+                // Real-time validation for password field
+                newPasswordField.addEventListener('input', function() {
+                    if (this.value.length < 8) {
+                        this.parentElement.classList.add('error');
+                        passwordError.classList.add('visible');
+                    } else {
+                        this.parentElement.classList.remove('error');
+                        passwordError.classList.remove('visible');
+                    }
                     
-                    // Feedback korisniku
-                    alert('Link za obnovu lozinke je poslan na vašu email adresu.');
+                    // Check match if confirm field has value
+                    if (confirmPasswordField.value) {
+                        if (this.value !== confirmPasswordField.value) {
+                            confirmPasswordField.parentElement.classList.add('error');
+                            confirmError.classList.add('visible');
+                        } else {
+                            confirmPasswordField.parentElement.classList.remove('error');
+                            confirmError.classList.remove('visible');
+                        }
+                    }
+                });
+                
+                // Real-time validation for confirm password field
+                confirmPasswordField.addEventListener('input', function() {
+                    if (this.value !== newPasswordField.value) {
+                        this.parentElement.classList.add('error');
+                        confirmError.classList.add('visible');
+                    } else {
+                        this.parentElement.classList.remove('error');
+                        confirmError.classList.remove('visible');
+                    }
                 });
             }
             
@@ -1274,4 +1342,3 @@
     </script>
 </body>
 </html>
-                        
