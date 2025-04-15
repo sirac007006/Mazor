@@ -771,7 +771,7 @@
             
             /* 404 page responsive styles */
             .error-container {
-                margin: 40px auto;
+                margin: 100px auto;
                 padding: 20px;
             }
             
@@ -794,98 +794,7 @@
     </style>
 </head>
 <body>
-    <!-- Main header with logo and search -->
-<div class="main-header">
-    <div class="header-container">
-        <!-- Desktop view -->
-        <a href="/" class="logo desktop">
-            <img src="logo.png" alt="TEHNOMAX" style="max-width: 180px;">
-        </a>
-        <div class="search-bar desktop-search">
-            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-        <div class="user-actions desktop">
-            <% if (typeof session.user !== "undefined") { %>
-                <a href="/profil" class="prijavljen-korisnik">
-                    <i class="fas fa-user fa-lg"></i> <%= session.user.ime[0].toUpperCase() %><%= session.user.prezime[0].toUpperCase() %>
-                </a>
-            <% } else { %>
-                <a href="/prijava" class="prijava">
-                    <i class="fas fa-user fa-lg"></i> PRIJAVA
-                </a>
-            <% } %>
-            <a href="/korpa" class="cart">
-                <i class="fas fa-shopping-cart fa-lg"></i>
-            </a>
-        </div>
-        
-        <!-- Mobile view - aligned in one row -->
-        <div class="mobile-top-nav">
-            <button class="hamburger-menu" id="hamburgerMenu">
-                <span class="hamburger-icon"></span>
-                <span class="hamburger-icon"></span>
-                <span class="hamburger-icon"></span>
-            </button>
-            
-            <a href="/" class="logo" id="kt">
-                <img src="logo.png" alt="TEHNOMAX" style="max-width: 120px;">
-            </a>
-            
-            <div class="user-actions">
-                <% if (typeof session.user !== "undefined") { %>
-                    <a href="/profil" class="prijavljen-korisnik" id="kt"> 
-                        <i class="fas fa-user fa-lg"></i> <%= session.user.ime[0] %><%= session.user.prezime[0] %>
-                    </a>
-                <% } else { %>
-                    <a href="/prijava" class="prijava" id="kt">
-                        <i class="fas fa-user fa-lg"></i>
-                    </a>
-                <% } %>
-                <a href="/korpa" class="cart" id="kt">
-                    <i class="fas fa-shopping-cart fa-lg"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Mobile search bar in separate row below -->
-    <div class="mobile-search-container" id="telefon">
-        <div class="search-bar">
-            <input type="text" placeholder="Pronađite proizvod, kategoriju ili brend...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-    </div>
-</div>
-
-<!-- Add mobile navigation menu -->
-<div class="mobile-nav" id="mobileNav">
-    <div class="mobile-nav-header">
-        <button id="closeMenu" class="close-menu">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    <a href="/svekategorije" class="sve-kategorije"><i class="fas fa-bars"></i> SVE KATEGORIJE</a>
-    <a href="/" class="mobile-nav-link"><i class="fas fa-home"></i> POČETNA</a>
-    <a href="/akcije" class="mobile-nav-link"><i class="fas fa-tag"></i> AKCIJE I POPUSTI</a>
-    <a href="/kontakt" class="mobile-nav-link"><i class="fas fa-envelope"></i> KONTAKT</a>
-    <a href="/servisi" class="mobile-nav-link"><i class="fas fa-cog"></i> SERVISI</a>
-</div>
-
-<!-- Add mobile overlay for closing menu -->
-<div class="mobile-overlay" id="mobileOverlay"></div>
-
-<!-- Desktop navigation menu -->
-<div class="nav-menu">
-    <div class="nav-container">
-        <a href="/svekategorije" class="sve-kategorije" id="sveKategorijeDesktop">SVE KATEGORIJE</a>
-        <a href="/">POČETNA</a>
-        <a href="/akcije">AKCIJE I POPUSTI</a>
-        <a href="/kontakt">KONTAKT</a>
-        <a href="/servisi">SERVISI</a>
-    </div>
-</div>
-
+   <%-include('partials/header.ejs')%>
 <!-- 404 Error Content -->
 <div class="error-container">
     <div class="error-icon">
@@ -897,183 +806,101 @@
     <a href="/" class="back-btn">Natrag na početnu</a>
 </div>
 
-<!-- Footer -->
-<footer class="footer">
-    <div class="footer-container">
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>Naše stranice</h3>
-                <ul class="footer-links">
-                    <li><a href="/svekategorije">Sve kategorije</a></li>
-                    <li><a href="/">Početna</a></li>
-                    <li><a href="/kontakt">Kontakt</a></li>
-                    <li><a href="/servisi">Servisi</a></li>                 
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h3>Proizvodi</h3>
-                <ul class="footer-links">
-                    <li><a href="/svekategorije/bijelatehnika">Bijela tehnika</a></li>
-                    <li><a href="/svekategorije/tviaudio">Televizori i audio</a></li>
-                    <li><a href="/svekategorije/sporetikaminipeci">Šporeti, kamini i peći</a></li>
-                    <li><a href="/svekategorije/malikucniaparati">Mali kućni aparati</a></li>
-                    <li><a href="/svekategorije/grijanjeihladjenje">Grijanje i hlađenje</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Kontaktirajte nas</h3>
-                <div class="footer-contact">
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Ulica Dr. Nika Miljanića 6, Nikšić 81400</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone-alt"></i>
-                        <span>+382 69 206 050</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>mazor@t-com.me</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-clock"></i>
-                        <span>Pon - Sub: 9:00 - 20:00<br></span>
-                    </div>
-                </div>
-                
-                <div class="footer-social">
-                    <a href="mailto:mazor@t-com.me" class="social-icon">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                    <a href="https://www.instagram.com/mazor_niksic/" class="social-icon">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="tel:+38269206050" class="social-icon">
-                        <i class="fas fa-phone"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>© 2025 Marko Ivanović</p>
-        </div>
-    </div>
-</footer>
-
-<!-- Footer za mobilne uređaje -->
-<div class="mobile-footer">
-    <div class="mobile-social">
-        <a href="mailto:mazor@t-com.me" class="social-icon">
-            <i class="fas fa-envelope"></i>
-        </a>
-        <a href="https://www.instagram.com/mazor_niksic/" class="social-icon">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <a href="tel:+38269206050" class="social-icon">
-            <i class="fas fa-phone"></i>
-        </a>
-    </div>
-    <div class="mobile-copyright">
-        © 2025 Marko Ivanović
-    </div>
-</div>
+<%-include('partials/footer.ejs')%>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Hamburger menu functionality
-        const hamburgerMenu = document.getElementById('hamburgerMenu');
-        const closeMenu = document.getElementById('closeMenu');
-        const mobileNav = document.getElementById('mobileNav');
-        const mobileOverlay = document.getElementById('mobileOverlay');
-        
-        // Function to open menu
-        function openMenu() {
-            mobileNav.classList.add('active');
-            mobileOverlay.classList.add('active');
-            hamburgerMenu.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        // Function to close menu
-        function closeMenuFunc() {
-            mobileNav.classList.remove('active');
-            mobileOverlay.classList.remove('active');
-            hamburgerMenu.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-        
-        // Event listeners
-        if (hamburgerMenu) {
-            hamburgerMenu.addEventListener('click', openMenu);
-        }
-        
-        if (closeMenu) {
-            closeMenu.addEventListener('click', closeMenuFunc);
-        }
-        
-        if (mobileOverlay) {
-            mobileOverlay.addEventListener('click', closeMenuFunc);
-        }
-        
-        // Mobile SVE KATEGORIJE dropdown functionality
-        const sveKategorijeMobile = document.querySelector('.mobile-nav .sve-kategorije');
-        
-        if (sveKategorijeMobile) {
-            // Add class for arrow icon
-            sveKategorijeMobile.classList.add('has-children');
+            // Hamburger menu functionality
+            const hamburgerMenu = document.getElementById('hamburgerMenu');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileOverlay = document.getElementById('mobileOverlay');
             
-            // Create mobile submenu if it doesn't exist
-            let mobileSubMenu = document.querySelector('.mobile-subcategories');
-            if (!mobileSubMenu) {
-                mobileSubMenu = document.createElement('div');
-                mobileSubMenu.className = 'mobile-subcategories';
-                
-                mobileSubMenu.innerHTML = `
-                    <a href="/svekategorije/bijelatehnika"><i class="fas fa-tools"></i> Bijela tehnika</a>
-                    <a href="/svekategorije/tviaudio"><i class="fas fa-tv"></i> Televizori i audio</a>
-                    <a href="/svekategorije/sporetikaminipeci"><i class="fas fa-fire"></i> Šporeti, kamini i peći</a>
-                    <a href="/svekategorije/ugradnatehnika"><i class="fas fa-plug"></i> Ugradna tehnika</a>
-                    <a href="/svekategorije/telefonigaming"><i class="fas fa-gamepad"></i> Telefoni i Gaming</a>
-                    <a href="/svekategorije/malikucniaparati"><i class="fas fa-blender"></i> Mali kućni aparati</a>
-                    <a href="/svekategorije/grijanjeihladjenje"><i class="fas fa-snowflake"></i> Grijanje i hlađenje</a>
-                    <a href="/svekategorije/laptopitableti"><i class="fas fa-laptop"></i> Laptop i tableti</a>
-                    <a href="/svekategorije/razno"><i class="fas fa-bolt"></i> Razno</a>
-                `;
-                
-                // Insert submenu after "SVE KATEGORIJE" link
-                sveKategorijeMobile.parentNode.insertBefore(mobileSubMenu, sveKategorijeMobile.nextSibling);
+            // Function to open menu
+            function openMenu() {
+                mobileNav.classList.add('active');
+                mobileOverlay.classList.add('active');
+                hamburgerMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
             }
             
-            // Toggle for submenu
-            sveKategorijeMobile.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
+            // Function to close menu
+            function closeMenuFunc() {
+                mobileNav.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                hamburgerMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Event listeners
+            if (hamburgerMenu) {
+                hamburgerMenu.addEventListener('click', openMenu);
+            }
+            
+            if (closeMenu) {
+                closeMenu.addEventListener('click', closeMenuFunc);
+            }
+            
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', closeMenuFunc);
+            }
+            
+            // Mobile SVE KATEGORIJE dropdown functionality
+            const sveKategorijeMobile = document.querySelector('.mobile-nav .sve-kategorije');
+            
+            if (sveKategorijeMobile) {
+                // Add class for arrow icon
+                sveKategorijeMobile.classList.add('has-children');
                 
-                this.classList.toggle('active');
-                
-                if (mobileSubMenu.style.display === 'block') {
-                    mobileSubMenu.style.display = 'none';
-                } else {
-                    mobileSubMenu.style.display = 'block';
+                // Create mobile submenu if it doesn't exist
+                let mobileSubMenu = document.querySelector('.mobile-subcategories');
+                if (!mobileSubMenu) {
+                    mobileSubMenu = document.createElement('div');
+                    mobileSubMenu.className = 'mobile-subcategories';
+                    
+                    mobileSubMenu.innerHTML = `
+                        <a href="/svekategorije/bijelatehnika"><i class="fas fa-tools"></i> Bijela tehnika</a>
+                        <a href="/svekategorije/tviaudio"><i class="fas fa-tv"></i> Televizori i audio</a>
+                        <a href="/svekategorije/sporetikaminipeci"><i class="fas fa-fire"></i> Šporeti, kamini i peći</a>
+                        <a href="/svekategorije/ugradnatehnika"><i class="fas fa-plug"></i> Ugradna tehnika</a>
+                        <a href="/svekategorije/telefonigaming"><i class="fas fa-gamepad"></i> Telefoni i Gaming</a>
+                        <a href="/svekategorije/malikucniaparati"><i class="fas fa-blender"></i> Mali kućni aparati</a>
+                        <a href="/svekategorije/grijanjeihladjenje"><i class="fas fa-snowflake"></i> Grijanje i hlađenje</a>
+                        <a href="/svekategorije/laptopitableti"><i class="fas fa-laptop"></i> Laptop i tableti</a>
+                        <a href="/svekategorije/razno"><i class="fas fa-bolt"></i> Razno</a>
+                    `;
+                    
+                    // Insert submenu after "SVE KATEGORIJE" link
+                    sveKategorijeMobile.parentNode.insertBefore(mobileSubMenu, sveKategorijeMobile.nextSibling);
                 }
-            });
-        }
-
-        // Close menu when clicking on mobile links (except SVE KATEGORIJE)
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav a:not(.sve-kategorije)');
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Don't close if it's a submenu item
-                if (this.closest('.mobile-subcategories')) {
+                
+                // Toggle for submenu
+                sveKategorijeMobile.addEventListener('click', function(e) {
+                    e.preventDefault();
                     e.stopPropagation();
-                    return;
-                }
-                closeMenuFunc();
+                    
+                    this.classList.toggle('active');
+                    
+                    if (mobileSubMenu.style.display === 'block') {
+                        mobileSubMenu.style.display = 'none';
+                    } else {
+                        mobileSubMenu.style.display = 'block';
+                    }
+                });
+            }
+
+            // Close menu when clicking on mobile links (except SVE KATEGORIJE)
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav a:not(.sve-kategorije)');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Don't close if it's a submenu item
+                    if (this.closest('.mobile-subcategories')) {
+                        e.stopPropagation();
+                        return;
+                    }
+                    closeMenuFunc();
+                });
             });
-        });
         
         // Ažuriranje godine u footeru
         const currentYear = new Date().getFullYear();
@@ -1083,3 +910,6 @@
             element.textContent = `© ${currentYear} Marko Ivanović`;
         });
     });
+</script>
+</body>
+</html>

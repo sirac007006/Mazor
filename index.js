@@ -75,6 +75,9 @@ app.get("/", async(req, res) => {
         session: req.session
     });
 });
+app.get("/404", async(req,res) =>{
+    res.render("404.ejs", { session: req.session });
+})
 app.get("/kontakt", async(req,res) =>{
     res.render("kontakt.ejs", { session: req.session });
 })
