@@ -1051,7 +1051,7 @@
                 <label for="email"><span class="required-mark">*</span> Email adresa</label>
                 <input type="email" id="email" name="email" required>
             </div>
-            <button type="submit" class="reset-btn">Pošalji Email</button>
+            <button type="submit" class="reset-btn" onclick="alertBtn()">Pošalji Email</button>
         </form>
     </form>
 
@@ -1140,7 +1140,9 @@
 </div>
 
     <script>
-        // Fixed Mobile Navigation JavaScript
+        function alertBtn(){
+            alert("Ako mejl postoji, poslat je link za reset");
+        }
         document.addEventListener('DOMContentLoaded', function() {
             // Hamburger menu functionality
             const hamburgerMenu = document.getElementById('hamburgerMenu');

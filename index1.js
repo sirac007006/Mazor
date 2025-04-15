@@ -379,7 +379,7 @@ app.post("/zaboravljenalozinka", async (req, res) => {
   
     const userRes = await db.query("SELECT id FROM users WHERE email = $1", [email]);
     if (userRes.rowCount === 0) {
-      return res.send("Ako mejl postoji, poslat je link za reset.");
+      console.log("Sve top")
     }
   
     const token = crypto.randomBytes(32).toString("hex");
@@ -390,10 +390,10 @@ app.post("/zaboravljenalozinka", async (req, res) => {
       [userRes.rows[0].id, token, expires]
     );
   
-    const link = `https://tvoj-domen.com/reset-lozinka?token=${token}`;
+    const link = `https://https://mazor-w95x.onrender.com/.com/reset-lozinka?token=${token}`;
   
     await transporter.sendMail({
-      from: '"Tvoj sajt" <ivanovicmicko4@gmail.com>',
+      from: '"Mazor" <ivanovicmicko4@gmail.com>',
       to: email,
       subject: "Resetovanje lozinke",
       html: `<p>Klikni ispod da resetuješ lozinku:</p><a href="${link}">${link}</a>`,
