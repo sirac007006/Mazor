@@ -1000,7 +1000,23 @@ body {
 
     <%-include('partials/footer.ejs')%>
     <script>
-        // Fixed Mobile Navigation JavaScript
+        function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
+    // Proverite da li postoji poruka o grešci
+    window.onload = function() {
+        var error = getUrlParameter('error');
+        if (error === 'invalid_credentials') {
+            alert('Email ili lozinka nisu tačni!');
+        }
+        else if (error === 'server_error') {
+            alert('Došlo je do greške na serveru. Pokušajte ponovo kasnije.');
+        }
+    }
 
 document.addEventListener('DOMContentLoaded', function() {
     // Hamburger menu functionality

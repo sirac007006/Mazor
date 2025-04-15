@@ -313,12 +313,13 @@ app.post("/prijava", async (req, res) => {
     try {
         let user = (await db.query("SELECT * FROM users WHERE email = $1", [email])).rows[0];
         if (!user) {
-            return res.redirect("/prijava");
+            // Dodajemo parametar greške u URL
+            return res.redirect("/prijava?error=invalid_credentials");
         }
         bcrypt.compare(password, user.lozinka, (err, result) => {
             if (err) {
                 console.error("Greška pri proveri lozinke:", err);
-                return res.redirect("/prijava");
+                return res.redirect("/prijava?error=server_error");
             }
 
             if (result === true) {
@@ -329,16 +330,17 @@ app.post("/prijava", async (req, res) => {
                 }; // Postavi user u sesiju
                 res.redirect("/");
             } else {
-                res.redirect("/prijava");
+                // Dodajemo parametar greške u URL
+                res.redirect("/prijava?error=invalid_credentials");
             }
         });
     } catch (err) {
         console.error("Greška pri prijavi:", err);
-        res.redirect("/prijava");
+        res.redirect("/prijava?error=server_error");
     }
 });
 app.get("/registracija", (req, res) => {
-    res.render("registracija.ejs", { session: req.session });
+    res.render("registracija.ejs", { session: req.session, error: req.query.error });
 });
 app.post("/registracija", async (req, res) => {
     let id = ((await db.query("SELECT * FROM users")).rows).length;
@@ -348,9 +350,10 @@ app.post("/registracija", async (req, res) => {
     let lozinka = req.body.lozinka;
     let telefon = req.body.telefon;
     let dbemail = (await db.query("SELECT lozinka from users where email = $1", [email])).rows[0];
-    if(dbemail){
-        res.redirect("/prijava")
+    if (dbemail) {
+        return res.redirect("/registracija?error=postoji");
     }
+    
     else{
         bcrypt.hash(lozinka, saltRounds, async function (err, hash) {
             if (err) {

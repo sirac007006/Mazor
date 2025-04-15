@@ -1051,6 +1051,12 @@ body {
 </head>
 <body>
     <%-include('partials/header.ejs')%>
+    <% if (error === 'postoji') { %>
+        <script>
+            alert("Korisnik sa ovom email adresom već postoji. Pokušajte da se prijavite.");
+        </script>
+    <% } %>
+    
     <form class="registration-container" method="post" action="/registracija">
         <h1 class="registration-title">Kreirajte svoj nalog</h1>
         
