@@ -52,14 +52,6 @@ function authMiddleware(req, res, next) {
     next();
 }
 
-app.get("/profil", authMiddleware, async (req, res) => {
-    // ...
-});
-
-app.post("/profil", authMiddleware, async (req, res) => {
-    // ...
-});
-
 function getCategory(category){
     let bcategory;
     switch(category){
@@ -95,7 +87,7 @@ function getCategory(category){
 }
 app.get("/", async(req, res) => {
     const { rows } = await db.query(
-        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Televizori' limit 14 offset 7"
+        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Televizori' limit 14"
     );
     const masine = (await db.query(
         "SELECT * FROM proizvodiful_updated limit 14 offset 317"
@@ -230,7 +222,7 @@ app.get("/proizvodi/:id", async (req, res) => {
     if(id > 0 && id < proizvodi.length +1){
     try {
         const { rows } = await db.query(
-            "SELECT * FROM proizvodiful_updated WHERE my_id = $1",
+            "SELECT * FROM proizvodiful_updated WHERE id = $1",
             [id]
         );
 
@@ -451,10 +443,32 @@ app.post("/reset-lozinka", async (req, res) => {
   
     res.send("Lozinka uspešno promenjena.");
   });
-app.get("/profil", authMiddleware, async(req,res) =>{
-    let korisnik = (await db.query("Select * from users where email = $1", [req.session.user.email])).rows[0];
-    res.render("profil.ejs", { session: req.session, korisnik });
-})
+  app.get("/profil", authMiddleware, async(req, res) => {
+    try {
+        // Dohvati podatke korisnika
+        let korisnik = (await db.query("SELECT * FROM users WHERE email = $1", [req.session.user.email])).rows[0];
+        
+        // Dohvati narudžbine korisnika, sortirane po datumu (najnovije prvo)
+        const narudzbineResult = await db.query(
+            `SELECT * FROM narudzbine 
+             WHERE korisnik_id = $1 
+             ORDER BY datum DESC 
+             LIMIT 10`, // Prikazujemo samo 10 najnovijih
+            [korisnik.id]
+        );
+        
+        const narudzbine = narudzbineResult.rows;
+        
+        res.render("profil.ejs", { 
+            session: req.session, 
+            korisnik,
+            narudzbine 
+        });
+    } catch (err) {
+        console.error("Greška pri dohvaćanju podataka profila:", err);
+        res.status(500).send("Greška na serveru.");
+    }
+});
 app.post("/profil", authMiddleware, async (req, res) => {
     try {
         const { telefon, adresa, grad, postanski_broj } = req.body;
@@ -473,7 +487,75 @@ app.post("/profil", authMiddleware, async (req, res) => {
         res.status(500).send("Greška na serveru.");
     }
 });
-
+app.post("/otkazi-narudzbinu", authMiddleware, async (req, res) => {
+    try {
+        const { narudzbina_id } = req.body;
+        const korisnik = (await db.query("SELECT id FROM users WHERE email = $1", [req.session.user.email])).rows[0];
+        
+        // Proveri da li je narudžbina od ovog korisnika
+        const narudzbina = (await db.query(
+            "SELECT * FROM narudzbine WHERE id = $1 AND korisnik_id = $2",
+            [narudzbina_id, korisnik.id]
+        )).rows[0];
+        
+        if (!narudzbina) {
+            return res.status(403).send("Nemate pristup ovoj narudžbini.");
+        }
+        
+        // Proveri da li je status "U obradi"
+        if (narudzbina.status !== 'U obradi') {
+            return res.status(400).send("Možete otkazati samo narudžbine koje su u obradi.");
+        }
+        
+        // Otkaži narudžbinu (postavi status na "Otkazano")
+        await db.query(
+            "UPDATE narudzbine SET status = 'Otkazano' WHERE id = $1",
+            [narudzbina_id]
+        );
+        
+        // Preusmeri nazad na profil
+        res.redirect("/profil");
+        
+    } catch (err) {
+        console.error("Greška pri otkazivanju narudžbine:", err);
+        res.status(500).send("Greška na serveru.");
+    }
+});
+app.get("/narudzbina/:id", authMiddleware, async (req, res) => {
+    try {
+        const narudzbina_id = req.params.id;
+        const korisnik = (await db.query("SELECT id FROM users WHERE email = $1", [req.session.user.email])).rows[0];
+        
+        // Proveri da li je narudžbina od ovog korisnika
+        const narudzbina = (await db.query(
+            "SELECT * FROM narudzbine WHERE id = $1 AND korisnik_id = $2",
+            [narudzbina_id, korisnik.id]
+        )).rows[0];
+        
+        if (!narudzbina) {
+            return res.status(403).send("Nemate pristup ovoj narudžbini.");
+        }
+        
+        // Dohvati stavke narudžbine
+        const stavke = (await db.query(
+            `SELECT ns.*, p.naziv, p.slika 
+             FROM narudzbine_stavke ns
+             JOIN proizvodiful_updated p ON ns.proizvod_id = p.id
+             WHERE ns.narudzbina_id = $1`,
+            [narudzbina_id]
+        )).rows;
+        
+        res.render("narudzbina.ejs", {
+            session: req.session,
+            narudzbina,
+            stavke
+        });
+        
+    } catch (err) {
+        console.error("Greška pri prikazivanju detalja narudžbine:", err);
+        res.status(500).send("Greška na serveru.");
+    }
+});
 app.get("/korpa", (req, res) => {
     const korpa = req.session.cart || [];
 

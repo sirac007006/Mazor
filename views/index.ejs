@@ -1448,7 +1448,7 @@ font-size: 14px !important;
             </button>
             <div class="product-container">
                 <%for(let i = 0; i < televizori.length; i++){%>
-                <a href="/proizvodi/<%=televizori[i].my_id%>" class="product-card">
+                <a href="/proizvodi/<%=televizori[i].id%>" class="product-card">
                     <div class="product-badge">IZDVAJAMO</div>
                     <div class="product-image">
                         <img src="<%=televizori[i].slka%>" alt="<%=televizori[i].naziv%>">
@@ -1489,7 +1489,7 @@ font-size: 14px !important;
     
             <div class="product-container">
                 <%for(let i = 0; i <masine.length; i++){%>
-                <a href="/proizvodi/<%=masine[i].my_id%>" class="product-card">
+                <a href="/proizvodi/<%=masine[i].id%>" class="product-card">
                     <div class="product-badge" style="background-color: #4caf50;">NOVO</div>
                     <div class="product-image">
                         <img src="<%=masine[i].slka%>" alt="<%=masine[i].naziv%>">
