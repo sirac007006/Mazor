@@ -864,6 +864,9 @@
         .status-shipped {
             background-color: #f39c12;
         }
+        .status-closed{
+            background-color: #c0392b;
+        }
 
         .view-btn {
             background-color: #124e9a;
@@ -1128,8 +1131,8 @@
     </form>
     
     <div class="recent-orders">
-        <h2 class="orders-title">Poslednje narudžbine</h2>
-        <% if (narudzbine && narudzbine.length > 0) { %>
+        <% if (porudzbine && porudzbine.length > 0) { %>
+            <h2 class="orders-title">Poslednje narudžbine</h2>
             <table class="orders-table">
                 <thead>
                     <tr>
@@ -1141,27 +1144,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% narudzbine.forEach(narudzbina => { %>
+                    <% porudzbine.forEach(porudzbina => { %>
                         <tr>
-                            <td>#<%= narudzbina.id %></td>
-                            <td><%= new Date(narudzbina.datum).toLocaleDateString('sr-RS') %></td>
-                            <td><%= narudzbina.ukupno_cena.toFixed(2) %> €</td>
+                            <td>#<%= porudzbina.id %></td>
+                            <td><%= new Date(porudzbina.datum).toLocaleDateString('sr-RS') %></td>
+                            <td><%= (parseFloat(porudzbina.iznos) || 0).toFixed(2) %> €</td>
                             <td>
-                                <% if (narudzbina.status === 'U obradi') { %>
-                                    <span class="status-badge status-processing"><%= narudzbina.status %></span>
-                                <% } else if (narudzbina.status === 'Poslato') { %>
-                                    <span class="status-badge status-shipped"><%= narudzbina.status %></span>
-                                <% } else if (narudzbina.status === 'Završeno') { %>
-                                    <span class="status-badge status-completed"><%= narudzbina.status %></span>
+                                <% if (porudzbina.status === 'U obradi') { %>
+                                    <span class="status-badge status-processing"><%= porudzbina.status %></span>
+                                <% } else if (porudzbina.status === 'Poslato') { %>
+                                    <span class="status-badge status-shipped"><%= porudzbina.status %></span>
+                                <% } else if (porudzbina.status === 'Završeno') { %>
+                                    <span class="status-badge status-completed"><%= porudzbina.status %></span>
+                                <% } else if (porudzbina.status === 'Otkazano') { %>
+                                    <span class="status-badge status-closed"><%= porudzbina.status %></span>
                                 <% } else { %>
-                                    <span class="status-badge"><%= narudzbina.status %></span>
+                                    <span class="status-badge"><%= porudzbina.status %></span>
                                 <% } %>
                             </td>
                             <td>
-                                <button class="view-btn" onclick="window.location.href='/narudzbina/<%= narudzbina.id %>'">Detalji</button>
-                                <% if (narudzbina.status === 'U obradi') { %>
+                                <% if (porudzbina.status === 'U obradi') { %>
                                     <form method="POST" action="/otkazi-narudzbinu" style="display: inline;">
-                                        <input type="hidden" name="narudzbina_id" value="<%= narudzbina.id %>">
+                                        <input type="hidden" name="porudzbina_id" value="<%= porudzbina.id %>">
                                         <button type="submit" class="cancel-btn" onclick="return confirm('Da li ste sigurni da želite otkazati ovu narudžbinu?')">Otkaži</button>
                                     </form>
                                 <% } %>
@@ -1171,7 +1175,6 @@
                 </tbody>
             </table>
         <% } else { %>
-            <p>Nemate narudžbina.</p>
         <% } %>
     </div>
 </div>
@@ -1207,7 +1210,7 @@
         viewButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const orderId = this.getAttribute('data-order-id');
-                window.location.href = `/narudzbina/${orderId}`;
+                window.location.href = `/porudzbina/${orderId}`;
             });
         });
     });
@@ -1305,34 +1308,32 @@
         });
         
         // Profile form validation and submission
-        const profileForm = document.querySelector('.profile-form');
+const profileForm = document.querySelector('.profile-form');
+
+if (profileForm) {
+    profileForm.addEventListener('submit', function(e) {
+        // Basic validation
+        const telefon = document.getElementById('tel').value;
         
-        if (profileForm) {
-            profileForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Validacija podataka
-                const email = document.getElementById('email').value;
-                
-                if (!email) {
-                    alert('Molimo unesite email adresu.');
-                    return;
-                }
-                
-                // Validacija email formata
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email)) {
-                    alert('Molimo unesite ispravan email format.');
-                    return;
-                }
-                
-                // Ovde bi išao kod za slanje podataka na server
-                console.log('Podaci profila su ažurirani.');
-                
-                // Feedback korisniku
-                alert('Vaš profil je uspješno ažuriran!');
-            });
+        if (!telefon || telefon.trim() === '') {
+            alert('Molimo unesite telefon.');
+            e.preventDefault();
+            return;
         }
+        
+        // If all validation passes, the form will submit normally to the server
+        // We're not preventing default, so it will submit to the /profil route
+    });
+}
+
+// Success message handling (will show if there's a URL parameter)
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('success') === 'true') {
+    alert('Vaš profil je uspješno ažuriran!');
+    // Remove the parameter from URL without reloading the page
+    const newUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, newUrl);
+}
         
         // Odjava korisnika
         const logoutBtn = document.querySelector('.logout-btn');

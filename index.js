@@ -19,6 +19,7 @@ app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     next();
 });
+
 const db = new pg.Client({
     user: "postgres",
     password: "marko123",
@@ -82,6 +83,25 @@ app.get("/404", async(req,res) =>{
 app.get("/kontakt", async(req,res) =>{
     res.render("kontakt.ejs", { session: req.session });
 })
+app.post("/kontakt", async(req, res) => {
+
+        console.log("Primljeni podaci iz forme:", req.body);
+
+        const { name, email, phone, subject, message } = req.body;
+
+        const { rows } = await db.query("SELECT COUNT(*) FROM poruke");
+        const id = parseInt(rows[0].count) + 1;
+        const datum = new Date();
+
+        const result = await db.query(
+            "INSERT INTO poruke(id, ime, email, telefon, predmet, poruka, vreme) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+            [id, name, email, phone || null, subject || 'Kontakt poruka', message, datum]
+        );
+
+        console.log('Poruka uspešno sačuvana u bazi sa ID:', result.rows[0].id);
+        res.send("Poruka uspešno sačuvana.");
+
+});
 app.get("/svekategorije", async(req,res) =>{
     const proizvodi = (await db.query(
         "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Televizori' limit 6 offset 9"
