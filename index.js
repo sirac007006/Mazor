@@ -64,10 +64,10 @@ function getCategory(category){
 }
 app.get("/", async(req, res) => {
     const { rows } = await db.query(
-        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Televizori' limit 14"
+        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Televizori' limit 14 offset 38"
     );
     const masine = (await db.query(
-        "SELECT * FROM proizvodiful_updated limit 14 offset 317"
+        "SELECT * FROM proizvodiful_updated limit 14 offset 266"
     )).rows;
     const televizori = rows;
     console.log(req.session)
@@ -104,7 +104,7 @@ app.post("/kontakt", async(req, res) => {
 });
 app.get("/svekategorije", async(req,res) =>{
     const proizvodi = (await db.query(
-        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Televizori' limit 6 offset 9"
+        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Televizori' limit 6 offset 24"
     )).rows;
     res.render("svekategorije.ejs", { proizvodi:proizvodi, session: req.session });
 })
@@ -112,7 +112,7 @@ app.get("/svekategorije/:category", async (req, res) => {
     var category = req.params.category;
     var bcategory = getCategory(category);
     const proizvodi = (await db.query(
-        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Televizori' limit 6 offset 9"
+        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Televizori' limit 6 offset 24"
     )).rows;
     var subcategories = (await db.query(
         "SELECT * FROM subcategories WHERE category = $1", [category]
