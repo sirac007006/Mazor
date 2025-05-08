@@ -10,14 +10,14 @@ const db = new pg.Client({
   database: "Mazor",
 });
 
-const SCRAPERAPI_KEY = "fd9caaf916b728a879b5003064e98d25";
+const SCRAPERAPI_KEY = "fb811fb7f42462637bebde02082aeff5";
 
 async function fetchProductsWithoutDescription() {
   await db.connect();
   const res = await db.query(`
     SELECT id, naziv, subcategories 
     FROM proizvodiful_updated 
-    WHERE deskripcija IS NULL 
+    where deskripcija = 'failed' and subcategories != 'Stono posuđe' and subcategories != 'Filteri' and subcategories != 'Dimne cijevi' and subcategories != 'Ostalo'
     LIMIT 1000
   `);
   return res.rows;
@@ -54,9 +54,43 @@ async function getGoogleLinks(queryText) {
         !href.includes("foxelectronics.rs") &&
         !href.includes("digitalis.ba") &&
         !href.includes("ananas.rs") &&
+        !href.includes("rowenta") &&
+        !href.includes("drtechno.rs") &&
+        !href.includes("svezakucu.rs") &&
+        !href.includes("fero-term.si") &&
+        !href.includes("bazzar.hr") &&
+        !href.includes("internetshop.co.rs") &&
+        !href.includes("alles.hr") &&
+        !href.includes("gasiks.rs") &&
+        !href.includes("ananas") &&
+        !href.includes("newegg.com") &&
+        !href.includes("rowenta") &&
+        !href.includes("central-ch.com") &&
+        !href.includes("tehnodepo.ba") &&
+        !href.includes("api.goglasi.com") &&
         !href.includes("vodoterm.co.rs") &&
         !href.includes("gigatron.rs") &&
         !href.includes("spektar.rs") &&
+        !href.includes("spektar.rs") &&
+        !href.includes("prof.lv") &&
+        !href.includes("nabava.net") &&
+        !href.includes("attriumcacak.rs") &&
+        !href.includes("bigbang.hr") &&
+        !href.includes("dijaspora.shop") &&
+        !href.includes("soundstar.gr") &&
+        !href.includes("iskrabih.com") &&
+        !href.includes("eurotehnikamn.me") &&
+        !href.includes("fontana.rs") &&
+        !href.includes("euronics") &&
+        !href.includes("dateks.lv") &&
+        !href.includes("lobod.me") &&
+        !href.includes("digitec.ch") &&
+        !href.includes("tehnomedia.rs") &&
+        !href.includes("maxidom.rs") &&
+        !href.includes("lg.com") &&
+        !href.includes("protis.hr") &&
+        !href.includes("kodmitra.com") &&
+        !href.includes("elbraco.rs") &&
         !href.includes("merkury.hr") &&
         !href.includes("hdtelevizija.com") &&
         !href.includes("acs-klime.rs") &&
@@ -64,24 +98,49 @@ async function getGoogleLinks(queryText) {
         !href.includes("tehnopromet.rs") &&
         !href.includes("samsung.com") &&
         !href.includes("nitom.rs") &&
+        !href.includes("kucniaparati.com") &&
         !href.includes("bigboom.eu") &&
+        !href.includes("computers.rs") &&
         !href.includes("centrometal.hr") &&
         !href.includes("ananas.me") &&
+        !href.includes("bazzar") &&
         !href.includes("multicom.me") &&
+        !href.includes("vitapur") &&
         !href.includes("tehnoplus.me") &&
         !href.includes("www.bcgroup-online.com") &&
         !href.includes("ekupi") &&
+        !href.includes("shop.miele.rs") &&
+        !href.includes("emix.ba") &&
+        !href.includes("keeptank.rs") &&
         !href.includes("datika.me") &&
+        !href.includes("promobil.me") &&
+        !href.includes("amazon") &&
+        !href.includes("idealno.ba") &&
+        !href.includes("gsmpcshop.rs") &&
+        !href.includes("aspiratori.rs") &&
         !href.includes("paluba.info") &&
         !href.includes("mazor.co.me") &&
         !href.includes("kondoras.rs") &&
         !href.includes("eponuda") &&
+        !href.includes("goglasi") &&
+        !href.includes("tehnocentar") &&
+        !href.includes("uspon.rs") &&
+        !href.includes("manuals") &&
+        !href.includes("veli.store") &&
         !href.includes("bosch-home.rs") &&
         !href.includes("svijetgrijanja.ba") &&
         !href.includes("magnetik.rs") &&
         !href.includes("omegashop.ba") &&
         !href.includes("pc-gamer.me") &&
+        !href.includes("tehnoplanet.me") &&
+        !href.includes("megashop.ba") &&
+        !href.includes("tehnomanija.rs") &&
         !href.includes("tehnoteka.rs") &&
+        !href.includes("technoshop.ba") &&
+        !href.includes("loren.co.rs") &&
+        !href.includes("zeusbl.com") &&
+        !href.includes("plocicekeramika.rs") &&
+        !href.includes("eltom.rs") &&
         !href.includes("vitapur.rs") &&
         !href.includes("eponuda.com") // ISKLJUČUJEMO VOX ELECTRONICS
       ) {
@@ -99,7 +158,7 @@ async function getGoogleLinks(queryText) {
 async function fetchDescriptionFromLink(link) {
   const url = `http://api.scraperapi.com?api_key=${SCRAPERAPI_KEY}&url=${encodeURIComponent(link)}`;
   try {
-    const res = await axios.get(url, { timeout: 20000 });
+    const res = await axios.get(url, { timeout: 30000 });
     const $ = cheerio.load(res.data);
     const keywords = [
       "kapacitet",
@@ -117,6 +176,9 @@ async function fetchDescriptionFromLink(link) {
       "osvetljenje",
       "buka",
       "ugradnj",
+      "hdmi",
+      "smart",
+
     ];
 
     let results = [];
@@ -188,8 +250,8 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       await updateDescriptionInDB(product.id, description);
       console.log("✅ Deskripcija uneta.");
     } else {
-      await updateDescriptionInDB(product.id, "failed");
-      console.log("❌ Nema pronađene deskripcije. Upisano 'failed'.");
+      await updateDescriptionInDB(product.id, "fullfailed");
+      console.log("❌ Nema pronađene deskripcije. Upisano 'fullfailed'.");
     }
 
     await delay(2000);
