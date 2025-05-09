@@ -10,14 +10,14 @@ const db = new pg.Client({
   database: "Mazor",
 });
 
-const SCRAPERAPI_KEY = "fb811fb7f42462637bebde02082aeff5";
+const SCRAPERAPI_KEY = "03f824b13b37da5056cc1f31b54cf82d";
 
 async function fetchProductsWithoutDescription() {
   await db.connect();
   const res = await db.query(`
     SELECT id, naziv, subcategories 
     FROM proizvodiful_updated 
-    where deskripcija = 'failed' and subcategories != 'Stono posuđe' and subcategories != 'Filteri' and subcategories != 'Dimne cijevi' and subcategories != 'Ostalo'
+    where deskripcija = 'nema' and subcategories != 'Stono posuđe' and subcategories != 'Filteri' and subcategories != 'Dimne cijevi' and subcategories != 'Ostalo'
     LIMIT 1000
   `);
   return res.rows;
@@ -49,6 +49,57 @@ async function getGoogleLinks(queryText) {
         !href.includes("aquamanija.rs") &&
         !href.includes("ctshop.rs") &&
         !href.includes("domod.ba") &&
+        !href.includes("icecat") &&
+        !href.includes("tango.rs") &&
+        !href.includes("dotmarket.rs") &&
+        !href.includes("panteh.eu") &&
+        !href.includes("elektroterm.rs") &&
+        !href.includes("sellme.ee") &&
+        !href.includes("sellme.ee") &&
+        !href.includes("sellme.ee") &&
+        !href.includes("deliks.rs") &&
+        !href.includes("ribamundotecnologia.es") &&
+        !href.includes("kucnatehnika.com") &&
+        !href.includes("shoptok.si") &&
+        !href.includes("poklonizakucu.rs") &&
+        !href.includes("datalink.me") &&
+        !href.includes("foxelectronics") &&
+        !href.includes("electronic.ba") &&
+        !href.includes("kernel.me") &&
+        !href.includes("technomarket.rs") &&
+        !href.includes("pioneerhomeaudio") &&
+        !href.includes("bgelektronik.shop") &&
+        !href.includes("peki.si") &&
+        !href.includes("tri-o.rs") &&
+        !href.includes("kliklak.rs") &&
+        !href.includes("bosch-home") &&
+        !href.includes("shoppster.rs") &&
+        !href.includes("mall.hr") &&
+        !href.includes("metro.it") &&
+        !href.includes("centar-tehnike.hr") &&
+        !href.includes("vesmasine.rs") &&
+        !href.includes("andromedapc.me") &&
+        !href.includes("ggmgastro.com") &&
+        !href.includes("agromanojlovic.com") &&
+        !href.includes("hgspot.hr") &&
+        !href.includes("euroline.co.rs") &&
+        !href.includes("eplaneta.rs") &&
+        !href.includes("avalon-ltd.com") &&
+        !href.includes("notebookcheck.net") &&
+        !href.includes("tempo-tehnika.rs") &&
+        !href.includes("kitele.com") &&
+        !href.includes("ecomex.rs") &&
+        !href.includes("bauhaus.hr") &&
+        !href.includes("cmcelectric.com") &&
+        !href.includes("najnajshop.rs") &&
+        !href.includes("rakispilacourisltd") &&
+        !href.includes("poruci.rs") &&
+        !href.includes("appliancesdirect.co.uk") &&
+        !href.includes("inelektronik.rs") &&
+        !href.includes("triomax.ba") &&
+        !href.includes("kingtrade.hr") &&
+        !href.includes("aghasarkissian.com") &&
+        !href.includes("winwin.rs") &&
         !href.includes("boss.co.rs") &&
         !href.includes("help.eset.com") &&
         !href.includes("foxelectronics.rs") &&
@@ -59,6 +110,7 @@ async function getGoogleLinks(queryText) {
         !href.includes("svezakucu.rs") &&
         !href.includes("fero-term.si") &&
         !href.includes("bazzar.hr") &&
+        !href.includes("vivax.com") &&
         !href.includes("internetshop.co.rs") &&
         !href.includes("alles.hr") &&
         !href.includes("gasiks.rs") &&
@@ -103,8 +155,36 @@ async function getGoogleLinks(queryText) {
         !href.includes("computers.rs") &&
         !href.includes("centrometal.hr") &&
         !href.includes("ananas.me") &&
+        !href.includes("protronic.hr") &&
         !href.includes("bazzar") &&
+        !href.includes("bazzar") &&
+        !href.includes("enaa.com") &&
+        !href.includes("gembird.rs") &&
+        !href.includes("unicor.rs") &&
+        !href.includes("tv-it.com") &&
+        !href.includes("jakov.rs") &&
+        !href.includes("gsmarena.com") &&
+        !href.includes("digitrend.ba") &&
+        !href.includes("eklix.rs") &&
+        !href.includes("zoka.co.rs") &&
+        !href.includes("tehnikauka.rs") &&
+        !href.includes("blackdot.co.me") &&
+        !href.includes("digitalko.me") &&
+        !href.includes("exceed.rs") &&
+        !href.includes("tehnoplus.ba") &&
+        !href.includes("hisense.com") &&
+        !href.includes("topchoice.com.mt") &&
+        !href.includes("gstore.rs") &&
         !href.includes("multicom.me") &&
+        !href.includes("marketserviszlatko.com") &&
+        !href.includes("loudshop.me") &&
+        !href.includes("sinclair-solutions.com") &&
+        !href.includes("manuall.co.uk") &&
+        !href.includes("forum.benchmark.rs") &&
+        !href.includes("betterlifeuae.com") &&
+        !href.includes("elektron.me") &&
+        !href.includes("halooglasi.com") &&
+        !href.includes("domoprema.rs") &&
         !href.includes("vitapur") &&
         !href.includes("tehnoplus.me") &&
         !href.includes("www.bcgroup-online.com") &&
@@ -129,6 +209,9 @@ async function getGoogleLinks(queryText) {
         !href.includes("veli.store") &&
         !href.includes("bosch-home.rs") &&
         !href.includes("svijetgrijanja.ba") &&
+        !href.includes("racunalo.com") &&
+        !href.includes("magnetik.rs") &&
+        !href.includes("magnetik.rs") &&
         !href.includes("magnetik.rs") &&
         !href.includes("omegashop.ba") &&
         !href.includes("pc-gamer.me") &&
@@ -250,8 +333,8 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       await updateDescriptionInDB(product.id, description);
       console.log("✅ Deskripcija uneta.");
     } else {
-      await updateDescriptionInDB(product.id, "fullfailed");
-      console.log("❌ Nema pronađene deskripcije. Upisano 'fullfailed'.");
+      await updateDescriptionInDB(product.id, "failed");
+      console.log("❌ Nema pronađene deskripcije. Upisano 'failed'.");
     }
 
     await delay(2000);
