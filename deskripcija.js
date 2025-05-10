@@ -10,14 +10,14 @@ const db = new pg.Client({
   database: "Mazor",
 });
 
-const SCRAPERAPI_KEY = "03f824b13b37da5056cc1f31b54cf82d";
+const SCRAPERAPI_KEY = "ed94cb1f03c5963321d75d4f1c83917f";
 
 async function fetchProductsWithoutDescription() {
   await db.connect();
   const res = await db.query(`
     SELECT id, naziv, subcategories 
     FROM proizvodiful_updated 
-    where deskripcija = 'nema' and subcategories != 'Stono posuđe' and subcategories != 'Filteri' and subcategories != 'Dimne cijevi' and subcategories != 'Ostalo'
+    where deskripcija = 'nema' and subcategories != 'Stono posuđe' and subcategories != 'Filteri' and subcategories != 'Dimne cijevi' and subcategories != 'Ostalo' and subcategories != 'Kablovi' and subcategories != 'Posuđe za pripremu hrane'
     LIMIT 1000
   `);
   return res.rows;
@@ -49,14 +49,77 @@ async function getGoogleLinks(queryText) {
         !href.includes("aquamanija.rs") &&
         !href.includes("ctshop.rs") &&
         !href.includes("domod.ba") &&
+        !href.includes(".lt") &&
+        !href.includes("karcher.com") &&
+        !href.includes("tribi.rs") &&
+        !href.includes("philips.hr") &&
         !href.includes("icecat") &&
+        !href.includes("eurotehna.rs") &&
+        !href.includes("eurotehna.rs") &&
+        !href.includes("eurotehna.rs") &&
+        !href.includes("eurotehna.rs") &&
+        !href.includes("cityshop.rs") &&
+        !href.includes("cityshop.rs") &&
+        !href.includes("cityshop.rs") &&
+        !href.includes("cityshop.rs") &&
+        !href.includes("makromikrogrupa.hr") &&
+        !href.includes("najboljacena.rs") &&
+        !href.includes("svetlostnis.rs") &&
+        !href.includes("uputstvo.rs") &&
+        !href.includes("zokapromet.rs") &&
+        !href.includes("kontekst.io") &&
         !href.includes("tango.rs") &&
         !href.includes("dotmarket.rs") &&
         !href.includes("panteh.eu") &&
         !href.includes("elektroterm.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("beltek.rs") &&
+        !href.includes("hoopla.rshoopla.rs") &&
+        !href.includes("e-catalog.com") &&
+        !href.includes("klimakoncept.hr") &&
+        !href.includes("detelina.rs") &&
+        !href.includes("nexi.go.jp") &&
+        !href.includes("stefan.co.rs") &&
+        !href.includes("vivamedia.hr") &&
+        !href.includes("klimauredjaji.co.rs") &&
+        !href.includes("villager.rs") &&
+        !href.includes("komelshop.rs") &&
+        !href.includes("euroimpex.rs") &&
+        !href.includes("klimescepanovic.com") &&
+        !href.includes("kerametal.rs") &&
+        !href.includes("kojo-komerc.com") &&
+        !href.includes("pccomponentes.com") &&
+        !href.includes("gorenje.cn") &&
+        !href.includes("elementa.rs") &&
+        !href.includes("virtikom.com") &&
+        !href.includes("ronis.hr") &&
         !href.includes("sellme.ee") &&
-        !href.includes("sellme.ee") &&
-        !href.includes("sellme.ee") &&
+        !href.includes("tika.hr") &&
+        !href.includes("philips.rs") &&
+        !href.includes("ikoma.hr") &&
+        !href.includes("ikoma.hr") &&
+        !href.includes("tehnomag.com") &&
+        !href.includes("excetrashop.hr") &&
+        !href.includes("prekoreda.com") &&
+        !href.includes("positiveline.rs") &&
+        !href.includes("bojleri-srbija.rs") &&
+        !href.includes("pevex.hr") &&
+        !href.includes("kupindo.com") &&
         !href.includes("deliks.rs") &&
         !href.includes("ribamundotecnologia.es") &&
         !href.includes("kucnatehnika.com") &&
@@ -70,7 +133,32 @@ async function getGoogleLinks(queryText) {
         !href.includes("pioneerhomeaudio") &&
         !href.includes("bgelektronik.shop") &&
         !href.includes("peki.si") &&
+        !href.includes("procomp.ba") &&
         !href.includes("tri-o.rs") &&
+        !href.includes("sharpconsumer.com") &&
+        !href.includes("bigbang.rs") &&
+        !href.includes("svezavasdom") &&
+        !href.includes("kale.co.rs") &&
+        !href.includes("mojwebshop") &&
+        !href.includes("pametno.rs") &&
+        !href.includes("dudico.com") &&
+        !href.includes(".si") &&
+        !href.includes(".ba") &&
+        !href.includes("funavo.com.hr") &&
+        !href.includes(".ba") &&
+        !href.includes(".ba") &&
+        !href.includes("pcpractic.rs") &&
+        !href.includes("idealno.rs") &&
+        !href.includes("gotech.al") &&
+        !href.includes("mcooker-hrm.tomathouse.com") &&
+        !href.includes("tradeinn.com") &&
+        !href.includes("manua.ls") &&
+        !href.includes("en.wikipedia.org") &&
+        !href.includes("soundmachine.com.mt") &&
+        !href.includes("tehnoroom.rs") &&
+        !href.includes("bima-shop.si") &&
+        !href.includes("bhtelecom.ba") &&
+        !href.includes("adazal.ba") &&
         !href.includes("kliklak.rs") &&
         !href.includes("bosch-home") &&
         !href.includes("shoppster.rs") &&
@@ -88,6 +176,19 @@ async function getGoogleLinks(queryText) {
         !href.includes("notebookcheck.net") &&
         !href.includes("tempo-tehnika.rs") &&
         !href.includes("kitele.com") &&
+        !href.includes("friz.hr") &&
+        !href.includes("ikl.rs") &&
+        !href.includes("ikl.rs") &&
+        !href.includes("ba.hw-glass.com") &&
+        !href.includes("oxfordhouse.com.mt") &&
+        !href.includes("tvcentardjecevic.me") &&
+        !href.includes("bshop.co.rs") &&
+        !href.includes("shopmania.rs") &&
+        !href.includes("unichrom.hr") &&
+        !href.includes("kupideo.com") &&
+        !href.includes("elektrotermnis.rs") &&
+        !href.includes("zutiklik.hr") &&
+        !href.includes("frigocool.rs") &&
         !href.includes("ecomex.rs") &&
         !href.includes("bauhaus.hr") &&
         !href.includes("cmcelectric.com") &&
@@ -113,6 +214,13 @@ async function getGoogleLinks(queryText) {
         !href.includes("vivax.com") &&
         !href.includes("internetshop.co.rs") &&
         !href.includes("alles.hr") &&
+        !href.includes(".fi") &&
+        !href.includes("mimovrste.com") &&
+        !href.includes("kupujemprodajem.com") &&
+        !href.includes("gasiks.rs") &&
+        !href.includes("candy-home.com") &&
+        !href.includes("gasiks.rs") &&
+        !href.includes("gasiks.rs") &&
         !href.includes("gasiks.rs") &&
         !href.includes("ananas") &&
         !href.includes("newegg.com") &&
@@ -157,7 +265,7 @@ async function getGoogleLinks(queryText) {
         !href.includes("ananas.me") &&
         !href.includes("protronic.hr") &&
         !href.includes("bazzar") &&
-        !href.includes("bazzar") &&
+        !href.includes("icp-nis.co.rs") &&
         !href.includes("enaa.com") &&
         !href.includes("gembird.rs") &&
         !href.includes("unicor.rs") &&
@@ -259,8 +367,8 @@ async function fetchDescriptionFromLink(link) {
       "osvetljenje",
       "buka",
       "ugradnj",
-      "hdmi",
-      "smart",
+      "veličina",
+      "rezolucija"
 
     ];
 
