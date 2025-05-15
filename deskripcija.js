@@ -10,25 +10,67 @@ const db = new pg.Client({
   database: "Mazor",
 });
 
-const SCRAPERAPI_KEY = "ed94cb1f03c5963321d75d4f1c83917f";
+// Primarni i rezervni API ključevi
+const PRIMARY_SCRAPERAPI_KEY = "efe36703f12673301dae1f1c28f9ba21";
+const BACKUP_SCRAPERAPI_KEY1 = "322858336d2ea84527fe1be304b4705a"; // Prvi rezervni ključ
+const BACKUP_SCRAPERAPI_KEY2 = "56ca942d15fb81b16546b8cd43514c54"; // Drugi rezervnsi ključ
+
+async function fetchWithRetry(url, keyIndex = 0) {
+  let apiKey;
+  switch (keyIndex) {
+    case 0:
+      apiKey = PRIMARY_SCRAPERAPI_KEY;
+      break;
+    case 1:
+      apiKey = BACKUP_SCRAPERAPI_KEY1;
+      break;
+    case 2:
+      apiKey = BACKUP_SCRAPERAPI_KEY2;
+      break;
+    default:
+      throw new Error("Svi API ključevi su iskorišćeni ili su nevažeći");
+  }
+
+  const scraperUrl = `http://api.scraperapi.com?api_key=${apiKey}&render=false&url=${encodeURIComponent(url)}`;
+
+  try {
+    return await axios.get(scraperUrl, { timeout: 80000 });
+  } catch (error) {
+    const status = error.response?.status;
+    if ((status === 403 || status === 401) && keyIndex < 2) {
+      console.log(`⚠️ API ključ #${keyIndex + 1} vratio ${status}, pokušavam sledeći...`);
+      return fetchWithRetry(url, keyIndex + 1);
+    }
+    throw error;
+  }
+}
+
 
 async function fetchProductsWithoutDescription() {
   await db.connect();
   const res = await db.query(`
     SELECT id, naziv, subcategories 
-    FROM proizvodiful_updated 
-    where deskripcija = 'nema' and subcategories != 'Stono posuđe' and subcategories != 'Filteri' and subcategories != 'Dimne cijevi' and subcategories != 'Ostalo' and subcategories != 'Kablovi' and subcategories != 'Posuđe za pripremu hrane'
-    LIMIT 1000
+FROM proizvodiful_updated 
+WHERE deskripcija = 'fullfailed' 
+  AND subcategories != 'Stono posuđe' 
+  AND subcategories != 'Filteri' 
+  AND subcategories != 'Dimne cijevi' 
+  AND subcategories != 'Ostalo' 
+  AND subcategories != 'Kablovi' 
+  AND subcategories != 'Baterije' 
+  AND subcategories != 'Posuđe za pripremu hrane'
+ORDER BY id DESC
+LIMIT 1000;
   `);
   return res.rows;
 }
 
 async function getGoogleLinks(queryText) {
   const query = encodeURIComponent(queryText + " specifikacije");
-  const url = `http://api.scraperapi.com?api_key=${SCRAPERAPI_KEY}&url=https://www.google.com/search?q=${query}`;
+  const url = `https://www.google.com/search?q=${query}`;
 
   try {
-    const res = await axios.get(url, { timeout: 80000 });
+    const res = await fetchWithRetry(url);
     const $ = cheerio.load(res.data);
 
     const links = [];
@@ -40,300 +82,51 @@ async function getGoogleLinks(queryText) {
         !href.includes("google") &&
         !href.includes("youtube") &&
         !href.includes("facebook") &&
-        !href.includes("voxelectronics.com") &&
-        !href.includes("dodatnaoprema.com") &&
-        !href.includes("tehnoprometst.rs") &&
-        !href.includes("gorenje.com") &&
-        !href.includes("ekupi.ba") &&
-        !href.includes("kralj.hr") &&
-        !href.includes("aquamanija.rs") &&
-        !href.includes("ctshop.rs") &&
-        !href.includes("domod.ba") &&
-        !href.includes(".lt") &&
-        !href.includes("karcher.com") &&
-        !href.includes("tribi.rs") &&
-        !href.includes("philips.hr") &&
-        !href.includes("icecat") &&
-        !href.includes("eurotehna.rs") &&
-        !href.includes("eurotehna.rs") &&
-        !href.includes("eurotehna.rs") &&
-        !href.includes("eurotehna.rs") &&
-        !href.includes("cityshop.rs") &&
-        !href.includes("cityshop.rs") &&
-        !href.includes("cityshop.rs") &&
-        !href.includes("cityshop.rs") &&
-        !href.includes("makromikrogrupa.hr") &&
-        !href.includes("najboljacena.rs") &&
-        !href.includes("svetlostnis.rs") &&
-        !href.includes("uputstvo.rs") &&
-        !href.includes("zokapromet.rs") &&
-        !href.includes("kontekst.io") &&
-        !href.includes("tango.rs") &&
-        !href.includes("dotmarket.rs") &&
-        !href.includes("panteh.eu") &&
-        !href.includes("elektroterm.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("beltek.rs") &&
-        !href.includes("hoopla.rshoopla.rs") &&
-        !href.includes("e-catalog.com") &&
-        !href.includes("klimakoncept.hr") &&
-        !href.includes("detelina.rs") &&
-        !href.includes("nexi.go.jp") &&
-        !href.includes("stefan.co.rs") &&
-        !href.includes("vivamedia.hr") &&
-        !href.includes("klimauredjaji.co.rs") &&
-        !href.includes("villager.rs") &&
-        !href.includes("komelshop.rs") &&
-        !href.includes("euroimpex.rs") &&
-        !href.includes("klimescepanovic.com") &&
-        !href.includes("kerametal.rs") &&
-        !href.includes("kojo-komerc.com") &&
-        !href.includes("pccomponentes.com") &&
-        !href.includes("gorenje.cn") &&
-        !href.includes("elementa.rs") &&
-        !href.includes("virtikom.com") &&
-        !href.includes("ronis.hr") &&
-        !href.includes("sellme.ee") &&
-        !href.includes("tika.hr") &&
-        !href.includes("philips.rs") &&
-        !href.includes("ikoma.hr") &&
-        !href.includes("ikoma.hr") &&
-        !href.includes("tehnomag.com") &&
-        !href.includes("excetrashop.hr") &&
-        !href.includes("prekoreda.com") &&
-        !href.includes("positiveline.rs") &&
-        !href.includes("bojleri-srbija.rs") &&
-        !href.includes("pevex.hr") &&
-        !href.includes("kupindo.com") &&
-        !href.includes("deliks.rs") &&
-        !href.includes("ribamundotecnologia.es") &&
-        !href.includes("kucnatehnika.com") &&
-        !href.includes("shoptok.si") &&
-        !href.includes("poklonizakucu.rs") &&
-        !href.includes("datalink.me") &&
-        !href.includes("foxelectronics") &&
-        !href.includes("electronic.ba") &&
-        !href.includes("kernel.me") &&
-        !href.includes("technomarket.rs") &&
-        !href.includes("pioneerhomeaudio") &&
-        !href.includes("bgelektronik.shop") &&
-        !href.includes("peki.si") &&
-        !href.includes("procomp.ba") &&
-        !href.includes("tri-o.rs") &&
-        !href.includes("sharpconsumer.com") &&
-        !href.includes("bigbang.rs") &&
-        !href.includes("svezavasdom") &&
-        !href.includes("kale.co.rs") &&
-        !href.includes("mojwebshop") &&
-        !href.includes("pametno.rs") &&
-        !href.includes("dudico.com") &&
-        !href.includes(".si") &&
-        !href.includes(".ba") &&
-        !href.includes("funavo.com.hr") &&
-        !href.includes(".ba") &&
-        !href.includes(".ba") &&
-        !href.includes("pcpractic.rs") &&
-        !href.includes("idealno.rs") &&
-        !href.includes("gotech.al") &&
-        !href.includes("mcooker-hrm.tomathouse.com") &&
-        !href.includes("tradeinn.com") &&
-        !href.includes("manua.ls") &&
-        !href.includes("en.wikipedia.org") &&
-        !href.includes("soundmachine.com.mt") &&
-        !href.includes("tehnoroom.rs") &&
-        !href.includes("bima-shop.si") &&
-        !href.includes("bhtelecom.ba") &&
-        !href.includes("adazal.ba") &&
-        !href.includes("kliklak.rs") &&
-        !href.includes("bosch-home") &&
-        !href.includes("shoppster.rs") &&
-        !href.includes("mall.hr") &&
-        !href.includes("metro.it") &&
-        !href.includes("centar-tehnike.hr") &&
-        !href.includes("vesmasine.rs") &&
-        !href.includes("andromedapc.me") &&
-        !href.includes("ggmgastro.com") &&
-        !href.includes("agromanojlovic.com") &&
-        !href.includes("hgspot.hr") &&
-        !href.includes("euroline.co.rs") &&
-        !href.includes("eplaneta.rs") &&
-        !href.includes("avalon-ltd.com") &&
-        !href.includes("notebookcheck.net") &&
-        !href.includes("tempo-tehnika.rs") &&
-        !href.includes("kitele.com") &&
-        !href.includes("friz.hr") &&
-        !href.includes("ikl.rs") &&
-        !href.includes("ikl.rs") &&
-        !href.includes("ba.hw-glass.com") &&
-        !href.includes("oxfordhouse.com.mt") &&
-        !href.includes("tvcentardjecevic.me") &&
-        !href.includes("bshop.co.rs") &&
-        !href.includes("shopmania.rs") &&
-        !href.includes("unichrom.hr") &&
-        !href.includes("kupideo.com") &&
-        !href.includes("elektrotermnis.rs") &&
-        !href.includes("zutiklik.hr") &&
-        !href.includes("frigocool.rs") &&
-        !href.includes("ecomex.rs") &&
-        !href.includes("bauhaus.hr") &&
-        !href.includes("cmcelectric.com") &&
-        !href.includes("najnajshop.rs") &&
-        !href.includes("rakispilacourisltd") &&
-        !href.includes("poruci.rs") &&
-        !href.includes("appliancesdirect.co.uk") &&
-        !href.includes("inelektronik.rs") &&
-        !href.includes("triomax.ba") &&
-        !href.includes("kingtrade.hr") &&
-        !href.includes("aghasarkissian.com") &&
-        !href.includes("winwin.rs") &&
-        !href.includes("boss.co.rs") &&
-        !href.includes("help.eset.com") &&
-        !href.includes("foxelectronics.rs") &&
-        !href.includes("digitalis.ba") &&
-        !href.includes("ananas.rs") &&
-        !href.includes("rowenta") &&
-        !href.includes("drtechno.rs") &&
-        !href.includes("svezakucu.rs") &&
-        !href.includes("fero-term.si") &&
-        !href.includes("bazzar.hr") &&
-        !href.includes("vivax.com") &&
-        !href.includes("internetshop.co.rs") &&
-        !href.includes("alles.hr") &&
-        !href.includes(".fi") &&
-        !href.includes("mimovrste.com") &&
-        !href.includes("kupujemprodajem.com") &&
-        !href.includes("gasiks.rs") &&
-        !href.includes("candy-home.com") &&
-        !href.includes("gasiks.rs") &&
-        !href.includes("gasiks.rs") &&
-        !href.includes("gasiks.rs") &&
-        !href.includes("ananas") &&
-        !href.includes("newegg.com") &&
-        !href.includes("rowenta") &&
-        !href.includes("central-ch.com") &&
-        !href.includes("tehnodepo.ba") &&
-        !href.includes("api.goglasi.com") &&
-        !href.includes("vodoterm.co.rs") &&
-        !href.includes("gigatron.rs") &&
-        !href.includes("spektar.rs") &&
-        !href.includes("spektar.rs") &&
-        !href.includes("prof.lv") &&
-        !href.includes("nabava.net") &&
-        !href.includes("attriumcacak.rs") &&
-        !href.includes("bigbang.hr") &&
-        !href.includes("dijaspora.shop") &&
-        !href.includes("soundstar.gr") &&
-        !href.includes("iskrabih.com") &&
-        !href.includes("eurotehnikamn.me") &&
-        !href.includes("fontana.rs") &&
-        !href.includes("euronics") &&
-        !href.includes("dateks.lv") &&
-        !href.includes("lobod.me") &&
-        !href.includes("digitec.ch") &&
-        !href.includes("tehnomedia.rs") &&
-        !href.includes("maxidom.rs") &&
-        !href.includes("lg.com") &&
-        !href.includes("protis.hr") &&
-        !href.includes("kodmitra.com") &&
-        !href.includes("elbraco.rs") &&
-        !href.includes("merkury.hr") &&
-        !href.includes("hdtelevizija.com") &&
-        !href.includes("acs-klime.rs") &&
-        !href.includes("frigo.hr") &&
-        !href.includes("tehnopromet.rs") &&
-        !href.includes("samsung.com") &&
-        !href.includes("nitom.rs") &&
-        !href.includes("kucniaparati.com") &&
-        !href.includes("bigboom.eu") &&
-        !href.includes("computers.rs") &&
-        !href.includes("centrometal.hr") &&
-        !href.includes("ananas.me") &&
-        !href.includes("protronic.hr") &&
-        !href.includes("bazzar") &&
-        !href.includes("icp-nis.co.rs") &&
-        !href.includes("enaa.com") &&
-        !href.includes("gembird.rs") &&
-        !href.includes("unicor.rs") &&
-        !href.includes("tv-it.com") &&
-        !href.includes("jakov.rs") &&
-        !href.includes("gsmarena.com") &&
-        !href.includes("digitrend.ba") &&
-        !href.includes("eklix.rs") &&
-        !href.includes("zoka.co.rs") &&
-        !href.includes("tehnikauka.rs") &&
-        !href.includes("blackdot.co.me") &&
-        !href.includes("digitalko.me") &&
-        !href.includes("exceed.rs") &&
-        !href.includes("tehnoplus.ba") &&
-        !href.includes("hisense.com") &&
-        !href.includes("topchoice.com.mt") &&
-        !href.includes("gstore.rs") &&
-        !href.includes("multicom.me") &&
-        !href.includes("marketserviszlatko.com") &&
-        !href.includes("loudshop.me") &&
-        !href.includes("sinclair-solutions.com") &&
-        !href.includes("manuall.co.uk") &&
-        !href.includes("forum.benchmark.rs") &&
-        !href.includes("betterlifeuae.com") &&
-        !href.includes("elektron.me") &&
-        !href.includes("halooglasi.com") &&
-        !href.includes("domoprema.rs") &&
-        !href.includes("vitapur") &&
-        !href.includes("tehnoplus.me") &&
-        !href.includes("www.bcgroup-online.com") &&
-        !href.includes("ekupi") &&
-        !href.includes("shop.miele.rs") &&
-        !href.includes("emix.ba") &&
-        !href.includes("keeptank.rs") &&
-        !href.includes("datika.me") &&
-        !href.includes("promobil.me") &&
-        !href.includes("amazon") &&
-        !href.includes("idealno.ba") &&
-        !href.includes("gsmpcshop.rs") &&
-        !href.includes("aspiratori.rs") &&
-        !href.includes("paluba.info") &&
-        !href.includes("mazor.co.me") &&
-        !href.includes("kondoras.rs") &&
-        !href.includes("eponuda") &&
-        !href.includes("goglasi") &&
-        !href.includes("tehnocentar") &&
-        !href.includes("uspon.rs") &&
-        !href.includes("manuals") &&
-        !href.includes("veli.store") &&
         !href.includes("bosch-home.rs") &&
-        !href.includes("svijetgrijanja.ba") &&
-        !href.includes("racunalo.com") &&
-        !href.includes("magnetik.rs") &&
-        !href.includes("magnetik.rs") &&
-        !href.includes("magnetik.rs") &&
-        !href.includes("omegashop.ba") &&
-        !href.includes("pc-gamer.me") &&
-        !href.includes("tehnoplanet.me") &&
-        !href.includes("megashop.ba") &&
-        !href.includes("tehnomanija.rs") &&
+        !href.includes("ekupi") &&
+        !href.includes("gsmarena.com") &&
+        !href.includes("ekupi.me") &&
+        !href.includes("bigbang.rs") &&
+        !href.includes("friz.hr") &&
+        !href.includes("eponuda.com") &&
+        !href.includes("voxelectronics.com") &&
+        !href.includes(".ba") &&
+        !href.includes(".ba") &&
+        !href.includes(".ba") &&
+        !href.includes(".ba") &&
+        !href.includes(".ba") &&
+        !href.includes(".ba") &&
+        !href.includes(".ba") &&
+        !href.includes("cini.rs") &&
+        !href.includes("kondoras.rs") &&
+        !href.includes(".lt") &&
+        !href.includes("prirucnici.hr") &&
+        !href.includes("tempo-tehnika.rs") &&
+        !href.includes("gasiks.rs") &&
+        !href.includes("kernel.me") &&
+        !href.includes("ananas") &&
+        !href.includes("centralno-grijanje-na-drva.blogspot.com") &&
+        !href.includes("shophisense.com") &&
+        !href.includes("kralj.hr") &&
+        !href.includes("goglasi.com") &&
+        !href.includes("elbraco.rs") &&
+        !href.includes("rowenta.co.rs") &&
+        !href.includes("datika.me") &&
+        !href.includes("klimacentar.com") &&
+        !href.includes("ebay.com") &&
+        !href.includes("foxelectronics.rs") &&
+        !href.includes("halooglasi.com") &&
         !href.includes("tehnoteka.rs") &&
-        !href.includes("technoshop.ba") &&
-        !href.includes("loren.co.rs") &&
-        !href.includes("zeusbl.com") &&
-        !href.includes("plocicekeramika.rs") &&
-        !href.includes("eltom.rs") &&
-        !href.includes("vitapur.rs") &&
-        !href.includes("eponuda.com") // ISKLJUČUJEMO VOX ELECTRONICS
+        !href.includes("amazon") &&
+        !href.includes("enaa.com") &&
+        !href.includes("api.goglasi.com") &&
+        !href.includes("klimescepanovic.com") &&
+        !href.includes("dimensions.com") &&
+        !href.includes("bosch-home") &&
+        !href.includes("fero-term.hr") &&
+        !href.includes("newegg.com") &&
+        !href.includes("manua") &&
+        !href.includes("lg.com") 
       ) {
         links.push(href);
       }
@@ -347,9 +140,8 @@ async function getGoogleLinks(queryText) {
 }
 
 async function fetchDescriptionFromLink(link) {
-  const url = `http://api.scraperapi.com?api_key=${SCRAPERAPI_KEY}&url=${encodeURIComponent(link)}`;
   try {
-    const res = await axios.get(url, { timeout: 30000 });
+    const res = await fetchWithRetry(link);
     const $ = cheerio.load(res.data);
     const keywords = [
       "kapacitet",
@@ -365,11 +157,11 @@ async function fetchDescriptionFromLink(link) {
       "brzina",
       "protok",
       "osvetljenje",
+      "veličina",
       "buka",
       "ugradnj",
       "veličina",
       "rezolucija"
-
     ];
 
     let results = [];
@@ -427,26 +219,242 @@ async function updateDescriptionInDB(id, description) {
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-(async () => {
-  const products = await fetchProductsWithoutDescription();
+// Funkcija za praćenje statistike API ključesva
+const apiKeyUsage = {
+  primary: 0,
+  backup1: 0,
+  backup2: 0
+};
 
-  for (const product of products) {
-    const fullName = `${product.naziv} ${product.subcategories || ""}`.trim();
-    console.log("🔍 Obrađujem:", fullName);
+// Modifikujemo axios funkciju da prati korišćenje različitih API ključeva
+const originalGet = axios.get;
+axios.get = function(url, config) {
+  // Pratimo koji API ključ se koristi
+  if (url.includes('api_key=' + PRIMARY_SCRAPERAPI_KEY)) {
+    apiKeyUsage.primary++;
+  } else if (url.includes('api_key=' + BACKUP_SCRAPERAPI_KEY1)) {
+    apiKeyUsage.backup1++;
+  } else if (url.includes('api_key=' + BACKUP_SCRAPERAPI_KEY2)) {
+    apiKeyUsage.backup2++;
+  }
+  
+  // Pozivamo originalnu funkciju sa istim argumentima
+  return originalGet.apply(this, arguments);
+};
 
-    const description = await fetchDescriptionFromWeb(product.naziv, product.subcategories || "");
-
-    if (description) {
-      console.log("📝 Deskripcija koja se upisuje:\n", description);
-      await updateDescriptionInDB(product.id, description);
-      console.log("✅ Deskripcija uneta.");
+// Funkcija za proveru statusa API ključeva
+async function checkApiKeyStatus() {
+  const testUrl = "https://www.google.com";
+  const results = [];
+  
+  console.log("🔄 Provera statusa API ključeva...");
+  
+  // Testiramo primarni ključ
+  try {
+    await axios.get(`http://api.scraperapi.com?api_key=${PRIMARY_SCRAPERAPI_KEY}&url=${encodeURIComponent(testUrl)}`, { timeout: 10000 });
+    results.push("✅ Primarni API ključ: Aktivan");
+  } catch (error) {
+    if (error.response && error.response.status === 403) {
+      results.push("❌ Primarni API ključ: Neaktivan (403 Forbidden)");
     } else {
-      await updateDescriptionInDB(product.id, "failed");
-      console.log("❌ Nema pronađene deskripcije. Upisano 'failed'.");
+      results.push(`⚠️ Primarni API ključ: Greška (${error.message})`);
+    }
+  }
+  
+  // Testiramo prvi rezervni ključ
+  try {
+    await axios.get(`http://api.scraperapi.com?api_key=${BACKUP_SCRAPERAPI_KEY1}&url=${encodeURIComponent(testUrl)}`, { timeout: 10000 });
+    results.push("✅ Prvi rezervni API ključ: Aktivan");
+  } catch (error) {
+    if (error.response && error.response.status === 403) {
+      results.push("❌ Prvi rezervni API ključ: Neaktivan (403 Forbidden)");
+    } else {
+      results.push(`⚠️ Prvi rezervni API ključ: Greška (${error.message})`);
+    }
+  }
+  
+  // Testiramo drugi rezervni ključ
+  try {
+    await axios.get(`http://api.scraperapi.com?api_key=${BACKUP_SCRAPERAPI_KEY2}&url=${encodeURIComponent(testUrl)}`, { timeout: 10000 });
+    results.push("✅ Drugi rezervni API ključ: Aktivan");
+  } catch (error) {
+    if (error.response && error.response.status === 403) {
+      results.push("❌ Drugi rezervni API ključ: Neaktivan (403 Forbidden)");
+    } else {
+      results.push(`⚠️ Drugi rezervni API ključ: Greška (${error.message})`);
+    }
+  }
+  
+  console.log("\n=== STATUS API KLJUČEVA ===");
+  results.forEach(result => console.log(result));
+  console.log("===========================\n");
+  
+  // Resetujemo brojače nakon provere
+  apiKeyUsage.primary = 0;
+  apiKeyUsage.backup1 = 0;
+  apiKeyUsage.backup2 = 0;
+  
+  return results.every(r => r.includes("Aktivan"));
+}
+
+// Funkcija za praćenje statistike
+async function logStatistics(success, fail) {
+  console.log("\n=== STATISTIKA ===");
+  console.log(`✅ Uspešno: ${success}`);
+  console.log(`❌ Neuspešno: ${fail}`);
+  console.log(`🔄 Ukupno obrađeno: ${success + fail}`);
+  console.log("\n=== KORIŠĆENJE API KLJUČEVA ===");
+  console.log(`🔑 Primarni ključ: ${apiKeyUsage.primary} zahteva`);
+  console.log(`🔑 Prvi rezervni ključ: ${apiKeyUsage.backup1} zahteva`);
+  console.log(`🔑 Drugi rezervni ključ: ${apiKeyUsage.backup2} zahteva`);
+  console.log("=================\n");
+}
+
+// Pomoćna funkcija za testiranje API ključa
+async function testApiKey(key, index) {
+  const testUrl = "https://www.google.com";
+  try {
+    await axios.get(`http://api.scraperapi.com?api_key=${key}&url=${encodeURIComponent(testUrl)}`, { timeout: 10000 });
+    return true; // Ključ je aktivan
+  } catch (error) {
+    if (error.response && error.response.status === 403) {
+      console.log(`❌ API ključ #${index + 1} je neaktivan (403 Forbidden)`);
+      return false;
+    }
+    // Za druge greške pretpostavljamo da ključ može raditi
+    console.log(`⚠️ API ključ #${index + 1}: Greška (${error.message}), ali pokušaćemo koristiti`);
+    return true;
+  }
+}
+
+// Modificirani fetchWithRetry koji koristi samo aktivne ključeve
+async function initApiKeyStatus() {
+  console.log("🔄 Inicijalizacija API ključeva...");
+  
+  // Testirajte sve ključeve
+  const keyStatuses = [
+    await testApiKey(PRIMARY_SCRAPERAPI_KEY, 0),
+    await testApiKey(BACKUP_SCRAPERAPI_KEY1, 1),
+    await testApiKey(BACKUP_SCRAPERAPI_KEY2, 2)
+  ];
+  
+  // Formiramo listu aktivnih ključeva
+  const activeKeys = [];
+  if (keyStatuses[0]) activeKeys.push(PRIMARY_SCRAPERAPI_KEY);
+  if (keyStatuses[1]) activeKeys.push(BACKUP_SCRAPERAPI_KEY1);
+  if (keyStatuses[2]) activeKeys.push(BACKUP_SCRAPERAPI_KEY2);
+  
+  console.log(`\n✅ Pronađeno ${activeKeys.length} aktivnih API ključeva od 3 ukupno`);
+  
+  return activeKeys;
+}
+
+// Glavna funkcija
+(async () => {
+  try {
+    // Inicijalizacija API ključeva i provera statusa
+    const activeKeys = await initApiKeyStatus();
+    
+    if (activeKeys.length === 0) {
+      console.log("❌ Nije pronađen nijedan aktivan API ključ! Prekidam proces...");
+      return;
+    }
+    
+    console.log(`🚀 Nastavljam rad sa ${activeKeys.length} aktivnih API ključeva...`);
+    
+    // Postavljamo funkciju za korišćenje aktivnih ključeva
+    // Modifikujemo fetchWithRetry funkciju da koristi samo aktivne ključeve
+    const originalFetchWithRetry = fetchWithRetry;
+    fetchWithRetry = async function(url, keyIndex = 0) {
+      if (keyIndex >= activeKeys.length) {
+        throw new Error("Svi dostupni API ključevi su iskorišćeni");
+      }
+      
+      const apiKey = activeKeys[keyIndex];
+      const scraperUrl = `http://api.scraperapi.com?api_key=${apiKey}&url=${encodeURIComponent(url)}`;
+      
+      try {
+        return await axios.get(scraperUrl, { timeout: 80000 });
+      } catch (error) {
+        if (error.response && error.response.status === 403) {
+          if (keyIndex < activeKeys.length - 1) {
+            console.log(`⚠️ API ključ vratio 403 Forbidden, pokušavam sa sledećim dostupnim ključem...`);
+            return fetchWithRetry(url, keyIndex + 1);
+          }
+        }
+        throw error;
+      }
+    };
+    
+    
+    const products = await fetchProductsWithoutDescription();
+    let successCount = 0;
+    let failCount = 0;
+
+    console.log(`🚀 Počinjem obradu za ${products.length} proizvoda...`);
+
+    for (const product of products) {
+      const fullName = `${product.naziv} ${product.subcategories || ""}`.trim();
+      console.log(`\n🔍 Obrađujem (${successCount + failCount + 1}/${products.length}): ${fullName}`);
+
+      try {
+        // Čuvamo prethodno stanje statistike
+        const prevPrimaryCount = apiKeyUsage.primary;
+        const prevBackup1Count = apiKeyUsage.backup1;
+        const prevBackup2Count = apiKeyUsage.backup2;
+
+        const description = await fetchDescriptionFromWeb(product.naziv, product.subcategories || "");
+
+        // Pokazujemo koji ključ je korišćen
+        if (apiKeyUsage.primary > prevPrimaryCount) {
+          console.log("🔑 Korišćen primarni API ključ");
+        } else if (apiKeyUsage.backup1 > prevBackup1Count) {
+          console.log("🔑 Korišćen prvi rezervni API ključ");
+        } else if (apiKeyUsage.backup2 > prevBackup2Count) {
+          console.log("🔑 Korišćen drugi rezervni API ključ");
+        }
+
+        if (description) {
+          console.log("📝 Deskripcija koja se upisuje:\n", description);
+          await updateDescriptionInDB(product.id, description);
+          console.log("✅ Deskripcija uneta.");
+          successCount++;
+        } else {
+          await updateDescriptionInDB(product.id, "nema");
+          console.log("❌ Nema pronađene deskripcije. Upisano 'nema'.");
+          failCount++;
+        }
+      } catch (error) {
+        console.error(`❌ Greška pri obradi proizvoda ${product.id}: ${error.message}`);
+        // U slučaju greške, označavamo proizvod kao neuspešan ali nastavljamo s ostalima
+        try {
+          await updateDescriptionInDB(product.id, "error: " + error.message.substring(0, 100));
+        } catch (dbError) {
+          console.error("❌ Greška prilikom upisa u bazu:", dbError.message);
+        }
+        failCount++;
+      }
+
+      // Periodično beležimo statistiku
+      if ((successCount + failCount) % 10 === 0) {
+        await logStatistics(successCount, failCount);
+      }
+
+      // Pauza između proizvoda
+      await delay(2000);
     }
 
-    await delay(2000);
+    // Konačna statistika na kraju
+    await logStatistics(successCount, failCount);
+    console.log("✅ Obrada završena!");
+  } catch (err) {
+    console.error("❌ Globalna greška:", err);
+  } finally {
+    try {
+      await db.end();
+      console.log("🔄 Konekcija sa bazom je zatvorena.");
+    } catch (err) {
+      console.error("❌ Greška pri zatvaranju konekcije:", err.message);
+    }
   }
-
-  await db.end();
 })();

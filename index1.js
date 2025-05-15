@@ -16,7 +16,7 @@ app.use(router);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(expressSession({
-    secret: "tajni_kljuc", // Zameni ovim sigurniji ključ
+    secret: "tajni_kljuc", // Zameni ovim sigurniji ključ 
     resave: false,
     saveUninitialized: false
 }));
@@ -27,8 +27,8 @@ app.use((req, res, next) => {
 
 const db = new pg.Client({
     user: "marko",
-    password: "BjgIlknTXDKS4VcASVI7CsDzarpsV27l",
-    host: "cvtripi4d50c73amk5gg-a.oregon-postgres.render.com",
+    password: "O95iBz6rttFi1PJDPZRcXuQIF50rn1Rh",
+    host: "d0j277ffte5s73c6kp70-a.oregon-postgres.render.com",
     port: 5432,
     database: "mazor",
     ssl: {
