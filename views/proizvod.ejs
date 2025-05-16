@@ -1146,7 +1146,7 @@ body {
         </div>
         
         <!-- Product Description Section moved here -->
-        <% if(proizvod.deskripcija) { %>
+        <% if(proizvod.deskripcija || proizvod.deskripcija !== 'nema' || proizvod.deskripcija != 'ostalo') { %>
             <div class="product-description">
                 <h3>Opis proizvoda</h3>
                 <div class="product-description-content">
