@@ -1144,17 +1144,20 @@ body {
         <div class="main-image">
             <img src="<%=proizvod.slka%>" alt="<%=proizvod.naziv%>">
         </div>
+        
+        <!-- Product Description Section moved here -->
+        <% if(proizvod.deskripcija) { %>
+            <div class="product-description">
+                <h3>Opis proizvoda</h3>
+                <div class="product-description-content">
+                    <%- proizvod.deskripcija
+                          .replace(/\\\\n/g, '<br>')
+                          .replace(/\\\\/g, '') %>
+                </div>
+            </div>
+            <% } %>
+                 
     </div>
-    
-    <!-- Product Description Section -->
-    <% if(proizvod.deskripcija) { %>
-    <div class="product-description">
-        <h3>Opis proizvoda</h3>
-        <div class="product-description-content">
-            <%- proizvod.deskripcija.replace(/\n/g, '<br>') %>
-        </div>
-    </div>
-    <% } %>
     
     <!-- Product Info -->
     <div class="product-info">
@@ -1164,7 +1167,7 @@ body {
             <div class="product-id">Šifra proizvoda: <%=proizvod.sifra%></div>
         </div>
         
-                    <div class="product-price-section">
+        <div class="product-price-section">
             <div class="product-price"><%=proizvod.cena_sapdv%>€</div>
         </div>
         
@@ -1175,20 +1178,19 @@ body {
         </div>
         
         <div class="product-actions">
-            
             <form action="/dodaj-u-korpu" method="POST" class="add-to-cart-btn">
                 <input type="hidden" name="id" value="<%= proizvod.id %>">
                 <input type="hidden" name="naziv" value="<%= proizvod.naziv %>">
                 <input type="hidden" name="cena" value="<%= proizvod.cena_sapdv %>">
                 <input type="hidden" name="slika" value="<%= proizvod.slka || '/images/placeholder.png' %>">
-            
+                
                 <button type="submit" class="add-to-cart-btn">
                     <i class="fas fa-cart-plus"></i> Dodaj u korpu
                 </button>
             </form>
-            
         </div>
         
+        <!-- Shipping Info Section moved here (where product description was) -->
         <div class="shipping-info">
             <h3>Informacije o dostavi</h3>
             <div class="shipping-options">
@@ -1204,6 +1206,8 @@ body {
         </div>
     </div>
 </div>
+
+
 
 <%-include('partials/footer.ejs')%>
 <!-- Footer za mobilne uređaje -->
