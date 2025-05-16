@@ -1145,8 +1145,7 @@ body {
             <img src="<%=proizvod.slka%>" alt="<%=proizvod.naziv%>">
         </div>
         
-        <!-- Product Description Section moved here -->
-        <% if(proizvod.deskripcija || proizvod.deskripcija !== 'nema' || proizvod.deskripcija != 'ostalo') { %>
+        <% if (proizvod.deskripcija !== 'nema' && proizvod.deskripcija !== 'ostalo') { %>
             <div class="product-description">
                 <h3>Opis proizvoda</h3>
                 <div class="product-description-content">
@@ -1155,8 +1154,7 @@ body {
                           .replace(/\\\\/g, '') %>
                 </div>
             </div>
-            <% } %>
-                 
+        <% } %>
     </div>
     
     <!-- Product Info -->
