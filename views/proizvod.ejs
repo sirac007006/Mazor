@@ -1146,6 +1146,16 @@ body {
         </div>
     </div>
     
+    <!-- Product Description Section -->
+    <% if(proizvod.deskripcija) { %>
+    <div class="product-description">
+        <h3>Opis proizvoda</h3>
+        <div class="product-description-content">
+            <%- proizvod.deskripcija.replace(/\n/g, '<br>') %>
+        </div>
+    </div>
+    <% } %>
+    
     <!-- Product Info -->
     <div class="product-info">
         <div class="product-header">
@@ -1179,16 +1189,6 @@ body {
             
         </div>
         
-        <!-- Product Description Section -->
-        <% if(proizvod.deskripcija) { %>
-        <div class="product-description">
-            <h3>Opis proizvoda</h3>
-            <div class="product-description-content">
-                <%= proizvod.deskripcija %>
-            </div>
-        </div>
-        <% } %>
-        
         <div class="shipping-info">
             <h3>Informacije o dostavi</h3>
             <div class="shipping-options">
@@ -1202,31 +1202,6 @@ body {
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- Full Description Tab Section -->
-<div class="product-description-box">
-    <div class="description-tabs">
-        <div class="tab active" data-tab="description">Opis proizvoda</div>
-        <div class="tab" data-tab="specifications">Specifikacije</div>
-        <div class="tab" data-tab="reviews">Recenzije</div>
-    </div>
-    
-    <div id="description-content" class="tab-content">
-        <% if(proizvod.deskripcija) { %>
-            <%= proizvod.deskripcija %>
-        <% } else { %>
-            <p>Trenutno nema detaljnog opisa za ovaj proizvod.</p>
-        <% } %>
-    </div>
-    
-    <div id="specifications-content" class="tab-content" style="display: none;">
-        <p>Specifikacije proizvoda će uskoro biti dostupne.</p>
-    </div>
-    
-    <div id="reviews-content" class="tab-content" style="display: none;">
-        <p>Trenutno nema recenzija za ovaj proizvod.</p>
     </div>
 </div>
 
