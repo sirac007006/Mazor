@@ -30,7 +30,7 @@ const db = new pg.Client({
     password: "O95iBz6rttFi1PJDPZRcXuQIF50rn1Rh",
     host: "d0j277ffte5s73c6kp70-a.oregon-postgres.render.com",
     port: 5432,
-    database: "mazor",
+    database: "mazor_ngl2",
     ssl: {
         rejectUnauthorized: false, // for most cloud DBs like Heroku/Render
       },
