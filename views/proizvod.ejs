@@ -1151,6 +1151,8 @@ body {
                 <div class="product-description-content">
                     <%- proizvod.deskripcija
                           .replace(/\\\\n/g, '<br>')
+                          .replace(/\\n/g, '<br>')
+                          .replace(/\n/g, '<br>')
                           .replace(/\\\\/g, '') %>
                 </div>
             </div>
