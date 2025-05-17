@@ -275,7 +275,7 @@ app.get("/search", async (req, res) => {
     let query = `
         SELECT * FROM proizvodiful_updated 
         WHERE LOWER(naziv) LIKE LOWER($1)
-        AND CAST(cena_sapdv AS NUMERIC) BETWEEN $2 AND $3
+        AND CAST(cena_sapdv AS NUMERIC) BETWEEN $2 AND $3 and cena_sapdv != '0'
     `;
 
     // Ako su selektovani brendovi
