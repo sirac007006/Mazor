@@ -1215,6 +1215,43 @@
     .product-price-info {
         margin-right: 40px;
     }
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    
+    /* Ensure product cards don't overflow */
+    .product-card {
+        width: 100%;
+        margin: 0;
+        min-height: 280px;
+    }
+    
+    /* Adjust padding on content areas */
+    .products-content {
+        padding: 0;
+    }
+    
+    /* Fix main content area */
+    .main-content {
+        padding: 0 10px;
+    }
+    
+    /* Make sure product images don't overflow */
+    .product-image img {
+        max-width: 90%;
+        max-height: 120px;
+    }
+    
+    /* Ensure each product takes exactly half the space minus gap */
+    .products-grid a {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
     @media (max-width: 768px) {
     .mobile-footer {
         margin-top: auto;
@@ -1271,6 +1308,26 @@
     
     .product-price {
         font-size: 16px;
+    }
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 5px;
+    }
+    
+    /* Make cards more compact */
+    .product-card {
+        min-height: 260px;
+        padding: 0;
+    }
+    
+    /* Reduce padding inside product info */
+    .product-info {
+        padding: 10px;
+    }
+    
+    /* Make sure the main container has minimal padding */
+    .main-content {
+        padding: 0 5px;
     }
 }
     </style>
