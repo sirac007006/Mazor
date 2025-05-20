@@ -87,7 +87,7 @@ function getCategory(category){
 }
 app.get("/", async(req, res) => {
     const { rows } = await db.query(
-        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' limit 14 offset 38"
+        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' limit 14 offset 38 and kolicina != '0'"
     );
     const masine = (await db.query(
         "SELECT * FROM proizvodiful_updated limit 14 offset 266"
@@ -126,7 +126,7 @@ app.post("/kontakt", async (req, res) => {
 });
 app.get("/svekategorije", async(req,res) =>{
     const proizvodi = (await db.query(
-        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' limit 6 offset 23"
+        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' limit 6 offset 23 and kolicina != '0'"
     )).rows;
     res.render("svekategorije.ejs", { proizvodi:proizvodi, session: req.session });
 })
@@ -134,10 +134,10 @@ app.get("/svekategorije/:category", async (req, res) => {
     var category = req.params.category;
     var bcategory = getCategory(category);
     const proizvodi = (await db.query(
-        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' limit 6 offset 23"
+        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' limit 6 offset 23 and kolicina != '0'"
     )).rows;
     var subcategories = (await db.query(
-        "SELECT * FROM subcategories WHERE category = $1", [category]
+        "SELECT * FROM subcategories WHERE category = $1 and kolicina != '0'", [category]
     )).rows;
 
     res.render("podkategorije1.ejs", {
@@ -161,7 +161,7 @@ app.get("/svekategorije/:category/:subcategory", async (req, res) => {
     let query = `
         SELECT * FROM proizvodiful_updated 
         WHERE subcategories = $1 and slka is not null and slka != 'Bez rasporeda po brendovima'
-        AND CAST(cena_sapdv AS NUMERIC) BETWEEN $2 AND $3
+        AND CAST(cena_sapdv AS NUMERIC) BETWEEN $2 AND $3 and kolicina != '0'
     `;
 
     // Ako su selektovani brendovi
@@ -180,7 +180,7 @@ app.get("/svekategorije/:category/:subcategory", async (req, res) => {
     const brendoviQuery = `
         SELECT DISTINCT brend 
         FROM proizvodiful_updated 
-        WHERE subcategories = $1 and slka is not null and slka != 'Bez rasporeda po brendovima'
+        WHERE subcategories = $1 and slka is not null and slka != 'Bez rasporeda po brendovima' and kolicina != '0'
     `;
     const brendovi = (await db.query(brendoviQuery, [subcategory])).rows.map(row => row.brend);
 
@@ -190,7 +190,7 @@ app.get("/svekategorije/:category/:subcategory", async (req, res) => {
             MIN(CAST(cena_sapdv AS NUMERIC)) as min_price, 
             MAX(CAST(cena_sapdv AS NUMERIC)) as max_price 
         FROM proizvodiful_updated 
-        WHERE subcategories = $1 and slka is not null and slka != 'Bez rasporeda po brendovima'
+        WHERE subcategories = $1 and slka is not null and slka != 'Bez rasporeda po brendovima' and kolicina != '0'
     `;
     const { rows: minMaxCene } = await db.query(minMaxQuery, [subcategory]);
     let { min_price, max_price } = minMaxCene[0];
@@ -221,7 +221,7 @@ app.get("/svekategorije/:category/:subcategory/:id", async (req, res) => {
 
     try {
         const { rows } = await db.query(
-            "SELECT * FROM proizvodiful_updated WHERE id = $1 AND subcategories = $2",
+            "SELECT * FROM proizvodiful_updated WHERE id = $1 AND subcategories = $2 and kolicina != '0'",
             [id, subcategory]
         );
 
@@ -244,7 +244,7 @@ app.get("/proizvodi/:id", async (req, res) => {
     if(id > 0 && id < proizvodi.length +1){
     try {
         const { rows } = await db.query(
-            "SELECT * FROM proizvodiful_updated WHERE id = $1",
+            "SELECT * FROM proizvodiful_updated WHERE id = $1 and kolicina != '0'",
             [id]
         );
 
@@ -275,7 +275,7 @@ app.get("/search", async (req, res) => {
     let query = `
         SELECT * FROM proizvodiful_updated 
         WHERE LOWER(naziv) LIKE LOWER($1)
-        AND CAST(cena_sapdv AS NUMERIC) BETWEEN $2 AND $3 and cena_sapdv != '0'
+        AND CAST(cena_sapdv AS NUMERIC) BETWEEN $2 AND $3 and cena_sapdv != '0' and kolicina != '0'
     `;
 
     // Ako su selektovani brendovi
@@ -294,7 +294,7 @@ app.get("/search", async (req, res) => {
     const brendoviQuery = `
         SELECT DISTINCT brend 
         FROM proizvodiful_updated 
-        WHERE LOWER(naziv) LIKE LOWER($1)
+        WHERE LOWER(naziv) LIKE LOWER($1) and kolicina != '0'
     `;
     const brendovi = (await db.query(brendoviQuery, [`%${searchQuery}%`])).rows.map(row => row.brend);
 
@@ -304,7 +304,7 @@ app.get("/search", async (req, res) => {
             MIN(CAST(cena_sapdv AS NUMERIC)) as min_price, 
             MAX(CAST(cena_sapdv AS NUMERIC)) as max_price 
         FROM proizvodiful_updated 
-        WHERE LOWER(naziv) LIKE LOWER($1)
+        WHERE LOWER(naziv) LIKE LOWER($1) and kolicina != '0'
     `;
     const { rows: minMaxCene } = await db.query(minMaxQuery, [`%${searchQuery}%`]);
     let { min_price, max_price } = minMaxCene[0];
