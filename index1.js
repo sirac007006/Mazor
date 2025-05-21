@@ -87,11 +87,11 @@ function getCategory(category){
 }
 app.get("/", async(req, res) => {
     const { rows } = await db.query(
-        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' or subcategories = 'Električni šporeti' AND kolicina != '0' LIMIT 14 "
+        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' or subcategories = 'Električni šporeti' AND kolicina != '0' LIMIT 14"
     );
     
     const masine = (await db.query(
-        "SELECT * FROM proizvodiful_updated where kolicina != '0' limit 14 offset 266"
+        "SELECT * FROM proizvodiful_updated where kolicina != '0' limit 14 offset 6"
     )).rows;
     const televizori = rows;
     res.render("index.ejs", {
