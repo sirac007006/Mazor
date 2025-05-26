@@ -138,7 +138,7 @@ app.get("/svekategorije/:category", async (req, res) => {
         "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' and kolicina != '0' limit 6 offset 23"
     )).rows;
     var subcategories = (await db.query(
-        "SELECT * FROM subcategories WHERE category = $1 and kolicina != '0'", [category]
+        "SELECT * FROM subcategories WHERE category = $1", [category]
     )).rows;
 
     res.render("podkategorije1.ejs", {
