@@ -127,7 +127,7 @@ app.post("/kontakt", async (req, res) => {
 });
 app.get("/svekategorije", async(req,res) =>{
     const proizvodi = (await db.query(
-        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' and kolicina != '0' limit 6 offset 23"
+        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' or subcategories = 'Električni šporeti' AND kolicina != '0' LIMIT 14"
     )).rows;
     res.render("svekategorije.ejs", { proizvodi:proizvodi, session: req.session });
 })
@@ -135,7 +135,7 @@ app.get("/svekategorije/:category", async (req, res) => {
     var category = req.params.category;
     var bcategory = getCategory(category);
     const proizvodi = (await db.query(
-        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' and kolicina != '0' limit 6 offset 23"
+        "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' or subcategories = 'Električni šporeti' AND kolicina != '0' LIMIT 14"
     )).rows;
     var subcategories = (await db.query(
         "SELECT * FROM subcategories WHERE category = $1", [category]
