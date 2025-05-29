@@ -47,7 +47,7 @@ const transporter = nodemailer.createTransport({
 db.connect();
 function authMiddleware(req, res, next) {
     if (!req.session.user) {
-        return res.redirect("/login");
+        return res.redirect("/prijava");
     }
     next();
 }
@@ -610,6 +610,9 @@ app.post("/ukloni-iz-korpe", (req, res) => {
 
 
 app.get('/kupovina', async(req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/prijava?redirect=kupovina");
+    }
     const korpa = req.session.korpa || [];
     let korisnik = await db.query("Select * from users where email = $1", [req.session.user[1]])
     let ukupno = 0;
