@@ -4,7 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%=proizvod.naziv%></title>
+    <link rel="icon" href="favicon.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title><%= proizvod.naziv %> – Mazor</title>
+
+  <!-- Meta opis i ključne reči -->
+  <meta name="description" content="<%= proizvod.deskripcija %> Dostupan za <%= proizvod.cena_sapdv %>€." />
+  <meta name="keywords" content="<%= proizvod.naziv %>, <%= proizvod.subcategories %>, kupi <%= proizvod.naziv %>" />
+  <link rel="canonical" href="https://mazorshop.me/proizvodi/<%= proizvod.id %>" />
+
+  <!-- Open Graph (Facebook, Instagram, Viber...) -->
+  <meta property="og:title" content="<%= proizvod.naziv %>" />
+  <meta property="og:description" content="<%= proizvod.deskripcija %> – Cena: <%= proizvod.cena_sapdv %>€" />
+  <meta property="og:image" content="https://mazorshop.me/<%= proizvod.slika %>" />
+  <meta property="og:url" content="https://mazorshop.me/proizvodi/<%= proizvod.id%>" />
+  <meta property="og:type" content="product" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="<%= proizvod.naziv %>" />
+  <meta name="twitter:description" content="<%= proizvod.deskripcija %>" />
+  <meta name="twitter:image" content="https://mazorshop.me/<%= proizvod.slika %>" />
+
+  <!-- Schema.org struktura (SEO rich results) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "<%= proizvod.naziv %>",
+    "image": ["https://mazorshop.me/<%= proizvod.slika %>"],
+    "description": "<%= proizvod.deskripcija %>",
+    "sku": "<%= proizvod.sifra %>",
+    "category": "<%= proizvod.subcategories %>",
+    "offers": {
+      "@type": "Offer",
+      "url": "https://mazorshop.me/proizvodi/<%= proizvod.id %>",
+      "priceCurrency": "EUR",
+      "price": "<%= proizvod.cena_sapdv %>",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+  </script>
     <style>
         * {
     margin: 0;
@@ -1145,7 +1185,7 @@ body {
             <img src="<%=proizvod.slka%>" alt="<%=proizvod.naziv%>">
         </div>
         
-        <% if (proizvod.deskripcija !== 'nema' && proizvod.deskripcija !== 'ostalo') { %>
+        <% if (proizvod.deskripcija !== 'nema' && proizvod.deskripcija !== 'ostalo' && proizvod.deskripcija !== 'fullfailed') { %>
             <div class="product-description">
                 <h3>Opis proizvoda</h3>
                 <div class="product-description-content">
