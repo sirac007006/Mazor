@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import expressSession from "express-session";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import "dotenv/config";
 
 const app = express();
 const port = 3000;
