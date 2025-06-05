@@ -16,9 +16,9 @@ app.use(router);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(expressSession({
-    secret: "tajni_kljuc", // Zameni ovim sigurniji ključ 
-    resave: false,
-    saveUninitialized: false
+    secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
 }));
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
@@ -26,21 +26,19 @@ app.use((req, res, next) => {
 });
 
 const db = new pg.Client({
-    user: "marko",
-    password: "O95iBz6rttFi1PJDPZRcXuQIF50rn1Rh",
-    host: "d0j277ffte5s73c6kp70-a.oregon-postgres.render.com",
-    port: 5432,
-    database: "mazor_ngl2",
-    ssl: {
-        rejectUnauthorized: false, // for most cloud DBs like Heroku/Render
-      },
+    user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
+  ssl: { rejectUnauthorized: false },
 })
 const transporter = nodemailer.createTransport({
     service: 'gmail',
-    auth: {
-      user: 'ivanovicmicko4@gmail.com',
-      pass: 'rijp cahz cinh yzeg'
-    }
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
   });
   
 
