@@ -674,6 +674,7 @@ app.get('/kupovina', async(req, res) => {
 // Updated route with fixed ID generation
 
 // Fix for the /kupovina POST route
+// Fix for the /kupovina POST route
 app.post("/kupovina", async (req, res) => {
     try {
         // Check if user is logged in
@@ -745,6 +746,67 @@ app.post("/kupovina", async (req, res) => {
         );
         
         // DO NOT attempt to insert into porudzbine_stavke - we're storing everything in the sadrzaj JSON field
+        
+        // NOVO: Pošalji email notifikaciju
+        try {
+            // Formatiramo sadržaj korpe za email
+            let proizvodiHtml = '';
+            korpa.forEach(item => {
+                proizvodiHtml += `
+                    <tr>
+                        <td>${item.naziv}</td>
+                        <td>${item.kolicina}</td>
+                        <td>${item.cena} €</td>
+                        <td>${(item.cena * item.kolicina).toFixed(2)} €</td>
+                    </tr>
+                `;
+            });
+
+            const emailHtml = `
+                <h2>Nova narudžbina - #${id}</h2>
+                <p><strong>Datum:</strong> ${datum.toLocaleString('sr-RS')}</p>
+                <p><strong>Kupac:</strong> ${ime} ${prezime}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Telefon:</strong> ${telefon}</p>
+                <p><strong>Adresa:</strong> ${adresa}</p>
+                ${napomena ? `<p><strong>Napomena:</strong> ${napomena}</p>` : ''}
+                
+                <h3>Naručeni proizvodi:</h3>
+                <table border="1" style="border-collapse: collapse; width: 100%;">
+                    <thead>
+                        <tr style="background-color: #f0f0f0;">
+                            <th style="padding: 8px;">Proizvod</th>
+                            <th style="padding: 8px;">Količina</th>
+                            <th style="padding: 8px;">Cena</th>
+                            <th style="padding: 8px;">Ukupno</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${proizvodiHtml}
+                        <tr style="font-weight: bold; background-color: #f9f9f9;">
+                            <td colspan="3" style="padding: 8px;">Dostava:</td>
+                            <td style="padding: 8px;">5.00 €</td>
+                        </tr>
+                        <tr style="font-weight: bold; background-color: #e0e0e0;">
+                            <td colspan="3" style="padding: 8px;">UKUPNO:</td>
+                            <td style="padding: 8px;">${iznos.toFixed(2)} €</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+
+            await transporter.sendMail({
+                from: '"Mazor Shop" <ivanovicmicko4@gmail.com>',
+                to: 'mazor@t-com.me',
+                subject: `Nova narudžbina #${id} - ${ime} ${prezime}`,
+                html: emailHtml
+            });
+
+            console.log('Email notifikacija uspešno poslana za narudžbinu #' + id);
+        } catch (emailError) {
+            console.error('Greška pri slanju email notifikacije:', emailError);
+            // Ne prekidamo proces čak i ako email ne može da se pošalje
+        }
         
         // Clear cart after successful order
         req.session.korpa = [];
