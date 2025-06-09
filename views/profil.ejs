@@ -1204,6 +1204,18 @@
 </div>
 
 <script>
+    let date = new Date();
+    let year = date.getFullYear();
+    const footerYear = document.querySelector(".footer-bottom p");
+    const mobileFooterYear = document.querySelector(".mobile-copyright");
+    
+    if (footerYear) {
+        footerYear.textContent = `© ${year} WebKutak`;
+    }
+    
+    if (mobileFooterYear) {
+        mobileFooterYear.textContent = `© ${year} WebKutak`;
+    }
     document.addEventListener('DOMContentLoaded', function() {
         // View order details
         const viewButtons = document.querySelectorAll('.view-btn');
@@ -1360,13 +1372,6 @@ if (urlParams.get('success') === 'true') {
             });
         });
         
-        // Ažuriranje godine u footeru
-        const currentYear = new Date().getFullYear();
-        const footerYearElements = document.querySelectorAll('.footer-bottom p, .mobile-copyright');
-        
-        footerYearElements.forEach(element => {
-            element.textContent = `© ${currentYear} Marko Ivanović`;
-        });
     });
 </script>
 </body>

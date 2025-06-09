@@ -1253,6 +1253,18 @@ body {
 <!-- Footer za mobilne uređaje -->
 
 <script>
+    let date = new Date();
+    let year = date.getFullYear();
+    const footerYear = document.querySelector(".footer-bottom p");
+    const mobileFooterYear = document.querySelector(".mobile-copyright");
+    
+    if (footerYear) {
+        footerYear.textContent = `© ${year} WebKutak`;
+    }
+    
+    if (mobileFooterYear) {
+        mobileFooterYear.textContent = `© ${year} WebKutak`;
+    }
    // Fixed Mobile Navigation JavaScript
         document.addEventListener('DOMContentLoaded', function() {
             // Hamburger menu functionality
@@ -1436,18 +1448,6 @@ body {
             });
         }
         
-        // Update year in footer
-        const currentYear = new Date().getFullYear();
-        const footerYear = document.querySelector('.footer-bottom p');
-        const mobileFooterYear = document.querySelector('.mobile-copyright');
-        
-        if (footerYear) {
-            footerYear.textContent = `© ${currentYear} Marko Ivanović`;
-        }
-        
-        if (mobileFooterYear) {
-            mobileFooterYear.textContent = `© ${currentYear} Marko Ivanović`;
-        }
     });
 </script>
 </body>

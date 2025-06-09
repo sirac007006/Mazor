@@ -970,6 +970,18 @@
     <!-- Footer -->
     <%-include('partials/footer.ejs')%>
     <script>
+        let date = new Date();
+    let year = date.getFullYear();
+    const footerYear = document.querySelector(".footer-bottom p");
+    const mobileFooterYear = document.querySelector(".mobile-copyright");
+    
+    if (footerYear) {
+        footerYear.textContent = `© ${year} WebKutak`;
+    }
+    
+    if (mobileFooterYear) {
+        mobileFooterYear.textContent = `© ${year} WebKutak`;
+    }
         function alertBtn(){
             alert("Ako mejl postoji, poslat je link za reset");
         }

@@ -1386,6 +1386,18 @@
 </div>
 <%-include('partials/footer.ejs')%>
 <script>
+    let date = new Date();
+    let year = date.getFullYear();
+    const footerYear = document.querySelector(".footer-bottom p");
+    const mobileFooterYear = document.querySelector(".mobile-copyright");
+    
+    if (footerYear) {
+        footerYear.textContent = `© ${year} WebKutak`;
+    }
+    
+    if (mobileFooterYear) {
+        mobileFooterYear.textContent = `© ${year} WebKutak`;
+    }
     document.querySelector(".apply-filters").addEventListener("click", () => {
     const brands = Array.from(document.querySelectorAll("input[name='brand']:checked")).map(cb => cb.value);
     const min = document.getElementById("minPriceRange").value;
@@ -1497,20 +1509,6 @@
              closeMenuFunc();
          });
      });
- 
-     // Ažuriranje godine u footeru
-     let date = new Date();
-     let year = date.getFullYear();
-     const footerYear = document.querySelector(".footer-bottom p");
-     const mobileFooterYear = document.querySelector(".mobile-copyright");
- 
-     if (footerYear) {
-         footerYear.textContent = `© ${year} Marko Ivanović`;
-     }
- 
-     if (mobileFooterYear) {
-         mobileFooterYear.textContent = `© ${year} Marko Ivanović`;
-     }
  
      // Add to cart buttons
      const addToCartButtons = document.querySelectorAll('.add-to-cart');

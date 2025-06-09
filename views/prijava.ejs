@@ -1003,6 +1003,18 @@ body {
 
     <%-include('partials/footer.ejs')%>
     <script>
+        let date = new Date();
+    let year = date.getFullYear();
+    const footerYear = document.querySelector(".footer-bottom p");
+    const mobileFooterYear = document.querySelector(".mobile-copyright");
+    
+    if (footerYear) {
+        footerYear.textContent = `© ${year} WebKutak`;
+    }
+    
+    if (mobileFooterYear) {
+        mobileFooterYear.textContent = `© ${year} WebKutak`;
+    }
         function getUrlParameter(name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -1172,13 +1184,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Ažuriranje godine u footeru
-    const currentYear = new Date().getFullYear();
-    const footerYearElements = document.querySelectorAll('.footer-bottom p, .mobile-copyright');
-    
-    footerYearElements.forEach(element => {
-        element.textContent = `© ${currentYear} Marko Ivanović`;
-    });
 });
     </script>
 </body>

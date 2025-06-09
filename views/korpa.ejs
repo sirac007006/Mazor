@@ -1257,6 +1257,18 @@
     
     <%-include('partials/footer.ejs')%>
         <script>
+            let date = new Date();
+    let year = date.getFullYear();
+    const footerYear = document.querySelector(".footer-bottom p");
+    const mobileFooterYear = document.querySelector(".mobile-copyright");
+    
+    if (footerYear) {
+        footerYear.textContent = `© ${year} WebKutak`;
+    }
+    
+    if (mobileFooterYear) {
+        mobileFooterYear.textContent = `© ${year} WebKutak`;
+    }
             // Fixed Mobile Navigation JavaScript
             document.addEventListener('DOMContentLoaded', function() {
                 // Hamburger menu functionality

@@ -1124,6 +1124,18 @@ body {
     <%-include('partials/footer.ejs')%>
    
     <script>
+        let date = new Date();
+    let year = date.getFullYear();
+    const footerYear = document.querySelector(".footer-bottom p");
+    const mobileFooterYear = document.querySelector(".mobile-copyright");
+    
+    if (footerYear) {
+        footerYear.textContent = `© ${year} WebKutak`;
+    }
+    
+    if (mobileFooterYear) {
+        mobileFooterYear.textContent = `© ${year} WebKutak`;
+    }
         // Fixed Mobile Navigation JavaScript
         document.addEventListener('DOMContentLoaded', function() {
             // Funkcionalnost za prikazivanje/sakrivanje lozinke
@@ -1381,13 +1393,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    
-    const currentYear = new Date().getFullYear();
-    const footerYearElements = document.querySelectorAll('.footer-bottom p, .mobile-copyright');
-    
-    footerYearElements.forEach(element => {
-        element.textContent = `© ${currentYear} Marko Ivanović`;
-    });
 });
     </script>
 </body>
