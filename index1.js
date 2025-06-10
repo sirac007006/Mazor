@@ -709,9 +709,6 @@ app.post("/kupovina", async (req, res) => {
             iznos += parseFloat(item.cena) * item.kolicina;
         });
         
-        // Add shipping cost (5 euros)
-        iznos += 5;
-        
         // Get new order ID - simplified approach
         let id = 1; // Default value if table is empty
         
@@ -783,10 +780,6 @@ app.post("/kupovina", async (req, res) => {
                     </thead>
                     <tbody>
                         ${proizvodiHtml}
-                        <tr style="font-weight: bold; background-color: #f9f9f9;">
-                            <td colspan="3" style="padding: 8px;">Dostava:</td>
-                            <td style="padding: 8px;">5.00 €</td>
-                        </tr>
                         <tr style="font-weight: bold; background-color: #e0e0e0;">
                             <td colspan="3" style="padding: 8px;">UKUPNO:</td>
                             <td style="padding: 8px;">${iznos.toFixed(2)} €</td>

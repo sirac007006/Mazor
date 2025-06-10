@@ -1217,28 +1217,20 @@
             <h2 class="summary-title">Pregled narudžbe</h2>
     
             <% 
-                let podzbir = 0;
-                korpa.forEach(item => {
-                    podzbir += item.kolicina * item.cena;
-                });
-                let dostava = podzbir >= 500 ? 0 : 5;
-                let ukupno = podzbir + dostava;
-            %>
-            
-            <div class="summary-item">
-                <span>Podzbir:</span>
-                <span><%= podzbir.toFixed(2) %> €</span>
-            </div>
-            
-            <div class="summary-item">
-                <span>Dostava:</span>
-                <span><%= dostava === 0 ? 'Besplatno' : dostava.toFixed(2) + ' €' %></span>
-            </div>
-            
-            <div class="summary-total">
-                <span>Ukupno:</span>
-                <span><%= ukupno.toFixed(2) %> €</span>
-            </div>
+    let ukupno = 0;
+    korpa.forEach(item => {
+        ukupno += item.kolicina * item.cena;
+    });
+%>
+
+<div class="summary-total">
+    <span>Ukupno:</span>
+    <span><%= ukupno.toFixed(2) %> €</span>
+</div>
+
+<p style="font-size: 12px; color: #666; margin-top: 10px; font-style: italic;">
+    *Dostava nije uračunata u cijenu
+</p>
             
             <form action="/kupovina" method="GET">
                 <button class="checkout-btn">Završi kupovinu</button>
@@ -1372,47 +1364,32 @@
                 const emptyCart = document.querySelector('.cart-empty');
                 const cartSummary = document.querySelector('.cart-summary');
                 
-                // Update cart total
                 function updateCartTotal() {
-                    const itemTotals = document.querySelectorAll('.item-total');
-                    let subtotal = 0;
-                    
-                    itemTotals.forEach(itemTotal => {
-                        // Extract the numeric value from the price string
-                        const priceText = itemTotal.textContent;
-                        const price = parseFloat(priceText.replace('€', '').replace(',', '.').trim());
-                        subtotal += price;
-                    });
-                    
-                    // Update subtotal in the summary
-                    const subtotalElement = document.querySelector('.summary-item:first-child span:last-child');
-                    subtotalElement.textContent = subtotal.toFixed(2).replace('.', ',') + ' €';
-                    
-                    // Calculate delivery cost (flat rate)
-                    const deliveryCost = 5;
-                    
-                    // Calculate discount (if any)
-                    const discountElement = document.querySelector('.summary-item:nth-child(3) span:last-child');
-                    const discountText = discountElement.textContent;
-                    const discount = parseFloat(discountText.replace('€', '').replace(',', '.').replace('-', '').trim());
-                    
-                    // Update total in the summary
-                    const totalElement = document.querySelector('.summary-total span:last-child');
-                    const total = subtotal + deliveryCost - discount;
-                    totalElement.textContent = total.toFixed(2).replace('.', ',') + ' €';
-                    
-                    // Show/hide empty cart message
-                    const cartItemElements = cartItems.querySelectorAll('.cart-item');
-                    if (cartItemElements.length === 0) {
-                        cartItems.style.display = 'none';
-                        cartSummary.style.display = 'none';
-                        emptyCart.style.display = 'block';
-                    } else {
-                        cartItems.style.display = 'block';
-                        cartSummary.style.display = 'block';
-                        emptyCart.style.display = 'none';
-                    }
-                }
+    const itemTotals = document.querySelectorAll('.item-total');
+    let total = 0;
+    
+    itemTotals.forEach(itemTotal => {
+        const priceText = itemTotal.textContent;
+        const price = parseFloat(priceText.replace('€', '').replace(',', '.').trim());
+        total += price;
+    });
+    
+    // Update total in the summary
+    const totalElement = document.querySelector('.summary-total span:last-child');
+    totalElement.textContent = total.toFixed(2).replace('.', ',') + ' €';
+    
+    // Show/hide empty cart message
+    const cartItemElements = cartItems.querySelectorAll('.cart-item');
+    if (cartItemElements.length === 0) {
+        cartItems.style.display = 'none';
+        cartSummary.style.display = 'none';
+        emptyCart.style.display = 'block';
+    } else {
+        cartItems.style.display = 'block';
+        cartSummary.style.display = 'block';
+        emptyCart.style.display = 'none';
+    }
+}
                 
                 // Update item subtotal based on quantity
                 function updateItemTotal(input) {

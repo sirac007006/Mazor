@@ -1014,7 +1014,16 @@
         .continue-btn:hover {
             background-color: #0a3b77;
         }
+        .delivery-note {
+    margin-top: 15px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
 
+.delivery-note small {
+    font-size: 12px;
+}
         /* Responsiveness */
         @media (max-width: 768px) {
             .telefon{
@@ -1359,17 +1368,8 @@
                         <span class="price-label">Ukupno</span>
                         <span class="price-value"><%= ukupno.toFixed(2) %> €</span>
                     </div>
-                    <div class="price-row">
-                        <span class="price-label">Dostava</span>
-                        <span class="price-value">5.00 €</span>
-                    </div>
-                    <div class="price-row">
-                        <span class="price-label">Ukupno za plaćanje</span>
-                        <span class="price-value total-price"><%= (ukupno + 5).toFixed(2) %> €</span>
-                    </div>
-                    <div class="price-row">
-                        <span class="price-label">Vrijeme isporuke</span>
-                        <span class="price-value">3 do 10 radnih dana</span>
+                    <div class="delivery-note">
+                        <small>*Dostava nije uračunata u cijenu</small>
                     </div>
                 </div>
             </div>
@@ -1694,13 +1694,6 @@
                     });
                 }
                 
-                // Ažuriranje godine u footeru
-                const currentYear = new Date().getFullYear();
-                const footerYearElements = document.querySelectorAll('.footer-bottom p, .mobile-copyright');
-                
-                footerYearElements.forEach(element => {
-                    element.textContent = `© ${currentYear} Marko Ivanović`;
-                });
             });
         </script>
         </body>
