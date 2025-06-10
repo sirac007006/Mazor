@@ -790,10 +790,11 @@ app.post("/kupovina", async (req, res) => {
 
             await transporter.sendMail({
                 from: '"Mazor Shop" <ivanovicmicko4@gmail.com>',
-                to: 'mazor@t-com.me',
+                to: ['mazor@t-com.me', 'radnjamazor@gmail.com'],
                 subject: `Nova narudžbina #${id} - ${ime} ${prezime}`,
                 html: emailHtml
             });
+            
 
             console.log('Email notifikacija uspešno poslana za narudžbinu #' + id);
         } catch (emailError) {
