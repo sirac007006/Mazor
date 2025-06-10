@@ -1265,19 +1265,7 @@ body {
                     closeMenuFunc();
                 });
             });
-// Ažuriranje godine u footeru
-let date = new Date();
-let year = date.getFullYear();
-const footerYear = document.querySelector(".footer-bottom p");
-const mobileFooterYear = document.querySelector(".mobile-copyright");
 
-if (footerYear) {
-    footerYear.textContent = `© ${year} Marko Ivanović`;
-}
-
-if (mobileFooterYear) {
-    mobileFooterYear.textContent = `© ${year} Marko Ivanović`;
-}
 
 // Wishlist buttons
 const wishlistButtons = document.querySelectorAll('.wishlist-button');
