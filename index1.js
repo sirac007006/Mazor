@@ -102,47 +102,7 @@ app.get("/", async(req, res) => {
 app.get("/kontakt", async(req,res) =>{
     res.render("kontakt.ejs", { session: req.session });
 })
-app.get('/sitemap.xml', async (req, res) => {
-    try {
-      const result = await db.query(`
-        SELECT id, naziv, updated_at
-        FROM proizvodiful_updated
-      `);
-  
-      const proizvodi = result.rows;
-  
-      const baseUrl = 'https://mazorshop.me';
-  
-      let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-      xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-  
-      // Početna stranica
-      xml += `  <url>\n`;
-      xml += `    <loc>${baseUrl}/</loc>\n`;
-      xml += `    <changefreq>weekly</changefreq>\n`;
-      xml += `    <priority>1.0</priority>\n`;
-      xml += `  </url>\n`;
-  
-      // Stranice sa proizvodima
-      proizvodi.forEach(p => {
-        const date = new Date(p.updated_at).toISOString();
-        xml += `  <url>\n`;
-        xml += `    <loc>${baseUrl}/proizvod/${p.slug}</loc>\n`;
-        xml += `    <lastmod>${date}</lastmod>\n`;
-        xml += `    <changefreq>weekly</changefreq>\n`;
-        xml += `    <priority>0.9</priority>\n`;
-        xml += `  </url>\n`;
-      });
-  
-      xml += `</urlset>`;
-  
-      res.header('Content-Type', 'application/xml');
-      res.send(xml);
-    } catch (err) {
-      console.error('Greška pri generisanju sitemap-a:', err);
-      res.status(500).send('Greška pri generisanju sitemap-a');
-    }
-  });
+
   
 app.post("/kontakt", async (req, res) => {
     try {
