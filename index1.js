@@ -343,7 +343,7 @@ app.post("/prijava", async (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
     try {
-        let user = (await db.query("SELECT * FROM users WHERE email = $1", [email])).rows[0];
+        let user = (await db.query("SELECT * FROM korisnici WHERE email = $1", [email])).rows[0];
         if (!user) {
             // Dodajemo parametar greške u URL
             return res.redirect("/prijava?error=invalid_credentials");
@@ -375,13 +375,13 @@ app.get("/registracija", (req, res) => {
     res.render("registracija.ejs", { session: req.session, error: req.query.error });
 });
 app.post("/registracija", async (req, res) => {
-    let id = ((await db.query("SELECT * FROM users")).rows).length;
+    let id = ((await db.query("SELECT * FROM korisnici")).rows).length;
     let ime = req.body.ime;
     let prezime = req.body.prezime;
     let email = req.body.email;
     let lozinka = req.body.lozinka;
     let telefon = req.body.telefon;
-    let dbemail = (await db.query("SELECT lozinka from users where email = $1", [email])).rows[0];
+    let dbemail = (await db.query("SELECT lozinka from korisnici where email = $1", [email])).rows[0];
     if (dbemail) {
         return res.redirect("/registracija?error=postoji");
     }
@@ -396,7 +396,7 @@ app.post("/registracija", async (req, res) => {
             let password = hash;
 
             await db.query(
-                "INSERT INTO users(id, ime, prezime, email, lozinka, telefon) VALUES ($1, $2, $3, $4, $5, $6)",
+                "INSERT INTO korisnici(id, ime, prezime, email, lozinka, telefon) VALUES ($1, $2, $3, $4, $5, $6)",
                 [id + 1, ime, prezime, email, password, telefon]
             );
 
@@ -412,7 +412,7 @@ app.post("/zaboravljenalozinka", async (req, res) => {
 
     const { email } = req.body;
   
-    const userRes = await db.query("SELECT id FROM users WHERE email = $1", [email]);
+    const userRes = await db.query("SELECT id FROM korisnici WHERE email = $1", [email]);
     if (userRes.rowCount === 0) {
       console.log("Sve top")
     }
@@ -462,7 +462,7 @@ app.post("/reset-lozinka", async (req, res) => {
     const userId = tokenRes.rows[0].user_id;
     const hashed = await bcrypt.hash(password, 10);
   
-    await db.query("UPDATE users SET lozinka = $1 WHERE id = $2", [hashed, userId]);
+    await db.query("UPDATE korisnici SET lozinka = $1 WHERE id = $2", [hashed, userId]);
     await db.query("DELETE FROM password_resets WHERE token = $1", [token]);
   
     res.send("Lozinka uspešno promenjena.");
@@ -470,7 +470,7 @@ app.post("/reset-lozinka", async (req, res) => {
   app.get("/profil", authMiddleware, async(req, res) => {
     try {
         // Dohvati podatke korisnika
-        let korisnik = (await db.query("SELECT * FROM users WHERE email = $1", [req.session.user.email])).rows[0];
+        let korisnik = (await db.query("SELECT * FROM korisnici WHERE email = $1", [req.session.user.email])).rows[0];
         
         // Dohvati narudžbine korisnika, sortirane po datumu (najnovije prvo)
         const porudzbineResult = await db.query(
@@ -499,7 +499,7 @@ app.post("/profil", authMiddleware, async (req, res) => {
         const email = req.session.user.email;
 
         await db.query(
-            `UPDATE users 
+            `UPDATE korisnici 
              SET telefon = $1, adresa = $2, grad = $3, pbroj = $4 
              WHERE email = $5`,
             [telefon, adresa, grad, postanski_broj, email]
@@ -515,7 +515,7 @@ app.post("/profil", authMiddleware, async (req, res) => {
 app.post("/otkazi-narudzbinu", authMiddleware, async (req, res) => {
     try {
         const { porudzbina_id } = req.body;
-        const korisnik = (await db.query("SELECT id FROM users WHERE email = $1", [req.session.user.email])).rows[0];
+        const korisnik = (await db.query("SELECT id FROM korisnici WHERE email = $1", [req.session.user.email])).rows[0];
         
         // Proveri da li je narudžbina od ovog korisnika
         const porudzbina = (await db.query(
@@ -615,7 +615,7 @@ app.get('/kupovina', async(req, res) => {
         return res.redirect("/prijava?redirect=kupovina");
     }
     const korpa = req.session.korpa || [];
-    let korisnik = await db.query("Select * from users where email = $1", [req.session.user[1]])
+    let korisnik = await db.query("Select * from korisnici where email = $1", [req.session.user[1]])
     let ukupno = 0;
     console.log(req.session)
     korpa.forEach(item => {
@@ -644,7 +644,7 @@ app.post("/kupovina", async (req, res) => {
 
         // Get user ID from session
         const userEmail = req.session.user.email;
-        const userResult = await db.query("SELECT id FROM users WHERE email = $1", [userEmail]);
+        const userResult = await db.query("SELECT id FROM korisnici WHERE email = $1", [userEmail]);
         
         if (userResult.rows.length === 0) {
             return res.status(400).send("Korisnik nije pronađen.");
