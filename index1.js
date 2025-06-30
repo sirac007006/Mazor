@@ -41,9 +41,33 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASS,
   },
   });
-  
+
 
 db.connect();
+
+// Check if "Resoi" subcategory exists and add it if it doesn't
+(async function() {
+    try {
+        const existingSubcategory = await db.query(
+            "SELECT * FROM subcategories WHERE naziv = $1 AND category = $2",
+            ["Resoi", "malikucniaparati"]
+        );
+
+        if (existingSubcategory.rows.length === 0) {
+            // Subcategory doesn't exist, add it
+            await db.query(
+                "INSERT INTO subcategories(naziv, slika, category) VALUES ($1, $2, $3)",
+                ["Resoi", "reso.png", "malikucniaparati"]
+            );
+            console.log('Successfully added "Resoi" subcategory to the database');
+        } else {
+            console.log('"Resoi" subcategory already exists in the database');
+        }
+    } catch (error) {
+        console.error('Error checking/adding subcategory:', error);
+    }
+})();
+
 function authMiddleware(req, res, next) {
     if (!req.session.user) {
         return res.redirect("/prijava");
@@ -88,7 +112,7 @@ app.get("/", async(req, res) => {
     const { rows } = await db.query(
         "SELECT * FROM proizvodiful_updated WHERE subcategories = 'Šporeti' or subcategories = 'Električni šporeti' AND kolicina != '0' LIMIT 14"
     );
-    
+
     const masine = (await db.query(
         "SELECT * FROM proizvodiful_updated where kolicina != '0' limit 14 offset 6"
     )).rows;
@@ -103,7 +127,7 @@ app.get("/kontakt", async(req,res) =>{
     res.render("kontakt.ejs", { session: req.session });
 })
 
-  
+
 app.post("/kontakt", async (req, res) => {
     try {
         console.log("Primljeni podaci iz forme:", req.body);
@@ -385,7 +409,7 @@ app.post("/registracija", async (req, res) => {
     if (dbemail) {
         return res.redirect("/registracija?error=postoji");
     }
-    
+
     else{
         bcrypt.hash(lozinka, saltRounds, async function (err, hash) {
             if (err) {
@@ -411,32 +435,32 @@ app.get("/zaboravljenalozinka", async(req,res) =>{
 app.post("/zaboravljenalozinka", async (req, res) => {
 
     const { email } = req.body;
-  
+
     const userRes = await db.query("SELECT id FROM korisnici WHERE email = $1", [email]);
     if (userRes.rowCount === 0) {
       console.log("Sve top")
     }
-  
+
     const token = crypto.randomBytes(32).toString("hex");
     const expires = new Date(Date.now() + 1000 * 60 * 60); // 1h
-  
+
     await db.query(
       "INSERT INTO password_resets (user_id, token, expires_at) VALUES ($1, $2, $3)",
       [userRes.rows[0].id, token, expires]
     );
-  
+
     const link = `https://mazor-w95x.onrender.com/reset-lozinka?token=${token}`;
-  
+
     await transporter.sendMail({
       from: '"Mazor" <ivanovicmicko4@gmail.com>',
       to: email,
       subject: "Resetovanje lozinke",
       html: `<p>Klikni ispod da resetuješ lozinku:</p><a href="${link}">${link}</a>`,
     });
-  
+
     res.send("Ako mejl postoji, poslat je link za reset.");
   });
-  
+
   export default router;
 app.get("/reset-lozinka", async (req, res) => {
   const { token } = req.query;
@@ -453,25 +477,25 @@ app.get("/reset-lozinka", async (req, res) => {
 });
 app.post("/reset-lozinka", async (req, res) => {
     const { token, password } = req.body;
-  
+
     const tokenRes = await db.query("SELECT * FROM password_resets WHERE token = $1", [token]);
     if (tokenRes.rowCount === 0) {
       return res.send("Token nije validan.");
     }
-  
+
     const userId = tokenRes.rows[0].user_id;
     const hashed = await bcrypt.hash(password, 10);
-  
+
     await db.query("UPDATE korisnici SET lozinka = $1 WHERE id = $2", [hashed, userId]);
     await db.query("DELETE FROM password_resets WHERE token = $1", [token]);
-  
+
     res.send("Lozinka uspešno promenjena.");
   });
   app.get("/profil", authMiddleware, async(req, res) => {
     try {
         // Dohvati podatke korisnika
         let korisnik = (await db.query("SELECT * FROM korisnici WHERE email = $1", [req.session.user.email])).rows[0];
-        
+
         // Dohvati narudžbine korisnika, sortirane po datumu (najnovije prvo)
         const porudzbineResult = await db.query(
             `SELECT * FROM porudzbine 
@@ -480,9 +504,9 @@ app.post("/reset-lozinka", async (req, res) => {
              LIMIT 10`, // Prikazujemo samo 10 najnovijih
             [korisnik.id]
         );
-        
+
         const porudzbine = porudzbineResult.rows;
-        
+
         res.render("profil.ejs", { 
             session: req.session, 
             korisnik,
@@ -516,31 +540,31 @@ app.post("/otkazi-narudzbinu", authMiddleware, async (req, res) => {
     try {
         const { porudzbina_id } = req.body;
         const korisnik = (await db.query("SELECT id FROM korisnici WHERE email = $1", [req.session.user.email])).rows[0];
-        
+
         // Proveri da li je narudžbina od ovog korisnika
         const porudzbina = (await db.query(
             "SELECT * FROM porudzbine WHERE id = $1 AND iduser = $2",
             [porudzbina_id, korisnik.id]
         )).rows[0];
-        
+
         if (!porudzbina) {
             return res.status(403).send("Nemate pristup ovoj narudžbini.");
         }
-        
+
         // Proveri da li je status "U obradi"
         if (porudzbina.status !== 'U obradi') {
             return res.status(400).send("Možete otkazati samo narudžbine koje su u obradi.");
         }
-        
+
         // Otkaži narudžbinu (postavi status na "Otkazano")
         await db.query(
             "UPDATE porudzbine SET status = 'Otkazano' WHERE id = $1",
             [porudzbina_id]
         );
-        
+
         // Preusmeri nazad na profil
         res.redirect("/profil");
-        
+
     } catch (err) {
         console.error("Greška pri otkazivanju narudžbine:", err);
         res.status(500).send("Greška na serveru.");
@@ -645,33 +669,33 @@ app.post("/kupovina", async (req, res) => {
         // Get user ID from session
         const userEmail = req.session.user.email;
         const userResult = await db.query("SELECT id FROM korisnici WHERE email = $1", [userEmail]);
-        
+
         if (userResult.rows.length === 0) {
             return res.status(400).send("Korisnik nije pronađen.");
         }
-        
+
         const iduser = userResult.rows[0].id;
-        
+
         // Get form data
         const { 
             ime, prezime, email, telefon, 
             ulica, broj, stan, sprat, grad, postanski_broj,
             ima_lift, napomena, delivery_method 
         } = req.body;
-        
+
         // Format address
         const adresa = `${ulica} ${broj}${stan ? `, stan ${stan}` : ''}${sprat ? `, sprat ${sprat}` : ''}, ${grad} ${postanski_broj}${ima_lift ? ' (ima lift)' : ''}`;
-        
+
         // Calculate total amount (add 5 euros for shipping)
         const korpa = req.session.korpa || [];
         let iznos = 0;
         korpa.forEach(item => {
             iznos += parseFloat(item.cena) * item.kolicina;
         });
-        
+
         // Get new order ID - simplified approach
         let id = 1; // Default value if table is empty
-        
+
         try {
             // Get the max ID from the table (handles both text and integer IDs)
             const maxIdResult = await db.query("SELECT MAX(CAST(id AS INTEGER)) as max_id FROM porudzbine");
@@ -681,13 +705,13 @@ app.post("/kupovina", async (req, res) => {
         } catch (err) {
             console.error("Error while getting max ID, using default value", err);
         }
-        
+
         // Current date
         const datum = new Date();
-        
+
         // Default status
         const status = "U obradi";
-        
+
         // Format cart items as JSON for sadrzaj
         const sadrzaj = JSON.stringify(korpa.map(item => ({
             id: item.id,
@@ -695,15 +719,15 @@ app.post("/kupovina", async (req, res) => {
             cena: item.cena,
             kolicina: item.kolicina
         })));
-        
+
         // Insert order into database
         await db.query(
             "INSERT INTO porudzbine(id, iduser, datum, iznos, status, adresa, sadrzaj) VALUES($1, $2, $3, $4, $5, $6, $7)",
             [id, iduser, datum, iznos, status, adresa, sadrzaj]
         );
-        
+
         // DO NOT attempt to insert into porudzbine_stavke - we're storing everything in the sadrzaj JSON field
-        
+
         // NOVO: Pošalji email notifikaciju
         try {
             // Formatiramo sadržaj korpe za email
@@ -727,7 +751,7 @@ app.post("/kupovina", async (req, res) => {
                 <p><strong>Telefon:</strong> ${telefon}</p>
                 <p><strong>Adresa:</strong> ${adresa}</p>
                 ${napomena ? `<p><strong>Napomena:</strong> ${napomena}</p>` : ''}
-                
+
                 <h3>Naručeni proizvodi:</h3>
                 <table border="1" style="border-collapse: collapse; width: 100%;">
                     <thead>
@@ -754,20 +778,20 @@ app.post("/kupovina", async (req, res) => {
                 subject: `Nova narudžbina #${id} - ${ime} ${prezime}`,
                 html: emailHtml
             });
-            
+
 
             console.log('Email notifikacija uspešno poslana za narudžbinu #' + id);
         } catch (emailError) {
             console.error('Greška pri slanju email notifikacije:', emailError);
             // Ne prekidamo proces čak i ako email ne može da se pošalje
         }
-        
+
         // Clear cart after successful order
         req.session.korpa = [];
-        
+
         // Redirect to success page or order summary
         res.redirect("/profil");
-        
+
     } catch (err) {
         console.error("Greška pri obradi porudžbine:", err);
         res.status(500).send("Došlo je do greške prilikom obrade porudžbine. Pokušajte ponovo.");
