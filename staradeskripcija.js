@@ -11,7 +11,7 @@ const db = new pg.Client({
 });
 
 // Primarni i rezervni API ključevi
-const PRIMARY_SCRAPERAPI_KEY = "43f5732a80999e9848a8308c2b755eb6";
+const PRIMARY_SCRAPERAPI_KEY = "415a6197d3a5f51b63dd944a412d5cd4";
 const BACKUP_SCRAPERAPI_KEY1 = "322858336d2ea84527fe1be304b4705a"; // Prvi rezervni ključ
 const BACKUP_SCRAPERAPI_KEY2 = "56ca942d15fb81b16546b8cd43514c54"; // Drugi rezervnsi ključ
 
@@ -53,7 +53,7 @@ async function fetchProductsWithoutDescription() {
   const res = await db.query(`
     SELECT id, naziv, subcategories 
 FROM proizvodiful_updated 
-WHERE deskripcija = 'failed' 
+WHERE deskripcija = 'alfa' 
   AND subcategories != 'Stono posuđe' 
   AND subcategories != 'Filteri' 
   AND subcategories != 'Dimne cijevi' 
@@ -485,6 +485,7 @@ async function getGoogleLinks(queryText) {
 
 
         !href.includes("megashop.ba") &&
+        !href.includes("alfaplam.rs") &&
 
         !href.includes("technoshop.ba") &&
         !href.includes("loren.co.rs") &&
