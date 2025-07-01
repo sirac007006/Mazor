@@ -88,7 +88,7 @@ app.get("/", async(req, res) => {
     );
 
     const masine = (await db.query(
-        "SELECT * FROM proizvodiful_updated where kolicina != '0' limit 14 offset 6"
+        "SELECT * FROM proizvodiful_updated where kolicina != '0' limit 14 offset 300"
     )).rows;
     const televizori = rows;
     res.render("index.ejs", {
